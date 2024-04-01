@@ -17,7 +17,7 @@ public class Loader {
 
         LoginController controller = loader.getController();
 
-        Scene scene = new Scene(root, 600, 300);
+        Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
         stage.show();
     }
