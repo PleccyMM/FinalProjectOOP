@@ -12,13 +12,13 @@ import java.util.List;
 
 public class LoginController {
 
-    @FXML private TextField userNameEntry;
-    @FXML private PasswordField passwordEntry;
+    @FXML private TextField enrName;
+    @FXML private PasswordField enrPassword;
     @FXML private Text lblWarning;
     @FXML
     protected void handleBtnLogin(ActionEvent event) throws Exception {
         resetLogin();
-        List<Operator> operatorCatch = DatabaseControl.getSpecificOperator(userNameEntry.getText());
+        List<Operator> operatorCatch = DatabaseControl.getSpecificOperator(enrName.getText());
 
         //Being good and not nesting ifs
         if (operatorCatch.isEmpty()) {
@@ -28,9 +28,9 @@ public class LoginController {
         }
 
         for (Operator o : operatorCatch) {
-            if (o.attemptLogin(passwordEntry.getText())) {
+            if (o.attemptLogin(enrPassword.getText())) {
                 System.out.println("SUCCESS, LOGGED IN");
-                Stage stage = (Stage) userNameEntry.getScene().getWindow();
+                Stage stage = (Stage) enrName.getScene().getWindow();
                 Loader loader = new Loader();
                 loader.showStock(stage, o);
                 return;
@@ -43,12 +43,12 @@ public class LoginController {
 
     private void resetLogin() {
         lblWarning.setText("");
-        userNameEntry.setStyle("-fx-border-color: #FFFFFF ;");
-        passwordEntry.setStyle("-fx-border-color: #FFFFFF ;");
+        enrName.setStyle("-fx-border-color: #FFFFFF ;");
+        enrPassword.setStyle("-fx-border-color: #FFFFFF ;");
     }
     private void failedLogin() {
         lblWarning.setText("Incorrect username or password");
-        userNameEntry.setStyle("-fx-border-color: #FF0000 ;");
-        passwordEntry.setStyle("-fx-border-color: #FF0000 ;");
+        enrName.setStyle("-fx-border-color: #FF0000 ;");
+        enrPassword.setStyle("-fx-border-color: #FF0000 ;");
     }
 }

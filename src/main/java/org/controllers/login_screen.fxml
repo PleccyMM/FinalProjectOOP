@@ -56,12 +56,12 @@
                    GridPane.rowIndex="2"
             />
         </GridPane>
-        <TextField fx:id="userNameEntry"
+        <TextField fx:id="enrName"
                    promptText="Username"
                    GridPane.columnIndex="0"
                    GridPane.rowIndex="3"
         />
-        <PasswordField fx:id="passwordEntry"
+        <PasswordField fx:id="enrPassword"
                        promptText="Password"
                        GridPane.columnIndex="0"
                        GridPane.rowIndex="4"
