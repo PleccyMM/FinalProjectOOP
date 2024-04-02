@@ -13,7 +13,6 @@
 <GridPane
         fx:controller="org.controllers.LoginController"
         xmlns:fx="http://javafx.com/fxml"
-        alignment="TOP_LEFT"
         hgap="48"
         vgap="48"
         stylesheets="@MainStyle.css">

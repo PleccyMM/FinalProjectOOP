@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.vexillum.*;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class LoginController {
         for (Operator o : operatorCatch) {
             if (o.attemptLogin(passwordEntry.getText())) {
                 System.out.println("SUCCESS, LOGGED IN");
+                Stage stage = (Stage) userNameEntry.getScene().getWindow();
+                Loader loader = new Loader();
+                loader.showStock(stage, o);
                 return;
             }
         }
