@@ -27,7 +27,7 @@ public class DatabaseControl {
 
     public static List<Operator> getOperators() {
         openDBSession();
-        Query query = databaseSession.createQuery("from Operator");
+        var query = databaseSession.createQuery("from Operator");
         List<Operator> list = query.list();
         closeDBSession();
         return list;
@@ -35,7 +35,7 @@ public class DatabaseControl {
 
     public static List<Operator> getSpecificOperator(String nameSearch) {
         openDBSession();
-        Query query = databaseSession.createQuery("from Operator where name = '" + nameSearch + "'");
+        var query = databaseSession.createQuery("from Operator where name = '" + nameSearch + "'");
         List<Operator> list = query.list();
         closeDBSession();
         return list;

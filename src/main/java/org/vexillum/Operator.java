@@ -12,7 +12,7 @@ public class Operator {
     public Operator() {}
     public Operator(String name, String password)
     {
-        operatorID = GenerateID();
+        operatorID = generateID();
         this.name = name;
         this.password = password;
         this.approved = false;
@@ -24,11 +24,11 @@ public class Operator {
         return "ID: " + operatorID + "\nName: " + name + "\nPassword: " + password + "\nApproved: " + approved + "\nAdministrator: " + administrator;
     }
 
-    private int GenerateID() {
+    private int generateID() {
         return 0;
     }
 
-    public boolean AttemptLogin(String password) {
+    public boolean attemptLogin(String password) {
         return Objects.equals(password, this.password);
     }
 

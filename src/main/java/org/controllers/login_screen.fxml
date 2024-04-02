@@ -32,53 +32,57 @@
               GridPane.columnIndex="2"
               GridPane.rowIndex="1">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" halignment="CENTER" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" halignment="CENTER" minWidth="10.0" prefWidth="50.0"/>
         </columnConstraints>
-        <padding><Insets top="25" right="25" bottom="35" left="25"/></padding>
+        <padding>
+            <Insets top="25" right="25" bottom="35" left="25"/>
+        </padding>
         <!--<gridLinesVisible>true</gridLinesVisible>-->
-        <children>
-            <Text id="title-text"
-                  text="Login"
-                  GridPane.columnIndex="0"
-                  GridPane.rowIndex="0"
-                  GridPane.columnSpan="3"
+        <Label id="title-text"
+               text="Login"
+               GridPane.columnIndex="0"
+               GridPane.rowIndex="0"
+               GridPane.columnSpan="3"
+        />
+        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" vgap="5">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" halignment="CENTER" minWidth="10.0" prefWidth="50.0"/>
+            </columnConstraints>
+            <Pane id="white-divider"
+                  minHeight="3"
             />
-            <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" vgap="5">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" halignment="CENTER" minWidth="10.0" prefWidth="50.0" />
-                </columnConstraints>
-                <Pane id="white-divider"
-                      minHeight="3"
-                />
-                <Text id="subhead-text"
-                      text="Vexillum Management"
-                      GridPane.columnIndex="0"
-                      GridPane.rowIndex="2"
-                />
-            </GridPane>
-            <TextField fx:id="userNameEntry"
-                       promptText="Username"
+            <Label id="subhead-text"
+                   text="Vexillum Management"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="2"
+            />
+        </GridPane>
+        <TextField fx:id="userNameEntry"
+                   promptText="Username"
+                   GridPane.columnIndex="0"
+                   GridPane.rowIndex="3"
+        />
+        <PasswordField fx:id="passwordEntry"
+                       promptText="Password"
                        GridPane.columnIndex="0"
-                       GridPane.rowIndex="3"
-            />
-            <PasswordField fx:id="passwordEntry"
-                           promptText="Password"
-                           GridPane.columnIndex="0"
-                           GridPane.rowIndex="4"
-            />
-            <Text id="white-label"
-                  text="Create account"
-                  underline="true"
-                  GridPane.columnIndex="0"
-                  GridPane.rowIndex="5"
-            />
-            <Button fx:id="btnLogin"
-                    text="Login"
-                    GridPane.columnIndex="0"
-                    GridPane.rowIndex="6"
-                    prefWidth="140"
-                    onAction="#handleBtnLogin"
-            />
-        </children>
+                       GridPane.rowIndex="4"
+        />
+        <Label id="white-label"
+               text="Create account"
+               underline="true"
+               GridPane.columnIndex="0"
+               GridPane.rowIndex="5"
+        />
+        <Text fx:id="lblWarning"
+               GridPane.columnIndex="0"
+               GridPane.rowIndex="6"
+        />
+        <Button fx:id="btnLogin"
+                text="Login"
+                GridPane.columnIndex="0"
+                GridPane.rowIndex="7"
+                prefWidth="140"
+                onAction="#handleBtnLogin"
+        />
     </GridPane>
 </GridPane>
