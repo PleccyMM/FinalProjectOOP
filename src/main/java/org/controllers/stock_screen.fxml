@@ -71,8 +71,8 @@
                         <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
                               maxWidth="1">
                             <ImageView id="image-test-flag"
-                                         fitHeight="70"
-                                         fitWidth="94"
+                                       fitHeight="70"
+                                       fitWidth="94"
                             />
                         </VBox>
                         <Label id="label-stock-name"
@@ -83,10 +83,11 @@
                         />
                         <Label/>
                         <HBox alignment="center" spacing="15">
-                            <Button id="btnBlue"
+                            <Button fx:id="btnBlue"
                                     text="Flag"
                                     prefWidth="65"
                                     prefHeight="27"
+                                    onAction="#handleBtnTest"
                             />
                             <Button id="btnBlue"
                                     text="Cushion"

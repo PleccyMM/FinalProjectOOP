@@ -15,4 +15,8 @@ public class StockController {
     public void loginOperator(Operator o) {
         operator = o;
     }
+    @FXML
+    protected void handleBtnTest(ActionEvent event) throws Exception {
+
+    }
 }

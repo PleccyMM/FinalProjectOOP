@@ -15,6 +15,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("mysql:mysql-connector-java:8.0.32")
     implementation("org.hibernate:hibernate-core:5.6.15.Final")
+    implementation("org.json:json:20141113")
 }
 
 javafx {

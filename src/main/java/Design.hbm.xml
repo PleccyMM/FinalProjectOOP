@@ -1,0 +1,12 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name = "org.vexillum.Design" table = "designs">
+        <id name = "isoID" column = "isoid" type = "string" />
+        <property name = "name" column = "name" type = "string"/>
+        <property name = "region" column = "regionid" type = "int"/>
+        <property name = "type" column = "typeid" type = "int"/>
+    </class>
+</hibernate-mapping>
