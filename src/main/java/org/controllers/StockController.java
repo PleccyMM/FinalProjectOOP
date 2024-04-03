@@ -3,34 +3,37 @@ package org.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import org.vexillum.*;
 
 import javafx.scene.image.ImageView;
+
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class StockController {
     private Operator operator;
     @FXML private VBox boxScroll;
+    @FXML private ScrollPane scrBackground;
     public void loginOperator(Operator o) {
         operator = o;
     }
-    @FXML
-    protected void handleBtnTest(ActionEvent event) throws Exception {
+
+    public void loadStock() throws Exception {
         List<Design> allDesigns = DatabaseControl.getAllDesigns();
 
-        for (int i = 0; i < allDesigns.size(); i+=3) {
+        for (int i = 0; i < 99; i+=3) {
             HBox box = new HBox();
-            box.setSpacing(10);
+            box.setSpacing(32);
             box.setAlignment(Pos.CENTER);
 
             int runAmount = 3;
@@ -47,15 +50,24 @@ public class StockController {
 
                 VBox imgContainer = (VBox) listFXML.get(0);
                 List<Node> listVBox = imgContainer.getChildren();
-                ImageView img = (ImageView) listVBox.get(0);
-                img.setImage(new Image("org/Assets/Flags/" + allDesigns.get(i+j).getIsoID() + ".png"));
+                ImageView imgView = (ImageView) listVBox.get(0);
+                try {
+                    Image img = new Image("org/Assets/Flags/" + allDesigns.get(i+j).getIsoID() + ".png");
+                    imgView.setImage(img);
+                    imgView.setFitWidth((int) (img.getWidth() / 10));
+                    imgView.setFitHeight((int) (img.getHeight() / 10));
+                }
+                catch (Exception ignored) { }
 
                 lbl.setText(allDesigns.get(i+j).getName());
                 box.getChildren().add(productView);
             }
             boxScroll.getChildren().add(box);
         }
+    }
 
-        //boxScroll.getChildren().add(productView);
+    @FXML
+    protected void handleBtnTest(ActionEvent event) throws Exception {
+
     }
 }

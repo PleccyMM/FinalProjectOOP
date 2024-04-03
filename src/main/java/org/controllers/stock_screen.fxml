@@ -64,7 +64,9 @@
                 </HBox>
             </top>
             <center>
-                <ScrollPane id="light-blue-fill">
+                <ScrollPane fx:id="scrBackground"
+                            hbarPolicy="NEVER"
+                            fitToWidth="true">
                     <VBox fx:id="boxScroll"
                           alignment="CENTER_LEFT"
                           spacing="10"

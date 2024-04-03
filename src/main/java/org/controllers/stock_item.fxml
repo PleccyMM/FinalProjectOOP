@@ -20,10 +20,11 @@
       stylesheets="@MainStyle.css">
     <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
           maxWidth="1">
-        <ImageView fitHeight="70"
-                   fitWidth="94"
-        />
+        <ImageView/>
     </VBox>
+    <padding>
+        <Insets left="5" right="5"/>
+    </padding>
     <Label fx:id="lblStockName"
            text="Sámi"
     />
@@ -36,7 +37,6 @@
                 text="Flag"
                 prefWidth="65"
                 prefHeight="27"
-                onAction="#handleBtnTest"
         />
         <Button id="btnBlue"
                 text="Cushion"

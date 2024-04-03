@@ -18,7 +18,7 @@ public class Main extends Application
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
         //loader.showLogin(stage);
-        loader.showStock(stage, new Operator());
+        loader.showLogin(stage);
     }
 
     public static void main(String[] args) {

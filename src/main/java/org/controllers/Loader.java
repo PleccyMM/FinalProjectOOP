@@ -29,6 +29,7 @@ public class Loader {
 
         StockController controller = loader.getController();
         controller.loginOperator(operator);
+        controller.loadStock();
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
