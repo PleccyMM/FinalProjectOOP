@@ -56,23 +56,58 @@
     -fx-text-fill: #FFFFFF;
 }
 
+#btnBlue {
+    -fx-background-color: #3551B4;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-size: 12px;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#btnBlue:hover {
+    -fx-background-color: #C2D0FF;
+    -fx-text-fill: #FFFFFF;
+}
+
 #btnBack {
-    -fx-background-color: #FFFFFF00;
+    -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/BackEnabled.png");;
 }
 #btnLogin:hover {
-    -fx-background-color: #FFFFFF00;
-    -fx-border-color: #FFFFFF00;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 #enrSearch {
-    -fx-border-color: #FFFFFF00;
+    -fx-border-color: transparent;
     -fx-prompt-text-fill: #DDEEEE;
     -fx-background-color: #596FC0;
     -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0.0, 0, 0);
 }
 #image-search {
     -fx-image:url('../Assets/Icons/Search.png');
+}
+#image-shopping {
+    -fx-image:url('../Assets/Icons/Shopping.png');
+}
+#image-profile {
+    -fx-image:url('../Assets/Icons/Profile.png');
+}
+
+#image-test-flag {
+    -fx-image:url('../Assets/Flags/test_flag.png');
+ }
+
+#label-stock-name {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+#label-stock-price {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
 }
 
 .text-field {
@@ -89,4 +124,47 @@
 }
 .label {
     -fx-font-family: "Inter Semi Bold";
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color : #FFFFFF;
+    -fx-border-color :transparent;
+}
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0;
+    -fx-padding :0.0 0.0 10.0 0.0;
+
+}
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-padding :2 0.0;
+}
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-padding :0.0 2;
+}
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color :#3551B4;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 4.0;
+}
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color : #596FC0;
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 4.0;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
 }

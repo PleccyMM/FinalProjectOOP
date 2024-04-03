@@ -18,20 +18,31 @@
               minHeight="55"
               spacing="10"
               alignment="CENTER_LEFT">
-            <Button id="btnBack"/>
             <padding>
                 <Insets left="10"/>
             </padding>
+            <Button id="btnBack"
+            />
             <HBox id="mid-blue-fill"
                   alignment="CENTER_LEFT"
-                  maxHeight="24">
+                  maxHeight="30">
                 <padding>
                     <Insets left="8"/>
                 </padding>
                 <ImageView id="image-search"/>
                 <TextField fx:id="enrSearch"
                            prefWidth="580"
-                           promptText="Search Stock"/>
+                           promptText="Search Stock"
+                />
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT"
+                  spacing="20">
+                <padding>
+                    <Insets right="20"/>
+                </padding>
+                <ImageView id="image-shopping"/>
+                <ImageView id="image-profile"/>
             </HBox>
         </HBox>
     </top>
@@ -52,10 +63,39 @@
                 </HBox>
             </top>
             <center>
-                <GridPane id="light-blue-fill"
-                          vgap="25"
-                          prefWidth="300">
-                </GridPane>
+                <ScrollPane id="light-blue-fill">
+                    <VBox id="white-divider"
+                          prefHeight="190"
+                          prefWidth="194"
+                          alignment="center">
+                        <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
+                              maxWidth="1">
+                            <ImageView id="image-test-flag"
+                                         fitHeight="70"
+                                         fitWidth="94"
+                            />
+                        </VBox>
+                        <Label id="label-stock-name"
+                               text="Sámi"
+                        />
+                        <Label id="label-stock-price"
+                               text="£2.50-£22.00+"
+                        />
+                        <Label/>
+                        <HBox alignment="center" spacing="15">
+                            <Button id="btnBlue"
+                                    text="Flag"
+                                    prefWidth="65"
+                                    prefHeight="27"
+                            />
+                            <Button id="btnBlue"
+                                    text="Cushion"
+                                    prefWidth="65"
+                                    prefHeight="27"
+                            />
+                        </HBox>
+                    </VBox>
+                </ScrollPane>
             </center>
             <left>
                 <VBox prefWidth="16"/>
