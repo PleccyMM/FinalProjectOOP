@@ -47,6 +47,15 @@ public class DatabaseControl {
         closeDBSession();
         return list;
     }
+
+    public static List<Design> getAllDesigns() {
+        openDBSession();
+        var query = databaseSession.createQuery("from Design order by name asc");
+        List<Design> list = query.list();
+        closeDBSession();
+        return list;
+    }
+
     public static void AddDesigns () {
         openDBSession();
         databaseSession.beginTransaction();

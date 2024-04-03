@@ -20,6 +20,11 @@
 }
 /*Please ensure test1 is properly replaced*/
 
+
+#scrlStock {
+    -fx-background-color: #C2D0FF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
 #title-text {
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 48px;
@@ -101,12 +106,12 @@
     -fx-image:url('../Assets/Flags/ll.png');
  }
 
-#label-stock-name {
-    -fx-font-size: 20px;
+#lblStockPrice {
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
-#label-stock-price {
-    -fx-font-size: 12px;
+#lblStockName {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 

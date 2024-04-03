@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
-
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.image.ImageView?>
+
 <BorderPane fx:controller="org.controllers.StockController"
             xmlns:fx="http://javafx.com/fxml"
             stylesheets="@MainStyle.css">
@@ -22,6 +22,7 @@
                 <Insets left="10"/>
             </padding>
             <Button id="btnBack"
+                    onAction="#handleBtnTest"
             />
             <HBox id="mid-blue-fill"
                   alignment="CENTER_LEFT"
@@ -64,38 +65,10 @@
             </top>
             <center>
                 <ScrollPane id="light-blue-fill">
-                    <VBox id="white-divider"
-                          prefHeight="190"
-                          prefWidth="194"
-                          alignment="center">
-                        <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
-                              maxWidth="1">
-                            <ImageView id="image-test-flag"
-                                       fitHeight="70"
-                                       fitWidth="94"
-                            />
-                        </VBox>
-                        <Label id="label-stock-name"
-                               text="Sámi"
-                        />
-                        <Label id="label-stock-price"
-                               text="£2.50-£22.00+"
-                        />
-                        <Label/>
-                        <HBox alignment="center" spacing="15">
-                            <Button fx:id="btnBlue"
-                                    text="Flag"
-                                    prefWidth="65"
-                                    prefHeight="27"
-                                    onAction="#handleBtnTest"
-                            />
-                            <Button id="btnBlue"
-                                    text="Cushion"
-                                    prefWidth="65"
-                                    prefHeight="27"
-                            />
-                        </HBox>
-                    </VBox>
+                    <VBox fx:id="boxScroll"
+                          alignment="CENTER_LEFT"
+                          spacing="10"
+                    />
                 </ScrollPane>
             </center>
             <left>
