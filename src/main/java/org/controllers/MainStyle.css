@@ -98,7 +98,7 @@
 }
 
 #image-test-flag {
-    -fx-image:url('../Assets/Flags/test_flag.png');
+    -fx-image:url('../Assets/Flags/ll.png');
  }
 
 #label-stock-name {
