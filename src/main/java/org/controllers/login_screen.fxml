@@ -24,7 +24,7 @@
           GridPane.rowIndex="1"
     />
 
-    <GridPane id="sub-pane-login-main"
+    <GridPane id="blue-fill"
               vgap="25"
               alignment="CENTER"
               prefWidth="300"
@@ -58,11 +58,13 @@
         </GridPane>
         <TextField fx:id="enrName"
                    promptText="Username"
+                   text="Mark"
                    GridPane.columnIndex="0"
                    GridPane.rowIndex="3"
         />
         <PasswordField fx:id="enrPassword"
                        promptText="Password"
+                       text="testpassword1"
                        GridPane.columnIndex="0"
                        GridPane.rowIndex="4"
         />
@@ -83,5 +85,6 @@
                 prefWidth="140"
                 onAction="#handleBtnLogin"
         />
+        <!-- Look at replacing this entire thing with vbox? -->
     </GridPane>
 </GridPane>

@@ -17,7 +17,8 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
-        loader.showLogin(stage);
+        //loader.showLogin(stage);
+        loader.showStock(stage, new Operator());
     }
 
     public static void main(String[] args) {

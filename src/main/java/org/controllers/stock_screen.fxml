@@ -5,11 +5,70 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
 
-<GridPane
-        fx:controller="org.controllers.StockController"
-        xmlns:fx="http://javafx.com/fxml"
-        hgap="48"
-        vgap="48"
-        stylesheets="@MainStyle.css">
-</GridPane>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+<BorderPane fx:controller="org.controllers.StockController"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@MainStyle.css">
+    <top>
+        <HBox id="blue-fill"
+              minHeight="55"
+              spacing="10"
+              alignment="CENTER_LEFT">
+            <Button id="btnBack"/>
+            <padding>
+                <Insets left="10"/>
+            </padding>
+            <HBox id="mid-blue-fill"
+                  alignment="CENTER_LEFT"
+                  maxHeight="24">
+                <padding>
+                    <Insets left="8"/>
+                </padding>
+                <ImageView id="image-search"/>
+                <TextField fx:id="enrSearch"
+                           prefWidth="580"
+                           promptText="Search Stock"/>
+            </HBox>
+        </HBox>
+    </top>
+    <center>
+        <BorderPane>
+            <top>
+                <HBox minHeight="64"
+                      spacing="32"
+                      alignment="CENTER_LEFT">
+                    <Label text="Type"
+                    />
+                    <Label text="Design"
+                    />
+                    <Label text="Region"
+                    />
+                    <Label text="Initial"
+                    />
+                </HBox>
+            </top>
+            <center>
+                <GridPane id="light-blue-fill"
+                          vgap="25"
+                          prefWidth="300">
+                </GridPane>
+            </center>
+            <left>
+                <VBox prefWidth="16"/>
+            </left>
+            <right>
+                <VBox prefWidth="16"/>
+            </right>
+        </BorderPane>
+    </center>
+    <left>
+        <VBox prefWidth="48"/>
+    </left>
+    <right>
+        <VBox prefWidth="48"/>
+    </right>
+</BorderPane>

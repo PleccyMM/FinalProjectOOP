@@ -1,5 +1,13 @@
-#sub-pane-login-main {
+#blue-fill {
     -fx-background-color: #3551B4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#mid-blue-fill {
+    -fx-background-color: #596FC0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#light-blue-fill {
+    -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
 #white-divider {
@@ -46,6 +54,25 @@
 #btnLogin:hover {
     -fx-background-color: #3551B4;
     -fx-text-fill: #FFFFFF;
+}
+
+#btnBack {
+    -fx-background-color: #FFFFFF00;
+    -fx-graphic: url("../Assets/Icons/BackEnabled.png");;
+}
+#btnLogin:hover {
+    -fx-background-color: #FFFFFF00;
+    -fx-border-color: #FFFFFF00;
+}
+#enrSearch {
+    -fx-border-color: #FFFFFF00;
+    -fx-prompt-text-fill: #DDEEEE;
+    -fx-background-color: #596FC0;
+    -fx-text-fill: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0.0, 0, 0);
+}
+#image-search {
+    -fx-image:url('../Assets/Icons/Search.png');
 }
 
 .text-field {
