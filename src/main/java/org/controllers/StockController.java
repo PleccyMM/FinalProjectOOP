@@ -3,7 +3,6 @@ package org.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -15,9 +14,7 @@ import org.vexillum.*;
 
 import javafx.scene.image.ImageView;
 
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 
 public class StockController {
@@ -31,14 +28,18 @@ public class StockController {
     public void loadStock() throws Exception {
         List<Design> allDesigns = DatabaseControl.getAllDesigns();
 
-        for (int i = 0; i < 99; i+=3) {
+        boxScroll.getChildren().add(new HBox());
+
+        int flagsToLoad = allDesigns.size();
+        System.out.println("HERE " + allDesigns.size());
+        for (int i = 0; i < flagsToLoad; i+=3) {
             HBox box = new HBox();
-            box.setSpacing(32);
+            box.setSpacing(48);
             box.setAlignment(Pos.CENTER);
 
             int runAmount = 3;
-            if (i + 2 > allDesigns.size()) {
-                runAmount = allDesigns.size() - i;
+            if (i + 2 > flagsToLoad) {
+                runAmount = flagsToLoad - i;
             }
 
             for (int j = 0; j < runAmount; j++) {
@@ -52,10 +53,10 @@ public class StockController {
                 List<Node> listVBox = imgContainer.getChildren();
                 ImageView imgView = (ImageView) listVBox.get(0);
                 try {
-                    Image img = new Image("org/Assets/Flags/" + allDesigns.get(i+j).getIsoID() + ".png");
+                    Image img = new Image("org/Assets/FlagsSmall/" + allDesigns.get(i+j).getIsoID() + ".png");
                     imgView.setImage(img);
-                    imgView.setFitWidth((int) (img.getWidth() / 10));
-                    imgView.setFitHeight((int) (img.getHeight() / 10));
+                    /*imgView.setFitWidth((int) (img.getWidth() / 10));
+                    imgView.setFitHeight((int) (img.getHeight() / 10));*/
                 }
                 catch (Exception ignored) { }
 
@@ -64,6 +65,8 @@ public class StockController {
             }
             boxScroll.getChildren().add(box);
         }
+
+        boxScroll.getChildren().add(new HBox());
     }
 
     @FXML

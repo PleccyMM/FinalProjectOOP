@@ -18,6 +18,7 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.controllers.StockController"
       stylesheets="@MainStyle.css">
+
     <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
           maxWidth="1">
         <ImageView/>
@@ -25,9 +26,8 @@
     <padding>
         <Insets left="5" right="5"/>
     </padding>
-    <Label fx:id="lblStockName"
-           text="Sámi"
-    />
+
+    <Label fx:id="lblStockName"/>
     <Label fx:id="lblStockPrice"
            text="£2.50-£22.00+"
     />

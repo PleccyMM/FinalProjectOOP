@@ -48,6 +48,9 @@
     -fx-font-family: "Inter Semi Bold";
     -fx-font-weight: bold;
 }
+#label-tag {
+    -fx-font-weight: bold;
+}
 
 #btnLogin {
     -fx-background-color: #FFFFFF;
@@ -105,10 +108,9 @@
 #image-profile {
     -fx-image:url('../Assets/Icons/Profile.png');
 }
-
-#image-test-flag {
-    -fx-image:url('../Assets/Flags/ll.png');
- }
+#image-down-arrow {
+    -fx-image:url('../Assets/Icons/DownArrow.png');
+}
 
 #lblStockPrice {
     -fx-font-size: 12px;
