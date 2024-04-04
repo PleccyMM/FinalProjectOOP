@@ -5,10 +5,67 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.canvas.Canvas?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.controllers.LoginController"
-            prefHeight="400.0" prefWidth="600.0">
+<HBox fx:controller="org.controllers.LoginController"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@MainStyle.css"
+      alignment="CENTER"
+      spacing="32">
 
-</AnchorPane>
+    <padding>
+        <Insets top="25" bottom="25"/>
+    </padding>
+
+    <Pane id="test1"
+          minWidth="480"
+    />
+
+    <VBox id="blue-fill"
+          alignment="CENTER"
+          prefWidth="300"
+          spacing="25">
+
+        <padding>
+            <Insets right="25" left="25"/>
+        </padding>
+        <Label id="title-text"
+               text="Login"
+        />
+
+        <VBox alignment="CENTER"
+              spacing="5">
+            <Pane id="white-divider"
+                  minHeight="3"
+            />
+            <Label id="subhead-text"
+                   text="Vexillum Management"
+            />
+        </VBox>
+
+        <TextField fx:id="enrName"
+                   promptText="Username"
+                   text="Mark"
+        />
+        <PasswordField fx:id="enrPassword"
+                       promptText="Password"
+                       text="testpassword1"
+        />
+
+        <Label id="white-label"
+               text="Create account"
+               underline="true"
+        />
+        <Text fx:id="lblWarning"
+        />
+
+        <Button fx:id="btnLogin"
+                text="Login"
+                prefWidth="140"
+                onAction="#handleBtnLogin"
+        />
+    </VBox>
+</HBox>

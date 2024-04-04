@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox id="white-divider"
+      prefHeight="190"
+      prefWidth="194"
+      alignment="center"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.controllers.StockController"
+      stylesheets="@MainStyle.css">
+
+    <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
+          maxWidth="1">
+        <ImageView/>
+    </VBox>
+    <padding>
+        <Insets left="5" right="5"/>
+    </padding>
+
+    <Label fx:id="lblStockName"/>
+    <Label fx:id="lblStockPrice"
+           text="£2.50-£22.00+"
+    />
+    <Label/>
+    <HBox alignment="center" spacing="15">
+        <Button fx:id="btnBlue"
+                text="Flag"
+                prefWidth="65"
+                prefHeight="27"
+        />
+        <Button id="btnBlue"
+                text="Cushion"
+                prefWidth="65"
+                prefHeight="27"
+        />
+    </HBox>
+</VBox>

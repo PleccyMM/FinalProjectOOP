@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane fx:controller="org.controllers.StockController"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@MainStyle.css">
+    <top>
+        <HBox id="blue-fill"
+              minHeight="55"
+              spacing="10"
+              alignment="CENTER_LEFT">
+            <padding>
+                <Insets left="10"/>
+            </padding>
+            <Button id="btnBack"
+                    onAction="#handleBtnTest"
+            />
+            <HBox id="mid-blue-fill"
+                  alignment="CENTER_LEFT"
+                  maxHeight="30">
+                <padding>
+                    <Insets left="8"/>
+                </padding>
+                <ImageView id="image-search"/>
+                <TextField fx:id="enrSearch"
+                           prefWidth="580"
+                           promptText="Search Stock"
+                />
+            </HBox>
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER_RIGHT"
+                  spacing="20">
+                <padding>
+                    <Insets right="20"/>
+                </padding>
+                <ImageView id="image-shopping"/>
+                <ImageView id="image-profile"/>
+            </HBox>
+        </HBox>
+    </top>
+    <center>
+        <BorderPane>
+            <top>
+                <HBox minHeight="64"
+                      spacing="64"
+                      alignment="CENTER_LEFT">
+                    <HBox spacing="5" alignment="CENTER_LEFT">
+                        <Label id="label-tag" text="Type"/>
+                        <ImageView id="image-down-arrow"/>
+                    </HBox>
+                    <HBox spacing="5" alignment="CENTER_LEFT">
+                        <Label id="label-tag" text="Design"/>
+                        <ImageView id="image-down-arrow"/>
+                    </HBox>
+                    <HBox spacing="5" alignment="CENTER_LEFT">
+                        <Label id="label-tag" text="Region"/>
+                        <ImageView id="image-down-arrow"/>
+                    </HBox>
+                    <HBox spacing="5" alignment="CENTER_LEFT">
+                        <Label id="label-tag" text="Initial"/>
+                        <ImageView id="image-down-arrow"/>
+                    </HBox>
+                </HBox>
+            </top>
+            <center>
+                <ScrollPane fx:id="scrBackground"
+                            hbarPolicy="NEVER"
+                            fitToWidth="true">
+                    <VBox fx:id="boxScroll"
+                          alignment="CENTER_LEFT"
+                          spacing="24"
+                    />
+                </ScrollPane>
+            </center>
+            <left>
+                <VBox prefWidth="16"/>
+            </left>
+            <right>
+                <VBox prefWidth="16"/>
+            </right>
+        </BorderPane>
+    </center>
+    <left>
+        <VBox prefWidth="48"/>
+    </left>
+    <right>
+        <VBox prefWidth="48"/>
+    </right>
+</BorderPane>
