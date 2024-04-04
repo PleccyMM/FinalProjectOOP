@@ -7,84 +7,65 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
-
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.canvas.Canvas?>
-<GridPane
-        fx:controller="org.controllers.LoginController"
-        xmlns:fx="http://javafx.com/fxml"
-        hgap="48"
-        vgap="48"
-        stylesheets="@MainStyle.css">
+
+<HBox fx:controller="org.controllers.LoginController"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@MainStyle.css"
+      alignment="CENTER"
+      spacing="32">
+
+    <padding>
+        <Insets top="25" bottom="25"/>
+    </padding>
 
     <Pane id="test1"
           minWidth="480"
-          maxHeight="480"
-          GridPane.columnIndex="1"
-          GridPane.rowIndex="1"
     />
 
-    <GridPane id="blue-fill"
-              vgap="25"
-              alignment="CENTER"
-              prefWidth="300"
-              GridPane.columnIndex="2"
-              GridPane.rowIndex="1">
-        <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" halignment="CENTER" minWidth="10.0" prefWidth="50.0"/>
-        </columnConstraints>
+    <VBox id="blue-fill"
+          alignment="CENTER"
+          prefWidth="300"
+          spacing="25">
+
         <padding>
-            <Insets top="25" right="25" bottom="35" left="25"/>
+            <Insets right="25" left="25"/>
         </padding>
-        <!--<gridLinesVisible>true</gridLinesVisible>-->
         <Label id="title-text"
                text="Login"
-               GridPane.columnIndex="0"
-               GridPane.rowIndex="0"
-               GridPane.columnSpan="3"
         />
-        <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" vgap="5">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" halignment="CENTER" minWidth="10.0" prefWidth="50.0"/>
-            </columnConstraints>
+
+        <VBox alignment="CENTER"
+              spacing="5">
             <Pane id="white-divider"
                   minHeight="3"
             />
             <Label id="subhead-text"
                    text="Vexillum Management"
-                   GridPane.columnIndex="0"
-                   GridPane.rowIndex="2"
             />
-        </GridPane>
+        </VBox>
+
         <TextField fx:id="enrName"
                    promptText="Username"
                    text="Mark"
-                   GridPane.columnIndex="0"
-                   GridPane.rowIndex="3"
         />
         <PasswordField fx:id="enrPassword"
                        promptText="Password"
                        text="testpassword1"
-                       GridPane.columnIndex="0"
-                       GridPane.rowIndex="4"
         />
+
         <Label id="white-label"
                text="Create account"
                underline="true"
-               GridPane.columnIndex="0"
-               GridPane.rowIndex="5"
         />
         <Text fx:id="lblWarning"
-               GridPane.columnIndex="0"
-               GridPane.rowIndex="6"
         />
+
         <Button fx:id="btnLogin"
                 text="Login"
-                GridPane.columnIndex="0"
-                GridPane.rowIndex="7"
                 prefWidth="140"
                 onAction="#handleBtnLogin"
         />
-        <!-- Look at replacing this entire thing with vbox? -->
-    </GridPane>
-</GridPane>
+    </VBox>
+</HBox>
