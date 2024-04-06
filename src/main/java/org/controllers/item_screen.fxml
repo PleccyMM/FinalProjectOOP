@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.controllers.ItemController"
+            stylesheets="@MainStyle.css"
+            style="-fx-background-color: #FFFFFF"
+            fx:id="paneMain">
+    <top>
+        <fx:include source="header.fxml"/>
+    </top>
+    <left>
+        <VBox fx:id="boxItemStore" spacing="8"
+              alignment="TOP_CENTER">
+            <padding>
+                <Insets right="8" top="8" left="8" bottom="8"/>
+            </padding>
+        </VBox>
+    </left>
+    <right>
+        <HBox minWidth="385"/>
+    </right>
+    <center>
+        <VBox spacing="16">
+            <padding>
+                <Insets right="8" top="8" left="8" bottom="8"/>
+            </padding>
+            <VBox id="grey-fill"
+                  minWidth="480"
+                  minHeight="305">
+            </VBox>
+            <HBox spacing="10">
+                <VBox id="grey-fill"
+                      prefWidth="235"
+                      prefHeight="105">
+                </VBox>
+                <VBox id="grey-fill"
+                      prefWidth="235">
+                </VBox>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
