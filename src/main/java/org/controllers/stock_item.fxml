@@ -19,9 +19,9 @@
       fx:controller="org.controllers.StockController"
       stylesheets="@MainStyle.css">
 
-    <VBox style="-fx-border-width: 2; -fx-border-color: #000000;"
+    <VBox id="imageHolder" style="-fx-border-width: 2; -fx-border-color: #000000;"
           maxWidth="1">
-        <ImageView/>
+        <ImageView id="imgDisp"/>
     </VBox>
     <padding>
         <Insets left="5" right="5"/>

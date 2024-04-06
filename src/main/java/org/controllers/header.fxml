@@ -8,21 +8,23 @@
 
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      id="blue-fill"
+      fx:id="boxHeader"
       minHeight="55"
       spacing="10"
       alignment="CENTER_LEFT">
 <padding>
     <Insets left="10"/>
 </padding>
-    <Button id="btnBack"/>
-<HBox id="mid-blue-fill"
+<Button id="btnBack"/>
+<HBox fx:id="boxSearch"
       alignment="CENTER_LEFT"
-      maxHeight="30">
+      maxHeight="30"
+      spacing="-5">
     <padding>
         <Insets left="8"/>
     </padding>
-    <ImageView id="image-search"/>
+    <Button fx:id="imgSearch"
+    />
     <TextField fx:id="enrSearch"
                prefWidth="580"
                promptText="Search Stock"

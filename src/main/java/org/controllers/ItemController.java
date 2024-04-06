@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 import java.util.List;
 import java.util.Objects;
 
-public class ItemController {
+public class ItemController extends ControllerParent {
     @FXML BorderPane paneMain;
 
     @FXML

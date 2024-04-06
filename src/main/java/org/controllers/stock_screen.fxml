@@ -13,7 +13,8 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.controllers.StockController"
-            stylesheets="@MainStyle.css">
+            stylesheets="@MainStyle.css"
+            fx:id="panMain">
     <top>
         <fx:include source="header.fxml"/>
     </top>
@@ -23,6 +24,7 @@
                 <HBox minHeight="64"
                       spacing="64"
                       alignment="CENTER_LEFT">
+
                     <HBox spacing="5" alignment="CENTER_LEFT">
                         <Label id="label-tag" text="Type"/>
                         <ImageView id="image-down-arrow"/>

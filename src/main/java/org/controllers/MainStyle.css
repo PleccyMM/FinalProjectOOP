@@ -1,7 +1,9 @@
+#boxHeader,
 #blue-fill {
     -fx-background-color: #3551B4;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+#boxSearch,
 #mid-blue-fill {
     -fx-background-color: #596FC0;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -104,8 +106,9 @@
     -fx-font-size: 14px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0.0, 0, 0);
 }
-#image-search {
-    -fx-image:url('../Assets/Icons/Search.png');
+#imgSearch {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Search.png");;
 }
 #image-shopping {
     -fx-image:url('../Assets/Icons/Shopping.png');
