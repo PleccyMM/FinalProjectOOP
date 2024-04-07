@@ -1,13 +1,24 @@
+#boxHeader,
 #blue-fill {
     -fx-background-color: #3551B4;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+#boxSearch,
 #mid-blue-fill {
     -fx-background-color: #596FC0;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+#light-blue-fill0,
+#light-blue-fill1,
+#light-blue-fill2,
+#light-blue-fill3,
+#light-blue-fill4,
 #light-blue-fill {
     -fx-background-color: #C2D0FF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#grey-fill {
+    -fx-background-color: #EEEEEE;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
 #scrBackground {
@@ -51,11 +62,16 @@
 #label-tag {
     -fx-font-weight: bold;
 }
+#title-black {
+    -fx-text-fill: #000000;
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
 
 #btnLogin {
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #3551B4;
-    -fx-border-color: #FFFFFF;
+    -fx-border-color: transparent;
     -fx-font-weight: bold;
     -fx-font-family: "Inter Semi Bold";
     -fx-font-size: 16px;
@@ -64,8 +80,8 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
 #btnLogin:hover {
-    -fx-background-color: #3551B4;
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #C2D0FF;
+    -fx-text-fill: #000000;
 }
 
 #btnBlue {
@@ -83,13 +99,55 @@
     -fx-text-fill: #FFFFFF;
 }
 
+
+#btnAdd {
+    -fx-background-color: #3551B4;
+    -fx-shape: "M 44,10 C 44,4.47715 39.52285,0 34,0 H 0 v 44 h 34 c 5.52285,0 10,-4.4772 10,-10 z";
+    -fx-graphic: url("../Assets/Icons/Add.png");
+}
+#btnMinus {
+    -fx-background-color: #3551B4;
+    -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
+    -fx-graphic: url("../Assets/Icons/Minus.png");
+}
+#lblIncriment {
+    -fx-text-fill: #000000;
+    -fx-font-size: 16px;
+    -fx-background-color: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+#cmbModifications {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#lblToggleL,
+#lblToggleR {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+#lblModifications {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+#lblTotalLabel,
+#lblTotalPrice {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+
+.combo-box .arrow, .combo-box .arrow-button{
+    -fx-shape: "M0 0H19V4H0V0Z M0 8H25V12H0V8Z M0 16H22V20H0V16Z";
+    -fx-scale-shape: true;
+    -fx-scale-x: 0.5;
+    -fx-scale-y: 0.5;
+    -fx-background-color: #3551B4;
+}
+
 #btnBack {
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/BackEnabled.png");;
-}
-#btnLogin:hover {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
 }
 #enrSearch {
     -fx-border-color: transparent;
@@ -99,8 +157,9 @@
     -fx-font-size: 14px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0.0, 0, 0);
 }
-#image-search {
-    -fx-image:url('../Assets/Icons/Search.png');
+#imgSearch {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Search.png");;
 }
 #image-shopping {
     -fx-image:url('../Assets/Icons/Shopping.png');
@@ -110,6 +169,13 @@
 }
 #image-down-arrow {
     -fx-image:url('../Assets/Icons/DownArrow.png');
+}
+#image-corner {
+    -fx-image:url('../Assets/Icons/Corner.png');
+}
+
+#image-test-flag {
+    -fx-image:url('../Assets/FlagsSmall/jp.png');
 }
 
 #lblStockPrice {

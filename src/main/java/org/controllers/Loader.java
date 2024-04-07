@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class Loader {
     public Loader() {}
+
     public void showLogin(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login_screen.fxml"));
         Parent root = loader.load();
@@ -23,13 +24,24 @@ public class Loader {
         stage.show();
     }
 
-    public void showStock(Stage stage, Operator operator) throws Exception {
+    public void showStock(Stage stage, Operator operator, String search) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_screen.fxml"));
         Parent root = loader.load();
 
         StockController controller = loader.getController();
-        controller.loginOperator(operator);
-        controller.loadStock();
+        controller.load(stage, operator, search);
+
+        Scene scene = new Scene(root, 960, 540);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void showItem(Stage stage, Operator operator) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
+        Parent root = loader.load();
+
+        ItemController controller = loader.getController();
+        controller.load(stage, operator);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);

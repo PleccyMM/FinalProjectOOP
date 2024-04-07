@@ -1,44 +1,72 @@
 package org.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 import org.vexillum.*;
+import java.util.*;
 
-import javafx.scene.image.ImageView;
-
-import java.util.List;
-
-
-public class StockController {
-    private Operator operator;
+public class StockController extends ControllerParent {
     @FXML private VBox boxScroll;
     @FXML private ScrollPane scrBackground;
-    public void loginOperator(Operator o) {
-        operator = o;
+    @FXML private BorderPane panMain;
+
+    public void load(Stage stage, Operator operator, String search) {
+        this.operator = operator;
+
+        try {
+            HBox headerBox = null;
+
+            for (Node n : panMain.getChildrenUnmodifiable()) {
+                if (Objects.equals(n.getId(), "boxHeader")) {
+                    headerBox = (HBox) n;
+                    break;
+                }
+            }
+
+            if (headerBox == null) { throw new Exception(); }
+
+            loadHeader(stage, headerBox, search);
+
+            loadStock(search);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void loadStock() throws Exception {
-        List<Design> allDesigns = DatabaseControl.getAllDesigns();
+    private void loadStock(String search) throws Exception {
+        List<Design> allDesigns;
+        if (search.isEmpty()) {
+            allDesigns = DatabaseControl.getAllDesigns();
+        }
+        else {
+            allDesigns = DatabaseControl.searchDesigns(search);
+        }
 
         boxScroll.getChildren().add(new HBox());
 
-        int flagsToLoad = allDesigns.size();
-        System.out.println("HERE " + allDesigns.size());
+        int flagsToLoad;
+        int maxFlagLoad = allDesigns.size();
+
+        flagsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
+
+        System.out.println("Loaded Designs: " + flagsToLoad);
+
         for (int i = 0; i < flagsToLoad; i+=3) {
             HBox box = new HBox();
             box.setSpacing(48);
             box.setAlignment(Pos.CENTER);
 
             int runAmount = 3;
-            if (i + 2 > flagsToLoad) {
+            if (i + 2 >= flagsToLoad) {
+                System.out.println("Reducing run because " + i + " + 2 >= " + flagsToLoad);
                 runAmount = flagsToLoad - i;
             }
 
@@ -46,21 +74,32 @@ public class StockController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_item.fxml"));
                 Parent productView = loader.load();
 
-                List<Node> listFXML = productView.getChildrenUnmodifiable();
-                Label lbl = (Label) listFXML.get(1);
+                List<Node> listVBox;
+                Label lblName = null;
+                ImageView imgView = null;
 
-                VBox imgContainer = (VBox) listFXML.get(0);
-                List<Node> listVBox = imgContainer.getChildren();
-                ImageView imgView = (ImageView) listVBox.get(0);
+                for (Node n : productView.getChildrenUnmodifiable()) {
+                    if (Objects.equals(n.getId(), "lblStockName")) {
+                        lblName = (Label) n;
+                    }
+                    if (Objects.equals(n.getId(), "imageHolder")) {
+                        listVBox = ((VBox) n).getChildren();
+                        for (Node n2 : listVBox) {
+                            if (Objects.equals(n2.getId(), "imgDisp")) {
+                                imgView = (ImageView) n2;
+                            }
+                        }
+                    }
+                    if (lblName != null && imgView != null) { break; }
+                }
+
                 try {
                     Image img = new Image("org/Assets/FlagsSmall/" + allDesigns.get(i+j).getIsoID() + ".png");
                     imgView.setImage(img);
-                    /*imgView.setFitWidth((int) (img.getWidth() / 10));
-                    imgView.setFitHeight((int) (img.getHeight() / 10));*/
                 }
                 catch (Exception ignored) { }
 
-                lbl.setText(allDesigns.get(i+j).getName());
+                lblName.setText(allDesigns.get(i+j).getName());
                 box.getChildren().add(productView);
             }
             boxScroll.getChildren().add(box);

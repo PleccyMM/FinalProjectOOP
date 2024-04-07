@@ -10,42 +10,13 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane fx:controller="org.controllers.StockController"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@MainStyle.css">
+            fx:controller="org.controllers.StockController"
+            stylesheets="@MainStyle.css"
+            fx:id="panMain">
     <top>
-        <HBox id="blue-fill"
-              minHeight="55"
-              spacing="10"
-              alignment="CENTER_LEFT">
-            <padding>
-                <Insets left="10"/>
-            </padding>
-            <Button id="btnBack"
-                    onAction="#handleBtnTest"
-            />
-            <HBox id="mid-blue-fill"
-                  alignment="CENTER_LEFT"
-                  maxHeight="30">
-                <padding>
-                    <Insets left="8"/>
-                </padding>
-                <ImageView id="image-search"/>
-                <TextField fx:id="enrSearch"
-                           prefWidth="580"
-                           promptText="Search Stock"
-                />
-            </HBox>
-            <Region HBox.hgrow="ALWAYS" />
-            <HBox alignment="CENTER_RIGHT"
-                  spacing="20">
-                <padding>
-                    <Insets right="20"/>
-                </padding>
-                <ImageView id="image-shopping"/>
-                <ImageView id="image-profile"/>
-            </HBox>
-        </HBox>
+        <fx:include source="header.fxml"/>
     </top>
     <center>
         <BorderPane>
@@ -53,6 +24,7 @@
                 <HBox minHeight="64"
                       spacing="64"
                       alignment="CENTER_LEFT">
+
                     <HBox spacing="5" alignment="CENTER_LEFT">
                         <Label id="label-tag" text="Type"/>
                         <ImageView id="image-down-arrow"/>

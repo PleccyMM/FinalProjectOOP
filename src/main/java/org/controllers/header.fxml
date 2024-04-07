@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:id="boxHeader"
+      minHeight="55"
+      spacing="10"
+      alignment="CENTER_LEFT">
+    <padding>
+        <Insets left="10"/>
+    </padding>
+    <Button id="btnBack"/>
+    <HBox fx:id="boxSearch"
+          alignment="CENTER_LEFT"
+          maxHeight="30"
+          spacing="-5">
+        <padding>
+            <Insets left="8"/>
+        </padding>
+        <Button fx:id="imgSearch"
+        />
+        <TextField fx:id="enrSearch"
+                   prefWidth="580"
+                   promptText="Search Stock"
+        />
+    </HBox>
+    <Region HBox.hgrow="ALWAYS" />
+    <HBox alignment="CENTER_RIGHT"
+          spacing="20">
+        <padding>
+            <Insets right="20"/>
+        </padding>
+        <ImageView id="image-shopping"/>
+        <ImageView id="image-profile"/>
+    </HBox>
+</HBox>

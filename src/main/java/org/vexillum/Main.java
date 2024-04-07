@@ -12,13 +12,14 @@ import org.controllers.Loader;
 
 public class Main extends Application
 {
-    private Loader loader = new Loader();
+    private final Loader loader = new Loader();
 
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
         //loader.showLogin(stage);
-        loader.showLogin(stage);
+        //loader.showStock(stage, new Operator(), "");
+        loader.showItem(stage, new Operator());
     }
 
     public static void main(String[] args) {

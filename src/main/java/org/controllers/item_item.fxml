@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox id="light-blue-fill"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      minWidth="65"
+      prefHeight="85"
+      spacing="10"
+      alignment="BOTTOM_CENTER">
+    <!--<ImageView id="image-test-flag"
+               fitWidth="50"
+               fitHeight="30"
+    />
+    <StackPane>
+        <ImageView id="image-corner"
+                   fitWidth="65"
+                   fitHeight="25"
+        />
+        <Text style="-fx-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
+              text="90x120  "
+              StackPane.alignment="BOTTOM_RIGHT"
+        />
+    </StackPane>-->
+</VBox>
