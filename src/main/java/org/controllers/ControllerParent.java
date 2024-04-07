@@ -21,11 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class ControllerParent {
-    @FXML TextField enrSearch;
 
 
-    public void search(Stage s, Operator o) throws Exception {
-        Loader loader = new Loader();
-        loader.showStock(s, o, enrSearch.getText());
-    }
+
 }

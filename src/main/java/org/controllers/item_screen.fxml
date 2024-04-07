@@ -9,6 +9,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.image.ImageView?>
+<?import org.vexillum.ToggleSwitch?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -28,7 +29,49 @@
         </VBox>
     </left>
     <right>
-        <HBox minWidth="385"/>
+        <StackPane minWidth="385">
+            <padding>
+                <Insets right="8" top="8" bottom="8"/>
+            </padding>
+            <VBox id="grey-fill" minHeight="300">
+                <padding>
+                    <Insets right="8" top="8" left="16" bottom="16"/>
+                </padding>
+                <Label id="title-black" text="£8.00+"/>
+                <HBox alignment="CENTER">
+                    <padding>
+                        <Insets right="8" top="8" left="8" bottom="8"/>
+                    </padding>
+                    <VBox id="light-blue-fill" spacing="5" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets right="5" top="5" left="5" bottom="5"/>
+                        </padding>
+                        <Label text="Modifications:"/>
+                        <ComboBox promptText="Hoist Attachment"/>
+                        <HBox>
+                            <ToggleSwitch/>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                            <HBox alignment="CENTER">
+                                <Button fx:id="btnMinus" minWidth="30" minHeight="30"/>
+                                <StackPane id="lblIncriment" minWidth="55" minHeight="30">
+                                    <Label id="lblIncriment" textAlignment="CENTER" text="1"/>
+                                </StackPane>
+                                <Button fx:id="btnAdd" minWidth="30" minHeight="30"/>
+                            </HBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <HBox alignment="CENTER_RIGHT">
+                                <Label style="-fx-font-size: 10" text="Total Price: £8.00"/>
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+                <Region VBox.vgrow="ALWAYS"/>
+                <HBox alignment="CENTER_RIGHT">
+                    <Button id="btnBlue" style="-fx-font-size: 16" minWidth="170" minHeight="50" text="Add to Basket"/>
+                </HBox>
+            </VBox>
+        </StackPane>
     </right>
     <center>
         <VBox spacing="16">
@@ -41,7 +84,7 @@
             </VBox>
             <HBox spacing="10">
                 <VBox id="grey-fill"
-                      prefWidth="235"
+                      HBox.hgrow="ALWAYS"
                       prefHeight="105">
                 </VBox>
                 <VBox id="grey-fill"

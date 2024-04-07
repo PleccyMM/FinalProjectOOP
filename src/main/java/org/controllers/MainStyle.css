@@ -62,6 +62,11 @@
 #label-tag {
     -fx-font-weight: bold;
 }
+#title-black {
+    -fx-text-fill: #000000;
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
 
 #btnLogin {
     -fx-background-color: #FFFFFF;
@@ -92,6 +97,29 @@
 #btnBlue:hover {
     -fx-background-color: #C2D0FF;
     -fx-text-fill: #FFFFFF;
+}
+
+
+#btnAdd {
+    -fx-background-color: #3551B4;
+    -fx-border-color: transparent;
+    -fx-shape: "M 44,10 C 44,4.47715 39.52285,0 34,0 H 0 v 44 h 34 c 5.52285,0 10,-4.4772 10,-10 z";
+    -fx-graphic: url("../Assets/Icons/Add.png");
+    -fx-padding: 5;
+}
+#btnMinus {
+    -fx-background-color: #3551B4;
+    -fx-border-color: transparent;
+    -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
+    -fx-graphic: url("../Assets/Icons/Minus.png");
+    -fx-padding: 5;
+}
+#lblIncriment {
+    -fx-text-fill: #000000;
+    -fx-font-size: 14px;
+    -fx-background-color: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
 }
 
 #btnBack {

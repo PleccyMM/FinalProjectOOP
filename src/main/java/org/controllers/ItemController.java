@@ -1,43 +1,30 @@
 package org.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.*;
+import javafx.scene.layout.*;
 import org.vexillum.*;
-import javafx.scene.image.ImageView;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ItemController extends ControllerParent {
     @FXML BorderPane paneMain;
 
     @FXML
     public void initialize() throws Exception {
-        List<Node> listFXML = paneMain.getChildrenUnmodifiable();
         VBox itemBox = null;
         BorderPane borderPane = null;
-        for (Node n : listFXML) {
+        for (Node n : paneMain.getChildrenUnmodifiable()) {
             if (Objects.equals(n.getId(), "boxItemStore")) {
                 itemBox = (VBox) n;
                 break;
             }
-            else {
-                System.out.println(n.toString());
-            }
         }
 
-        if (itemBox == null) {
-            System.out.println("Failed to find");
-            return;
-        }
+        if (itemBox == null) { throw new Exception(); }
 
         for (int i = 0; i < 5; i++) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
@@ -47,4 +34,6 @@ public class ItemController extends ControllerParent {
             itemBox.getChildren().add(box);
         }
     }
+
+
 }

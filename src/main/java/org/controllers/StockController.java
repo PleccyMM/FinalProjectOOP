@@ -32,12 +32,10 @@ public class StockController extends ControllerParent {
 
     public void load(String search) {
         try {
-
-            List<Node> listFXML = panMain.getChildrenUnmodifiable();
             HBox searchBox = null;
             HBox headerBox = null;
 
-            for (Node n : listFXML) {
+            for (Node n : panMain.getChildrenUnmodifiable()) {
                 if (Objects.equals(n.getId(), "boxHeader")) {
                     headerBox = (HBox) n;
                     break;
@@ -74,7 +72,7 @@ public class StockController extends ControllerParent {
 
     EventHandler<ActionEvent> searchHandleBtn = new EventHandler<ActionEvent>() {
         @Override
-        public void handle(ActionEvent event)  {
+        public void handle(ActionEvent event) {
             try {
                 Loader l = new Loader();
                 l.showStock(((Stage) boxScroll.getScene().getWindow()), operator, enrSearch.getText());
@@ -86,7 +84,7 @@ public class StockController extends ControllerParent {
     };
     EventHandler<KeyEvent> searchHandleEnr = new EventHandler<KeyEvent>() {
         @Override
-        public void handle(KeyEvent event)  {
+        public void handle(KeyEvent event) {
             if (event.getCode() != KeyCode.ENTER) {
                 return;
             }
@@ -116,7 +114,8 @@ public class StockController extends ControllerParent {
         boxScroll.getChildren().add(new HBox());
 
         int flagsToLoad = allDesigns.size();
-        System.out.println("SIZE " + allDesigns.size());
+        System.out.println("Loaded Designs: " + allDesigns.size());
+
         for (int i = 0; i < flagsToLoad; i+=3) {
             HBox box = new HBox();
             box.setSpacing(48);
@@ -132,12 +131,11 @@ public class StockController extends ControllerParent {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_item.fxml"));
                 Parent productView = loader.load();
 
-                List<Node> listFXML = productView.getChildrenUnmodifiable();
-
                 List<Node> listVBox;
                 Label lblName = null;
                 ImageView imgView = null;
-                for (Node n : listFXML) {
+
+                for (Node n : productView.getChildrenUnmodifiable()) {
                     if (Objects.equals(n.getId(), "lblStockName")) {
                         lblName = (Label) n;
                     }

@@ -12,31 +12,31 @@
       minHeight="55"
       spacing="10"
       alignment="CENTER_LEFT">
-<padding>
-    <Insets left="10"/>
-</padding>
-<Button id="btnBack"/>
-<HBox fx:id="boxSearch"
-      alignment="CENTER_LEFT"
-      maxHeight="30"
-      spacing="-5">
     <padding>
-        <Insets left="8"/>
+        <Insets left="10"/>
     </padding>
-    <Button fx:id="imgSearch"
-    />
-    <TextField fx:id="enrSearch"
-               prefWidth="580"
-               promptText="Search Stock"
-    />
-</HBox>
-<Region HBox.hgrow="ALWAYS" />
-<HBox alignment="CENTER_RIGHT"
-      spacing="20">
-    <padding>
-        <Insets right="20"/>
-    </padding>
-    <ImageView id="image-shopping"/>
-    <ImageView id="image-profile"/>
-</HBox>
+    <Button id="btnBack"/>
+    <HBox fx:id="boxSearch"
+          alignment="CENTER_LEFT"
+          maxHeight="30"
+          spacing="-5">
+        <padding>
+            <Insets left="8"/>
+        </padding>
+        <Button fx:id="imgSearch"
+        />
+        <TextField fx:id="enrSearch"
+                   prefWidth="580"
+                   promptText="Search Stock"
+        />
+    </HBox>
+    <Region HBox.hgrow="ALWAYS" />
+    <HBox alignment="CENTER_RIGHT"
+          spacing="20">
+        <padding>
+            <Insets right="20"/>
+        </padding>
+        <ImageView id="image-shopping"/>
+        <ImageView id="image-profile"/>
+    </HBox>
 </HBox>
