@@ -53,7 +53,7 @@ public class StockController extends ControllerParent {
         boxScroll.getChildren().add(new HBox());
 
         int flagsToLoad;
-        int maxFlagLoad = 27;
+        int maxFlagLoad = allDesigns.size();
 
         flagsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
 

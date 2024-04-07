@@ -66,8 +66,8 @@ public class ItemController extends ControllerParent {
     private void populateInfo() {
         try {
             Image img = new Image("org/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png");
-            imgFlag.setFitWidth((int) (img.getWidth() * 0.33));
-            imgFlag.setFitHeight((int) (img.getHeight() * 0.33));
+            imgFlag.setFitWidth((int) (img.getWidth() * 0.25));
+            imgFlag.setFitHeight((int) (img.getHeight() * 0.25));
             imgFlag.setImage(img);
         }
         catch (Exception ignored) { }

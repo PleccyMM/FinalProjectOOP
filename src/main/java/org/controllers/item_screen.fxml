@@ -10,6 +10,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.image.ImageView?>
 <?import org.vexillum.ToggleSwitch?>
+<?import javafx.collections.FXCollections?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -47,7 +48,16 @@
                             <Insets right="10" top="15" left="10" bottom="15"/>
                         </padding>
                         <Label id="lblModifications" text="Modifications:"/>
-                        <ComboBox id="cmbModifications" promptText="Hoist Attachment" minWidth="160"/>
+                        <ComboBox id="cmbModifications" promptText="Hoist Attachment" minWidth="160">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="None (£0.00)"/>
+                                    <String fx:value="Fabric Rings (£0.50)"/>
+                                    <String fx:value="Metal Rings (£2.50)"/>
+                                    <String fx:value="Wooden Toggles (£5.00)"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
                         <HBox alignment="CENTER_LEFT" spacing="7">
                             <Label id="lblToggleL" text="Polyester"/>
                             <ToggleSwitch/>
@@ -92,7 +102,11 @@
                   minWidth="480"
                   minHeight="305"
                   alignment="CENTER">
-                <ImageView fx:id="imgFlag"/>
+                <VBox id="imageHolder"
+                      style="-fx-border-width: 2; -fx-border-color: #000000;"
+                      maxWidth="1">
+                    <ImageView fx:id="imgFlag"/>
+                </VBox>
             </VBox>
             <HBox spacing="10">
                 <VBox id="grey-fill"
