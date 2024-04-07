@@ -42,26 +42,31 @@
                     <padding>
                         <Insets right="8" top="8" left="8" bottom="8"/>
                     </padding>
-                    <VBox id="light-blue-fill" spacing="5" HBox.hgrow="ALWAYS">
+                    <VBox id="light-blue-fill" spacing="25" HBox.hgrow="ALWAYS">
                         <padding>
-                            <Insets right="5" top="5" left="5" bottom="5"/>
+                            <Insets right="10" top="15" left="10" bottom="15"/>
                         </padding>
-                        <Label text="Modifications:"/>
-                        <ComboBox promptText="Hoist Attachment"/>
-                        <HBox>
+                        <Label id="lblModifications" text="Modifications:"/>
+                        <ComboBox id="cmbModifications" promptText="Hoist Attachment" minWidth="160"/>
+                        <HBox alignment="CENTER_LEFT" spacing="7">
+                            <Label id="lblToggleL" text="Polyester"/>
                             <ToggleSwitch/>
+                            <Label id="lblToggleR" text="Nylon (£3)"/>
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
-                            <HBox alignment="CENTER">
-                                <Button fx:id="btnMinus" minWidth="30" minHeight="30"/>
-                                <StackPane id="lblIncriment" minWidth="55" minHeight="30">
-                                    <Label id="lblIncriment" textAlignment="CENTER" text="1"/>
-                                </StackPane>
-                                <Button fx:id="btnAdd" minWidth="30" minHeight="30"/>
+                            <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
+                                <Button fx:id="btnMinus" minWidth="15" minHeight="15"/>
+                                <VBox id="lblIncriment" minWidth="65" alignment="CENTER">
+                                    <Label id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
+                                </VBox>
+                                <Button fx:id="btnAdd" minWidth="15" minHeight="15"/>
                             </HBox>
                             <Region HBox.hgrow="ALWAYS"/>
                             <HBox alignment="CENTER_RIGHT">
-                                <Label style="-fx-font-size: 10" text="Total Price: £8.00"/>
+                                <VBox alignment="CENTER_RIGHT" spacing="-4">
+                                    <Label id="lblTotalLabel" text="Total Price:"/>
+                                    <Label fx:id="lblTotalPrice" text="£8.00"/>
+                                </VBox>
                             </HBox>
                         </HBox>
                     </VBox>

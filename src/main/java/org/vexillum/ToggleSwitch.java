@@ -19,9 +19,11 @@ public class ToggleSwitch extends HBox
 
     public ToggleSwitch()
     {
-        int sizeOfBall = 27;
-        btnLeft.setPrefSize(sizeOfBall, sizeOfBall);
-        btnRight.setPrefSize(sizeOfBall, sizeOfBall);
+        int sizeOfBall = 20;
+        btnLeft.setMinSize(sizeOfBall, sizeOfBall);
+        btnLeft.setMaxSize(sizeOfBall, sizeOfBall);
+        btnRight.setMinSize(sizeOfBall, sizeOfBall);
+        btnRight.setMaxSize(sizeOfBall, sizeOfBall);
         btnLeft.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -43,7 +45,7 @@ public class ToggleSwitch extends HBox
         btnRight.setStyle("-fx-background-radius: 360; -fx-border-color: transparent; -fx-background-color: transparent;");
 
         setAlignment(Pos.CENTER_LEFT);
-        setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 360;");
+        setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 360; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);");
         getChildren().add(btnLeft);
         getChildren().add(btnRight);
 
