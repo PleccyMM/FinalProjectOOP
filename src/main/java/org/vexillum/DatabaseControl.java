@@ -2,13 +2,10 @@ package org.vexillum;
 
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import org.json.*;
 
@@ -80,15 +77,57 @@ public class DatabaseControl {
                 String name = variableList.getString(iso);
                 databaseSession.save(new Design(iso, name));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            databaseSession.getTransaction().commit();
         }
+        catch (Exception e) {
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+        finally {
+            closeDBSession();
+        }
+    }
+
+    public static void TestUpdate() {
+        openDBSession();
+        databaseSession.beginTransaction();
+        Design d = databaseSession.get(Design.class, "gb");
+        d.setName("United Kingdom");
+        databaseSession.update(d);
         databaseSession.getTransaction().commit();
         closeDBSession();
-/*
-        databaseSession.beginTransaction();
-        databaseSession.save(d);
+    }
 
-        */
+    public static void AddTags () {
+        openDBSession();
+        databaseSession.beginTransaction();
+        try {
+            String loc = new String("src/main/java/org/Assets/flagsTags.json");
+            File file = new File(loc);
+            String contents = new String(Files.readAllBytes(Paths.get(file.toURI())));
+            JSONObject jsonFile = new JSONObject(contents);
+            JSONObject variableList = jsonFile.getJSONObject("Tags");
+            JSONArray keys = variableList.names ();
+
+            int updatedRows = 0;
+            for (int i = 0; i < keys.length (); ++i) {
+                String iso = keys.getString(i);
+                JSONArray tags = variableList.getJSONArray(iso);
+
+                String query = "update Design set region = " + tags.get(0) + ", type = " + tags.get(1) + " where isoID = '" + iso + "'";
+                databaseSession.createQuery(query).executeUpdate();
+                updatedRows ++;
+            }
+            databaseSession.getTransaction().commit();
+            System.out.println("Updated " + updatedRows);
+        }
+        catch (Exception e) {
+            System.out.println("FAILED");
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+        finally {
+            closeDBSession();
+        }
     }
 }

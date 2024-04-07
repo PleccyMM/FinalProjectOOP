@@ -75,12 +75,16 @@ public class StockController extends ControllerParent {
                 Parent productView = loader.load();
 
                 Label lblName = null;
+                Label lblStockPrice = null;
                 ImageView imgView = null;
                 Design currentDesign = allDesigns.get(i+j);
 
                 for (Node n : productView.getChildrenUnmodifiable()) {
                     if (Objects.equals(n.getId(), "lblStockName")) {
                         lblName = (Label) n;
+                    }
+                    else if (Objects.equals(n.getId(), "lblStockPrice")) {
+                        lblStockPrice = (Label) n;
                     }
                     else if (Objects.equals(n.getId(), "imageHolder")) {
                         List<Node> listVBox;
@@ -114,6 +118,11 @@ public class StockController extends ControllerParent {
                 catch (Exception ignored) { }
 
                 lblName.setText(currentDesign.getName());
+
+                if (currentDesign.getType() == TYPE.NATIONAL.getValue()) {
+                    lblStockPrice.setText("\u00A31.50-\u00A322.00");
+                }
+
                 box.getChildren().add(productView);
             }
             boxScroll.getChildren().add(box);

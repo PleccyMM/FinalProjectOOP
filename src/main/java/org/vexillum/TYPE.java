@@ -5,8 +5,13 @@ public enum TYPE {
     INTERNATIONAL(1),
     PRIDE(2);
 
-    public final int value;
-    private TYPE(int value) {
+    private final int value;
+
+    TYPE(int value) {
         this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

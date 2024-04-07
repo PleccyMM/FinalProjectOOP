@@ -20,6 +20,7 @@ public class Main extends Application
         //loader.showLogin(stage);
         loader.showStock(stage, new Operator(), "");
         //loader.showItem(stage, new Operator());
+        //DatabaseControl.AddTags();
     }
 
     public static void main(String[] args) {
