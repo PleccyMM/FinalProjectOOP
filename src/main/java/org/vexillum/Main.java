@@ -18,8 +18,8 @@ public class Main extends Application
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
         //loader.showLogin(stage);
-        //loader.showStock(stage, new Operator(), "");
-        loader.showItem(stage, new Operator());
+        loader.showStock(stage, new Operator(), "");
+        //loader.showItem(stage, new Operator());
     }
 
     public static void main(String[] args) {

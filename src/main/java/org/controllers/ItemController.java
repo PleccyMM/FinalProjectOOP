@@ -13,10 +13,13 @@ import org.vexillum.*;
 import java.util.*;
 
 public class ItemController extends ControllerParent {
-    @FXML BorderPane panMain;
+    @FXML private BorderPane panMain;
+    @FXML private ImageView imgFlag;
+    private Design loadedDesign;
 
-    public void load(Stage stage, Operator operator) {
+    public void load(Stage stage, Operator operator, Design loadedDesign) {
         this.operator = operator;
+        this.loadedDesign = loadedDesign;
 
         try {
             HBox headerBox = null;
@@ -31,8 +34,8 @@ public class ItemController extends ControllerParent {
             if (headerBox == null) { throw new Exception(); }
 
             loadHeader(stage, headerBox, "");
-
             createSizeSelection(5);
+            populateInfo();
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -60,4 +63,13 @@ public class ItemController extends ControllerParent {
         }
     }
 
+    private void populateInfo() {
+        try {
+            Image img = new Image("org/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png");
+            imgFlag.setFitWidth((int) (img.getWidth() * 0.33));
+            imgFlag.setFitHeight((int) (img.getHeight() * 0.33));
+            imgFlag.setImage(img);
+        }
+        catch (Exception ignored) { }
+    }
 }

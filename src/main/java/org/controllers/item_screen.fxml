@@ -90,7 +90,9 @@
             </padding>
             <VBox id="grey-fill"
                   minWidth="480"
-                  minHeight="305">
+                  minHeight="305"
+                  alignment="CENTER">
+                <ImageView fx:id="imgFlag"/>
             </VBox>
             <HBox spacing="10">
                 <VBox id="grey-fill"

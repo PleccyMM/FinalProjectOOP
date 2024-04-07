@@ -84,7 +84,8 @@
     -fx-text-fill: #000000;
 }
 
-#btnBlue {
+#btnBlue,
+.btnBlue {
     -fx-background-color: #3551B4;
     -fx-text-fill: #FFFFFF;
     -fx-border-color: transparent;
@@ -94,7 +95,8 @@
     -fx-background-radius: 25;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
-#btnBlue:hover {
+#btnBlue:hover,
+.btnBlue:hover {
     -fx-background-color: #C2D0FF;
     -fx-text-fill: #FFFFFF;
 }

@@ -16,6 +16,7 @@ public class StockController extends ControllerParent {
     @FXML private VBox boxScroll;
     @FXML private ScrollPane scrBackground;
     @FXML private BorderPane panMain;
+    private List<Design> allDesigns;
 
     public void load(Stage stage, Operator operator, String search) {
         this.operator = operator;
@@ -42,7 +43,6 @@ public class StockController extends ControllerParent {
     }
 
     private void loadStock(String search) throws Exception {
-        List<Design> allDesigns;
         if (search.isEmpty()) {
             allDesigns = DatabaseControl.getAllDesigns();
         }
@@ -53,7 +53,7 @@ public class StockController extends ControllerParent {
         boxScroll.getChildren().add(new HBox());
 
         int flagsToLoad;
-        int maxFlagLoad = allDesigns.size();
+        int maxFlagLoad = 27;
 
         flagsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
 
@@ -74,15 +74,16 @@ public class StockController extends ControllerParent {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_item.fxml"));
                 Parent productView = loader.load();
 
-                List<Node> listVBox;
                 Label lblName = null;
                 ImageView imgView = null;
+                Design currentDesign = allDesigns.get(i+j);
 
                 for (Node n : productView.getChildrenUnmodifiable()) {
                     if (Objects.equals(n.getId(), "lblStockName")) {
                         lblName = (Label) n;
                     }
-                    if (Objects.equals(n.getId(), "imageHolder")) {
+                    else if (Objects.equals(n.getId(), "imageHolder")) {
+                        List<Node> listVBox;
                         listVBox = ((VBox) n).getChildren();
                         for (Node n2 : listVBox) {
                             if (Objects.equals(n2.getId(), "imgDisp")) {
@@ -90,16 +91,29 @@ public class StockController extends ControllerParent {
                             }
                         }
                     }
-                    if (lblName != null && imgView != null) { break; }
+                    else if (Objects.equals(n.getId(), "boxButons")) {
+                        List<Node> listHBox;
+                        listHBox = ((HBox) n).getChildren();
+                        for (Node n2 : listHBox) {
+                            if (Objects.equals(n2.getId(), "btnFlag")) {
+                                Button btnFlag = (Button) n2;
+                                btnFlag.setId(btnFlag.getId() + "_" + currentDesign.getIsoID());
+                                btnFlag.setOnAction(btnFlagHandle);
+                            }
+                            if (Objects.equals(n2.getId(), "btnCushion")) {
+                                Button btnCushion = (Button) n2;
+                            }
+                        }
+                    }
                 }
 
                 try {
-                    Image img = new Image("org/Assets/FlagsSmall/" + allDesigns.get(i+j).getIsoID() + ".png");
+                    Image img = new Image("org/Assets/FlagsSmall/" + currentDesign.getIsoID() + ".png");
                     imgView.setImage(img);
                 }
                 catch (Exception ignored) { }
 
-                lblName.setText(allDesigns.get(i+j).getName());
+                lblName.setText(currentDesign.getName());
                 box.getChildren().add(productView);
             }
             boxScroll.getChildren().add(box);
@@ -107,6 +121,26 @@ public class StockController extends ControllerParent {
 
         boxScroll.getChildren().add(new HBox());
     }
+
+    EventHandler<ActionEvent> btnFlagHandle = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                Button b = (Button) source;
+                String isoID = b.getId().split("_")[1];
+                for (Design d : allDesigns) {
+                    if (d.getIsoID().equals(isoID)) {
+                        l.showItem(stage, operator, d);
+                        break;
+                    }
+                }
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     @FXML
     protected void handleBtnTest(ActionEvent event) throws Exception {

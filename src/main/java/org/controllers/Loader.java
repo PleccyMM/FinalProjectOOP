@@ -1,16 +1,16 @@
 package org.controllers;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.text.*;
-import javafx.stage.Stage;
-import org.vexillum.Operator;
-
-import java.io.IOException;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
+import org.vexillum.*;
+import java.util.*;
 
 public class Loader {
     public Loader() {}
@@ -36,12 +36,12 @@ public class Loader {
         stage.show();
     }
 
-    public void showItem(Stage stage, Operator operator) throws Exception {
+    public void showItem(Stage stage, Operator operator, Design loadedDesign) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
         Parent root = loader.load();
 
         ItemController controller = loader.getController();
-        controller.load(stage, operator);
+        controller.load(stage, operator, loadedDesign);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);

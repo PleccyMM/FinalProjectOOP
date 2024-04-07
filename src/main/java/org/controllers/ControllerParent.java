@@ -14,7 +14,8 @@ import java.util.*;
 
 public abstract class ControllerParent {
     private TextField enrSearch;
-    private Stage stage;
+    protected Stage stage;
+    protected final Loader l = new Loader();
     protected Operator operator;
 
     protected void loadHeader(Stage stage, HBox headerBox, String search) {
@@ -25,7 +26,9 @@ public abstract class ControllerParent {
             for (Node n : headerBox.getChildrenUnmodifiable()) {
                 if (Objects.equals(n.getId(), "boxSearch")) {
                     searchBox = (HBox) n;
-                    break;
+                }
+                else if (Objects.equals(n.getId(), "btnBack")) {
+                    ((Button) n).setOnAction(btnBackHandle);
                 }
             }
 
@@ -35,9 +38,9 @@ public abstract class ControllerParent {
 
             for (Node n : searchBox.getChildrenUnmodifiable()) {
                 if (Objects.equals(n.getId(), "imgSearch")) {
-                    System.out.println("Found imgSearch");
                     ((Button) n).setOnAction(searchHandleBtn);
-                } else if (Objects.equals(n.getId(), "enrSearch")) {
+                }
+                else if (Objects.equals(n.getId(), "enrSearch")) {
                     enrSearch = (TextField) n;
                     enrSearch.setText(search);
                     enrSearch.setOnKeyPressed(searchHandleEnr);
@@ -50,11 +53,21 @@ public abstract class ControllerParent {
     }
 
 
+    EventHandler<ActionEvent> btnBackHandle = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                l.showStock(stage, operator, "");
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
     EventHandler<ActionEvent> searchHandleBtn = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             try {
-                Loader l = new Loader();
                 l.showStock(stage, operator, enrSearch.getText());
             }
             catch (Exception e) {
@@ -69,7 +82,6 @@ public abstract class ControllerParent {
                 return;
             }
             try {
-                Loader l = new Loader();
                 l.showStock(stage, operator, enrSearch.getText());
             }
             catch (Exception e) {
