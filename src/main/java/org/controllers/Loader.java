@@ -29,9 +29,7 @@ public class Loader {
         Parent root = loader.load();
 
         StockController controller = loader.getController();
-        controller.loginOperator(operator);
-        controller.loadStock(search);
-        controller.load(search);
+        controller.load(stage, operator, search);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
@@ -43,8 +41,7 @@ public class Loader {
         Parent root = loader.load();
 
         ItemController controller = loader.getController();
-      /*  controller.loginOperator(operator);
-        controller.loadStock();*/
+        controller.load(stage, operator);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);

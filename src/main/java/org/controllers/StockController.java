@@ -1,38 +1,26 @@
 package org.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.event.*;
+import javafx.fxml.*;
+import javafx.geometry.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
 import org.vexillum.*;
-
-import javafx.scene.image.ImageView;
-
-import java.util.List;
-import java.util.Objects;
-
+import java.util.*;
 
 public class StockController extends ControllerParent {
-    private Operator operator;
     @FXML private VBox boxScroll;
-    TextField enrSearch;
     @FXML private ScrollPane scrBackground;
     @FXML private BorderPane panMain;
 
-    public void load(String search) {
+    public void load(Stage stage, Operator operator, String search) {
+        this.operator = operator;
+
         try {
-            HBox searchBox = null;
             HBox headerBox = null;
 
             for (Node n : panMain.getChildrenUnmodifiable()) {
@@ -44,65 +32,16 @@ public class StockController extends ControllerParent {
 
             if (headerBox == null) { throw new Exception(); }
 
-            for (Node n : headerBox.getChildrenUnmodifiable()) {
-                if (Objects.equals(n.getId(), "boxSearch")) {
-                    searchBox = (HBox) n;
-                    break;
-                }
-            }
+            loadHeader(stage, headerBox, search);
 
-            if (searchBox == null) { throw new Exception(); }
-
-            for (Node n : searchBox.getChildrenUnmodifiable()) {
-                if (Objects.equals(n.getId(), "imgSearch")) {
-                    System.out.println("Found imgSearch");
-                    ((Button) n).setOnAction(searchHandleBtn);
-                }
-                else if (Objects.equals(n.getId(), "enrSearch")) {
-                    enrSearch = (TextField) n;
-                    enrSearch.setText(search);
-                    enrSearch.setOnKeyPressed(searchHandleEnr);
-                }
-            }
+            loadStock(search);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    EventHandler<ActionEvent> searchHandleBtn = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            try {
-                Loader l = new Loader();
-                l.showStock(((Stage) boxScroll.getScene().getWindow()), operator, enrSearch.getText());
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    };
-    EventHandler<KeyEvent> searchHandleEnr = new EventHandler<KeyEvent>() {
-        @Override
-        public void handle(KeyEvent event) {
-            if (event.getCode() != KeyCode.ENTER) {
-                return;
-            }
-            try {
-                Loader l = new Loader();
-                l.showStock(((Stage) boxScroll.getScene().getWindow()), operator, enrSearch.getText());
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    };
-
-    public void loginOperator(Operator o) {
-        operator = o;
-    }
-
-    public void loadStock(String search) throws Exception {
+    private void loadStock(String search) throws Exception {
         List<Design> allDesigns;
         if (search.isEmpty()) {
             allDesigns = DatabaseControl.getAllDesigns();
@@ -113,8 +52,12 @@ public class StockController extends ControllerParent {
 
         boxScroll.getChildren().add(new HBox());
 
-        int flagsToLoad = allDesigns.size();
-        System.out.println("Loaded Designs: " + allDesigns.size());
+        int flagsToLoad;
+        int maxFlagLoad = allDesigns.size();
+
+        flagsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
+
+        System.out.println("Loaded Designs: " + flagsToLoad);
 
         for (int i = 0; i < flagsToLoad; i+=3) {
             HBox box = new HBox();

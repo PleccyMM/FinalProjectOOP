@@ -6,18 +6,20 @@ import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.stage.*;
 import org.vexillum.*;
 import java.util.*;
 
 public class ItemController extends ControllerParent {
-    @FXML BorderPane paneMain;
+    @FXML BorderPane panMain;
 
     @FXML
     public void initialize() throws Exception {
         VBox itemBox = null;
         BorderPane borderPane = null;
-        for (Node n : paneMain.getChildrenUnmodifiable()) {
+        for (Node n : panMain.getChildrenUnmodifiable()) {
             if (Objects.equals(n.getId(), "boxItemStore")) {
                 itemBox = (VBox) n;
                 break;
@@ -35,5 +37,26 @@ public class ItemController extends ControllerParent {
         }
     }
 
+    public void load(Stage stage, Operator operator) {
+        this.operator = operator;
+
+        try {
+            HBox headerBox = null;
+
+            for (Node n : panMain.getChildrenUnmodifiable()) {
+                if (Objects.equals(n.getId(), "boxHeader")) {
+                    headerBox = (HBox) n;
+                    break;
+                }
+            }
+
+            if (headerBox == null) { throw new Exception(); }
+
+            loadHeader(stage, headerBox, "");
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

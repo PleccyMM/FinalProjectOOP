@@ -16,7 +16,7 @@
             fx:controller="org.controllers.ItemController"
             stylesheets="@MainStyle.css"
             style="-fx-background-color: #FFFFFF"
-            fx:id="paneMain">
+            fx:id="panMain">
     <top>
         <fx:include source="header.fxml"/>
     </top>
