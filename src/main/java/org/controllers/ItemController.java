@@ -15,28 +15,6 @@ import java.util.*;
 public class ItemController extends ControllerParent {
     @FXML BorderPane panMain;
 
-    @FXML
-    public void initialize() throws Exception {
-        VBox itemBox = null;
-        BorderPane borderPane = null;
-        for (Node n : panMain.getChildrenUnmodifiable()) {
-            if (Objects.equals(n.getId(), "boxItemStore")) {
-                itemBox = (VBox) n;
-                break;
-            }
-        }
-
-        if (itemBox == null) { throw new Exception(); }
-
-        for (int i = 0; i < 5; i++) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
-            Parent itemView = loader.load();
-            VBox box = (VBox) itemView;
-            box.setId("light-blue-fill" + i);
-            itemBox.getChildren().add(box);
-        }
-    }
-
     public void load(Stage stage, Operator operator) {
         this.operator = operator;
 
@@ -53,9 +31,32 @@ public class ItemController extends ControllerParent {
             if (headerBox == null) { throw new Exception(); }
 
             loadHeader(stage, headerBox, "");
+
+            createSizeSelection(5);
         }
         catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void createSizeSelection(int amount) throws Exception {
+        VBox itemBox = null;
+        BorderPane borderPane = null;
+        for (Node n : panMain.getChildrenUnmodifiable()) {
+            if (Objects.equals(n.getId(), "boxItemStore")) {
+                itemBox = (VBox) n;
+                break;
+            }
+        }
+
+        if (itemBox == null) { throw new Exception(); }
+
+        for (int i = 0; i < amount; i++) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
+            Parent itemView = loader.load();
+            VBox box = (VBox) itemView;
+            box.setId("light-blue-fill" + i);
+            itemBox.getChildren().add(box);
         }
     }
 
