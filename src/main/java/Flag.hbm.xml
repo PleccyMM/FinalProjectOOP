@@ -1,0 +1,11 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name = "org.vexillum.Flag" table = "flags">
+        <id name = "flagID" column = "flagid" type = "int" />
+        <property name = "isoID" column = "isoid" type = "string"/>
+        <property name = "stockID" column = "stockid" type = "int"/>
+    </class>
+</hibernate-mapping>

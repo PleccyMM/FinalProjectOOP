@@ -1,6 +1,5 @@
 package org.vexillum;
 
-import java.util.Objects;
 import javax.persistence.*;
 
 @Entity

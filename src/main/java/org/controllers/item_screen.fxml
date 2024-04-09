@@ -38,7 +38,7 @@
                 <padding>
                     <Insets right="8" top="8" left="16" bottom="16"/>
                 </padding>
-                <Label id="title-black" text="£8.00+"/>
+                <Label fx:id="lblPrice"/>
                 <HBox alignment="CENTER">
                     <padding>
                         <Insets right="8" top="8" left="8" bottom="8"/>
@@ -48,7 +48,7 @@
                             <Insets right="10" top="15" left="10" bottom="15"/>
                         </padding>
                         <Label id="lblModifications" text="Modifications:"/>
-                        <ComboBox id="cmbModifications" promptText="Hoist Attachment" minWidth="160">
+                        <ComboBox fx:id="cmbModifications" promptText="Hoist Attachment" minWidth="160" onAction="#cmbModificationsChange">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
                                     <String fx:value="None (£0.00)"/>
@@ -59,23 +59,23 @@
                             </items>
                         </ComboBox>
                         <HBox alignment="CENTER_LEFT" spacing="7">
-                            <Label id="lblToggleL" text="Polyester"/>
-                            <ToggleSwitch/>
-                            <Label id="lblToggleR" text="Nylon (£3)"/>
+                            <Label fx:id="lblToggleL" text="Polyester"/>
+                            <ToggleSwitch fx:id="tglSwitch"/>
+                            <Label fx:id="lblToggleR" text="Nylon (£3)"/>
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                             <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
-                                <Button fx:id="btnMinus" minWidth="15" minHeight="15"/>
+                                <Button fx:id="btnMinus" minWidth="15" minHeight="15" onAction="#btnMinusClick"/>
                                 <VBox id="lblIncriment" minWidth="65" alignment="CENTER">
-                                    <Label id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
+                                    <Label fx:id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
                                 </VBox>
-                                <Button fx:id="btnAdd" minWidth="15" minHeight="15"/>
+                                <Button fx:id="btnAdd" minWidth="15" minHeight="15" onAction="#btnAddClick"/>
                             </HBox>
                             <Region HBox.hgrow="ALWAYS"/>
                             <HBox alignment="CENTER_RIGHT">
                                 <VBox alignment="CENTER_RIGHT" spacing="-4">
                                     <Label id="lblTotalLabel" text="Total Price:"/>
-                                    <Label fx:id="lblTotalPrice" text="£8.00"/>
+                                    <Label fx:id="lblTotalPrice"/>
                                 </VBox>
                             </HBox>
                         </HBox>

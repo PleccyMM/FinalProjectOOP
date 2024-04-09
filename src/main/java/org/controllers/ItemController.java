@@ -1,5 +1,6 @@
 package org.controllers;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
@@ -10,12 +11,22 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.vexillum.*;
+
+import java.text.NumberFormat;
 import java.util.*;
 
 public class ItemController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private ImageView imgFlag;
     @FXML private Label lblName;
+    @FXML private Label lblToggleL;
+    @FXML private Label lblToggleR;
+    @FXML private Label lblTotalPrice;
+    @FXML private Label lblPrice;
+    @FXML private Label lblIncriment;
+    @FXML private ComboBox cmbModifications;
+    @FXML private ToggleSwitch tglSwitch;
+
     private Design loadedDesign;
     private Boolean isFlag;
     private StockItem item;
@@ -40,6 +51,8 @@ public class ItemController extends ControllerParent {
             loadHeader(stage, headerBox, "");
             typeSetUp();
             populateInfo();
+            listenerToggle();
+            updateItem();
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -49,8 +62,14 @@ public class ItemController extends ControllerParent {
     private void typeSetUp() throws Exception {
         if (isFlag) {
             createSizeSelection(5);
+            item = new Flag();
         }
         else {
+            lblToggleL.setText("With filling");
+            lblToggleR.setText("No filling");
+            cmbModifications.getItems().clear();
+            cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
+            cmbModifications.setPromptText("Cushion Filling");
             createSizeSelection(4);
         }
     }
@@ -97,6 +116,43 @@ public class ItemController extends ControllerParent {
         }
     }
 
+    private void updateItem() {
+        if (item instanceof Flag f) {
+            if (tglSwitch.getToLeft().get()) {
+                f.setMaterial(FLAG_MATERIAL.getType(lblToggleL.getText()));
+            }
+            else {
+                f.setMaterial(FLAG_MATERIAL.getType(lblToggleR.getText()));
+            }
+            item = f;
+        }
+        else if (item instanceof Cushion c) {
+            c.setJustCase(!tglSwitch.getToLeft().get());
+            item = c;
+        }
+
+        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+        float price = item.calculatePrice();
+        String cost = eurFormatter.format(price);
+        if (cmbModifications.getSelectionModel().isEmpty()) {
+            lblPrice.setText(cost + "+");
+        }
+        else {
+            lblPrice.setText(cost);
+        }
+
+        item.setAmount(Integer.parseInt(lblIncriment.getText()));
+
+        String totalCost = eurFormatter.format(price * item.getAmount());
+        lblTotalPrice.setText(totalCost);
+    }
+
+    private void listenerToggle() {
+        tglSwitch.getToLeft().addListener((observable, oldValue, newValue) -> {
+            updateItem();
+        });
+    }
+
     EventHandler<MouseEvent> boxClick = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
@@ -108,6 +164,28 @@ public class ItemController extends ControllerParent {
             }
         }
     };
+
+    @FXML
+    protected void cmbModificationsChange(ActionEvent event) throws Exception {
+        updateItem();
+    }
+
+    @FXML
+    protected void btnMinusClick(ActionEvent event) throws Exception {
+        int val = Integer.parseInt(lblIncriment.getText());
+        if (val > 1) val -= 1;
+
+        lblIncriment.setText(String.valueOf(val));
+        updateItem();
+    }
+
+    @FXML
+    protected void btnAddClick(ActionEvent event) throws Exception {
+        int val = Integer.parseInt(lblIncriment.getText());
+        val += 1;
+        lblIncriment.setText(String.valueOf(val));
+        updateItem();
+    }
 
     private void populateInfo() {
         try {

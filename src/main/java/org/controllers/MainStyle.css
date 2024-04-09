@@ -58,6 +58,7 @@
 #label-tag {
     -fx-font-weight: bold;
 }
+#lblPrice,
 #title-black {
     -fx-text-fill: #000000;
     -fx-font-size: 48px;
