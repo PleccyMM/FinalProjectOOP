@@ -36,12 +36,12 @@ public class Loader {
         stage.show();
     }
 
-    public void showItem(Stage stage, Operator operator, Design loadedDesign) throws Exception {
+    public void showItem(Stage stage, Operator operator, Design loadedDesign, Boolean isFlag) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
         Parent root = loader.load();
 
         ItemController controller = loader.getController();
-        controller.load(stage, operator, loadedDesign);
+        controller.load(stage, operator, loadedDesign, isFlag);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);

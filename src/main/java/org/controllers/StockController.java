@@ -106,6 +106,8 @@ public class StockController extends ControllerParent {
                             }
                             if (Objects.equals(n2.getId(), "btnCushion")) {
                                 Button btnCushion = (Button) n2;
+                                btnCushion.setId(btnCushion.getId() + "_" + currentDesign.getIsoID());
+                                btnCushion.setOnAction(btnCushionHandle);
                             }
                         }
                     }
@@ -120,7 +122,7 @@ public class StockController extends ControllerParent {
                 lblName.setText(currentDesign.getName());
 
                 if (currentDesign.getType() == TYPE.NATIONAL.getValue()) {
-                    lblStockPrice.setText("\u00A31.50-\u00A322.00");
+                    lblStockPrice.setText("\u00A31.50-\u00A320.00+");
                 }
 
                 box.getChildren().add(productView);
@@ -135,21 +137,36 @@ public class StockController extends ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
-                Object source = event.getSource();
-                Button b = (Button) source;
-                String isoID = b.getId().split("_")[1];
-                for (Design d : allDesigns) {
-                    if (d.getIsoID().equals(isoID)) {
-                        l.showItem(stage, operator, d);
-                        break;
-                    }
-                }
+                showItemScreen(event, true);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     };
+    EventHandler<ActionEvent> btnCushionHandle = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                showItemScreen(event, false);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    private void showItemScreen(ActionEvent event, Boolean isFlag) throws Exception {
+        Object source = event.getSource();
+        Button b = (Button) source;
+        String isoID = b.getId().split("_")[1];
+        for (Design d : allDesigns) {
+            if (d.getIsoID().equals(isoID)) {
+                l.showItem(stage, operator, d, isFlag);
+                break;
+            }
+        }
+    }
 
     @FXML
     protected void handleBtnTest(ActionEvent event) throws Exception {

@@ -8,11 +8,7 @@
     -fx-background-color: #596FC0;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
-#light-blue-fill0,
-#light-blue-fill1,
-#light-blue-fill2,
-#light-blue-fill3,
-#light-blue-fill4,
+.light-blue-fill,
 #light-blue-fill {
     -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -65,6 +61,11 @@
 #title-black {
     -fx-text-fill: #000000;
     -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
+#lblName {
+    -fx-text-fill: #000000;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 

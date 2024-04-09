@@ -1,5 +1,5 @@
 package org.vexillum;
 
-public class Flag {
+public class Flag extends StockItem {
 
 }
