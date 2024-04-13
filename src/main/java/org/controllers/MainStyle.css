@@ -114,6 +114,17 @@
     -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
     -fx-graphic: url("../Assets/Icons/Minus.png");
 }
+#btnAdd:hover {
+    -fx-background-color: #C2D0FF;
+}
+#btnMinus:hover {
+    -fx-background-color: #C2D0FF;
+}
+
+#btnEdit {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Edit.png");
+}
 #lblIncriment {
     -fx-text-fill: #000000;
     -fx-font-size: 16px;
@@ -121,6 +132,8 @@
     -fx-font-weight: bold;
     -fx-text-alignment: center;
 }
+
+
 #cmbModifications {
     -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -133,7 +146,7 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
-#lblModifications {
+#sub-title-black {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }

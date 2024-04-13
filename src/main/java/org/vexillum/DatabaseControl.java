@@ -1,6 +1,7 @@
 package org.vexillum;
 
 import org.hibernate.*;
+import org.hibernate.query.*;
 import org.hibernate.cfg.Configuration;
 
 import java.io.File;
@@ -88,14 +89,27 @@ public class DatabaseControl {
         }
     }
 
-    public static void TestUpdate() {
+    public static void TestSQL() {
         openDBSession();
-        databaseSession.beginTransaction();
-        Design d = databaseSession.get(Design.class, "gb");
-        d.setName("United Kingdom");
-        databaseSession.update(d);
-        databaseSession.getTransaction().commit();
-        closeDBSession();
+        try {
+            String sql = "SELECT * FROM sizes";
+            NativeQuery<Object[]> query = databaseSession.createNativeQuery(sql);
+            List<Object[]> results = query.getResultList();
+
+            for (Object[] row : results) {
+                int id = (int) row[0];
+                String name = (String) row[1];
+
+                System.out.println("Size: ID=" + id + ", Name=" + name);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("FAILED TO TEST SQL");
+            e.printStackTrace();
+        }
+        finally {
+            closeDBSession();
+        }
     }
 
     public static void AddTags () {

@@ -21,13 +21,13 @@
       alignment="BOTTOM_CENTER"
       styleClass="light-blue-fill">
     <ImageView id="imgDesign"/>
-    <StackPane>
+    <StackPane fx:id="stkMain">
         <ImageView id="image-corner"
                    fitWidth="65"
                    fitHeight="25"
         />
-        <Text style="-fx-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
-              text="90x120  "
+        <Label fx:id="lblSize"
+              style="-fx-text-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
               StackPane.alignment="BOTTOM_RIGHT"
         />
     </StackPane>

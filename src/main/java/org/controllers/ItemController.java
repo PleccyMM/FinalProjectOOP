@@ -5,6 +5,7 @@ import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
 import javafx.scene.*;
+import javafx.scene.text.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
@@ -12,13 +13,17 @@ import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.vexillum.*;
 
+import javax.swing.*;
 import java.text.NumberFormat;
 import java.util.*;
 
 public class ItemController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private ImageView imgFlag;
+
     @FXML private Label lblName;
+    @FXML private Label lblTags;
+
     @FXML private Label lblToggleL;
     @FXML private Label lblToggleR;
     @FXML private Label lblTotalPrice;
@@ -30,6 +35,7 @@ public class ItemController extends ControllerParent {
     private Design loadedDesign;
     private Boolean isFlag;
     private StockItem item;
+    private String selectedSize;
 
     public void load(Stage stage, Operator operator, Design loadedDesign, Boolean isFlag) {
         this.operator = operator;
@@ -61,20 +67,22 @@ public class ItemController extends ControllerParent {
 
     private void typeSetUp() throws Exception {
         if (isFlag) {
-            createSizeSelection(5);
+            selectedSize = "Hand";
             item = new Flag();
         }
         else {
+            selectedSize = "45x45cm";
             lblToggleL.setText("With filling");
             lblToggleR.setText("No filling");
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            createSizeSelection(4);
+            item = new Cushion();
         }
+        createSizeSelection();
     }
 
-    private void createSizeSelection(int amount) throws Exception {
+    private void createSizeSelection() throws Exception {
         VBox itemBox = null;
         BorderPane borderPane = null;
         for (Node n : panMain.getChildrenUnmodifiable()) {
@@ -86,18 +94,36 @@ public class ItemController extends ControllerParent {
 
         if (itemBox == null) { throw new Exception(); }
         int imageViewLoc = -1;
+        int[] lblSize = new int[2];
 
-        for (int i = 0; i < amount; i++) {
+        String[] sizeVals;
+        if (isFlag) {
+            sizeVals = new String[]{"Hand", "Desk", "90x60cm", "150x90cm", "240x150cm"};
+        }
+        else {
+            sizeVals = new String[]{"45x45cm", "55x55cm", "60x60cm", "50x30cm"};
+        }
+
+        for (int i = 0; i < sizeVals.length; i++) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
             Parent itemView = loader.load();
             VBox box = (VBox) itemView;
             box.setOnMouseClicked(boxClick);
 
             if (imageViewLoc == -1) {
-                List<Node> nodes = box.getChildrenUnmodifiable();
-                for (int j = 0; j < nodes.size(); j++) {
-                    if (Objects.equals(nodes.get(j).getId(), "imgDesign")) {
+                List<Node> n1 = box.getChildrenUnmodifiable();
+                for (int j = 0; j < n1.size(); j++) {
+                    if (Objects.equals(n1.get(j).getId(), "imgDesign")) {
                         imageViewLoc = j;
+                    }
+                    else if (Objects.equals(n1.get(j).getId(), "stkMain")) {
+                        lblSize[0] = j;
+                        List<Node> n2 = ((StackPane) n1.get(j)).getChildrenUnmodifiable();
+                        for (int k = 0; k < n2.size(); k++) {
+                            if (Objects.equals(n2.get(k).getId(), "lblSize")) {
+                                lblSize[1] = k;
+                            }
+                        }
                     }
                 }
             }
@@ -111,7 +137,10 @@ public class ItemController extends ControllerParent {
             }
             catch (Exception ignored) { }
 
-            box.setId("boxSize" + i);
+            StackPane stk = (StackPane)box.getChildren().get(lblSize[0]);
+            ((Label)stk.getChildren().get(lblSize[1])).setText(sizeVals[i]);
+
+            box.setId("boxSize_" + sizeVals[i]);
             itemBox.getChildren().add(box);
         }
     }
@@ -119,11 +148,21 @@ public class ItemController extends ControllerParent {
     private void updateItem() {
         if (item instanceof Flag f) {
             if (tglSwitch.getToLeft().get()) {
-                f.setMaterial(FLAG_MATERIAL.getType(lblToggleL.getText()));
+                f.setMaterial(FLAG_MATERIAL.getType(lblToggleL.getText().split(" ")[0]));
             }
             else {
-                f.setMaterial(FLAG_MATERIAL.getType(lblToggleR.getText()));
+                f.setMaterial(FLAG_MATERIAL.getType(lblToggleR.getText().split(" ")[0]));
             }
+
+            switch (cmbModifications.getSelectionModel().getSelectedIndex()) {
+                case 0 -> f.setHoist(FLAG_HOIST.NONE);
+                case 1 -> f.setHoist(FLAG_HOIST.FABRIC);
+                case 2 -> f.setHoist(FLAG_HOIST.METAL);
+                case 3 -> f.setHoist(FLAG_HOIST.WOODEN);
+            }
+
+            f.setSize(FLAG_SIZE.fromString(selectedSize));
+
             item = f;
         }
         else if (item instanceof Cushion c) {
@@ -157,7 +196,10 @@ public class ItemController extends ControllerParent {
         @Override
         public void handle(MouseEvent event) {
             try {
-                System.out.println("CLICKED");
+                Object source = event.getSource();
+                VBox box = (VBox) source;
+                selectedSize = box.getId().split("_")[1];
+                updateItem();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -187,6 +229,11 @@ public class ItemController extends ControllerParent {
         updateItem();
     }
 
+    @FXML
+    protected void btnEditClick(ActionEvent event) throws Exception {
+
+    }
+
     private void populateInfo() {
         try {
             Image img = new Image("org/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png");
@@ -197,6 +244,7 @@ public class ItemController extends ControllerParent {
         catch (Exception ignored) { }
         finally {
             lblName.setText(loadedDesign.getName());
+            lblTags.setText("Hey\nHi");
         }
     }
 }

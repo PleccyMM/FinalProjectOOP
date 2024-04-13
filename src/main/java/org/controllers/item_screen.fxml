@@ -47,7 +47,7 @@
                         <padding>
                             <Insets right="10" top="15" left="10" bottom="15"/>
                         </padding>
-                        <Label id="lblModifications" text="Modifications:"/>
+                        <Label id="sub-title-black" text="Modifications:"/>
                         <ComboBox fx:id="cmbModifications" promptText="Hoist Attachment" minWidth="160" onAction="#cmbModificationsChange">
                             <items>
                                 <FXCollections fx:factory="observableArrayList">
@@ -59,7 +59,7 @@
                             </items>
                         </ComboBox>
                         <HBox alignment="CENTER_LEFT" spacing="7">
-                            <Label fx:id="lblToggleL" text="Polyester"/>
+                            <Label fx:id="lblToggleL" text="Polyester (£1)"/>
                             <ToggleSwitch fx:id="tglSwitch"/>
                             <Label fx:id="lblToggleR" text="Nylon (£3)"/>
                         </HBox>
@@ -116,11 +116,32 @@
                         <Insets right="8" top="8" left="8" bottom="8"/>
                     </padding>
                     <Label fx:id="lblName" wrapText="true"/>
+                    <Label fx:id="lblTags"/>
                 </VBox>
                 <VBox id="grey-fill"
                       HBox.hgrow="ALWAYS"
                       prefWidth="100">
-                    <Label fx:id="lblTags"/>
+                    <padding>
+                        <Insets right="8" top="8" left="8" bottom="8"/>
+                    </padding>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label id="sub-title-black" text="Stock Details"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="btnEdit" onAction="#btnEditClick"/>
+                    </HBox>
+                    <HBox>
+                        <Label text="Current Stock:"/>
+                        <ImageView fx:id="imgSeverity"/>
+                        <Label fx:id="lblCurrentStock"/>
+                    </HBox>
+                    <HBox>
+                        <Label text="Restock Limit:"/>
+                        <Label fx:id="lblRestock"/>
+                    </HBox>
+                    <HBox>
+                        <Label text="Cost to Produce:"/>
+                        <Label fx:id="lblCostToProduce"/>
+                    </HBox>
                 </VBox>
             </HBox>
         </VBox>

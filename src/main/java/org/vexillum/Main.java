@@ -18,6 +18,7 @@ public class Main extends Application
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
         //loader.showLogin(stage);
+        //DatabaseControl.TestSQL();
         loader.showStock(stage, new Operator(), "");
         //loader.showItem(stage, new Operator());
         //DatabaseControl.AddTags();
