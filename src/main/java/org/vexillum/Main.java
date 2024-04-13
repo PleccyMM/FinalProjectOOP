@@ -10,6 +10,8 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import org.controllers.Loader;
 
+import javax.xml.crypto.Data;
+
 public class Main extends Application
 {
     private final Loader loader = new Loader();
@@ -19,6 +21,8 @@ public class Main extends Application
         stage.setTitle("Vexillum Management");
         //loader.showLogin(stage);
         //DatabaseControl.TestSQL();
+        /*DatabaseControl.AddDesigns();
+        DatabaseControl.AddTags();*/
         loader.showStock(stage, new Operator(), "");
         //loader.showItem(stage, new Operator());
         //DatabaseControl.AddTags();
