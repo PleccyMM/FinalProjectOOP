@@ -17,35 +17,26 @@ public abstract class ControllerParent {
     protected Stage stage;
     protected final Loader l = new Loader();
     protected Operator operator;
+    protected List<StockItem> items;
 
-    protected void loadHeader(Stage stage, HBox headerBox, String search) {
+    protected void loadHeader(Stage stage, Operator operator, List<StockItem> items, HBox headerBox, String search) {
         try {
+            this.operator = operator;
+            this.items = items;
+
             this.stage = stage;
-            HBox searchBox = null;
+            Button btnBack = ((Button) headerBox.lookup("#btnBack"));
+            btnBack.setOnAction(btnBackHandle);
 
-            for (Node n : headerBox.getChildrenUnmodifiable()) {
-                if (Objects.equals(n.getId(), "boxSearch")) {
-                    searchBox = (HBox) n;
-                }
-                else if (Objects.equals(n.getId(), "btnBack")) {
-                    ((Button) n).setOnAction(btnBackHandle);
-                }
-            }
+            Button btnSearch = ((Button) headerBox.lookup("#btnSearch"));
+            btnSearch.setOnAction(searchHandleBtn);
 
-            if (searchBox == null) {
-                throw new Exception();
-            }
+            Button btnBasket = ((Button) headerBox.lookup("#btnBasket"));
+            btnBasket.setOnAction(basketHandleBtn);
 
-            for (Node n : searchBox.getChildrenUnmodifiable()) {
-                if (Objects.equals(n.getId(), "imgSearch")) {
-                    ((Button) n).setOnAction(searchHandleBtn);
-                }
-                else if (Objects.equals(n.getId(), "enrSearch")) {
-                    enrSearch = (TextField) n;
-                    enrSearch.setText(search);
-                    enrSearch.setOnKeyPressed(searchHandleEnr);
-                }
-            }
+            enrSearch = (TextField) headerBox.lookup("#enrSearch");
+            enrSearch.setText(search);
+            enrSearch.setOnKeyPressed(searchHandleEnr);
         }
         catch (Exception e) {
             throw new RuntimeException();
@@ -57,7 +48,7 @@ public abstract class ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
-                l.showStock(stage, operator, "");
+                l.showStock(stage, operator, items, "");
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -68,7 +59,7 @@ public abstract class ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
-                l.showStock(stage, operator, enrSearch.getText());
+                l.showStock(stage, operator, items, enrSearch.getText());
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -82,7 +73,19 @@ public abstract class ControllerParent {
                 return;
             }
             try {
-                l.showStock(stage, operator, enrSearch.getText());
+                l.showStock(stage, operator, items, enrSearch.getText());
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    EventHandler<ActionEvent> basketHandleBtn = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                l.showBasket(stage, items, operator);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

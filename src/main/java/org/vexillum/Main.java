@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.controllers.Loader;
 
 import javax.xml.crypto.Data;
+import java.util.ArrayList;
 
 public class Main extends Application
 {
@@ -23,7 +24,7 @@ public class Main extends Application
         //DatabaseControl.TestSQL();
         /*DatabaseControl.AddDesigns();
         DatabaseControl.AddTags();*/
-        loader.showStock(stage, new Operator(), "");
+        loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), "");
         //loader.showItem(stage, new Operator());
         //DatabaseControl.AddTags();
     }

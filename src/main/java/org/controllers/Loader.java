@@ -24,24 +24,36 @@ public class Loader {
         stage.show();
     }
 
-    public void showStock(Stage stage, Operator operator, String search) throws Exception {
+    public void showStock(Stage stage, Operator operator, List<StockItem> items, String search) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_screen.fxml"));
         Parent root = loader.load();
 
         StockController controller = loader.getController();
-        controller.load(stage, operator, search);
+        controller.load(stage, items, operator, search);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void showItem(Stage stage, Operator operator, Design loadedDesign, Boolean isFlag) throws Exception {
+    public void showItem(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
         Parent root = loader.load();
 
         ItemController controller = loader.getController();
-        controller.load(stage, operator, loadedDesign, isFlag);
+        controller.load(stage, operator, items, loadedDesign, isFlag);
+
+        Scene scene = new Scene(root, 960, 540);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void showBasket(Stage stage, List<StockItem> items, Operator operator) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_screen.fxml"));
+        Parent root = loader.load();
+
+        BasketController controller = loader.getController();
+        controller.load(stage, items, operator);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);

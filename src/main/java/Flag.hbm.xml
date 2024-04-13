@@ -6,6 +6,5 @@
     <class name = "org.vexillum.Flag" table = "flags">
         <id name = "flagID" column = "flagid" type = "int" />
         <property name = "isoID" column = "isoid" type = "string"/>
-        <property name = "stockID" column = "stockid" type = "int"/>
     </class>
 </hibernate-mapping>

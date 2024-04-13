@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+<?import org.vexillum.ToggleSwitch?>
+<?import javafx.collections.FXCollections?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.controllers.BasketController"
+            stylesheets="@MainStyle.css"
+            fx:id="panMain">
+    <top>
+        <fx:include source="header.fxml"/>
+    </top>
+    <left>
+        <Label prefWidth="16"/>
+    </left>
+    <right>
+        <VBox prefWidth="200">
+            <padding>
+                <Insets right="8" top="8" left="8" bottom="8"/>
+            </padding>
+        </VBox>
+    </right>
+    <center>
+        <BorderPane>
+            <top>
+                <HBox id="white-divider" spacing="20">
+                    <padding>
+                        <Insets right="8" top="8" left="8" bottom="8"/>
+                    </padding>
+                    <Label id="sub-title-black" text="Image"/>
+                    <Label id="sub-title-black" text="Product Name"/>
+                    <Label id="sub-title-black" text="Single Price"/>
+                    <Label id="sub-title-black" text="Quantity"/>
+                    <Label id="sub-title-black" text="Subtotal"/>
+                </HBox>
+            </top>
+            <center>
+                <ScrollPane fx:id="scrBackground"
+                            hbarPolicy="NEVER"
+                            fitToWidth="true">
+                    <padding>
+                        <Insets right="8" top="8" left="8" bottom="8"/>
+                    </padding>
+                    <VBox fx:id="boxScroll"
+                          alignment="CENTER_LEFT"
+                          spacing="24"
+                    />
+                </ScrollPane>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

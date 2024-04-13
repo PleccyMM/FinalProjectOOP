@@ -64,6 +64,8 @@
     -fx-font-size: 48px;
     -fx-font-weight: bold;
 }
+#lblPriceSingle,
+#lblSubtotal,
 #lblName {
     -fx-text-fill: #000000;
     -fx-font-size: 14px;
@@ -177,12 +179,17 @@
     -fx-font-size: 14px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0.0, 0, 0);
 }
-#imgSearch {
+#btnSearch {
     -fx-background-color: transparent;
-    -fx-graphic: url("../Assets/Icons/Search.png");;
+    -fx-graphic: url("../Assets/Icons/Search.png");
 }
-#image-shopping {
-    -fx-image:url('../Assets/Icons/Shopping.png');
+#btnBasket {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Shopping.png");
+}
+#btnInformation {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Info.png");
 }
 #image-profile {
     -fx-image:url('../Assets/Icons/Profile.png');

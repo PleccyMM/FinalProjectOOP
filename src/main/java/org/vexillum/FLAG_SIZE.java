@@ -17,7 +17,7 @@ public enum FLAG_SIZE {
         return value / 100.0f;
     }
 
-    public static String toString(FLAG_SIZE f) {
+    public static String getString(FLAG_SIZE f) {
         return switch (f) {
             case HAND -> "Hand";
             case DESK -> "Desk";

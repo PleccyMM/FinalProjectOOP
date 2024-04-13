@@ -144,4 +144,13 @@ public class DatabaseControl {
             closeDBSession();
         }
     }
+
+    public static String getIsoName(String isoID) {
+        openDBSession();
+        var query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        List<String> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return "";
+    }
 }

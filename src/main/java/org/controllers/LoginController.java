@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.vexillum.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginController {
@@ -33,7 +35,7 @@ public class LoginController {
                 System.out.println("SUCCESS, LOGGED IN");
                 Stage stage = (Stage) enrName.getScene().getWindow();
                 Loader loader = new Loader();
-                loader.showStock(stage, o, "");
+                loader.showStock(stage, o, new ArrayList<StockItem>(), "");
                 return;
             }
         }

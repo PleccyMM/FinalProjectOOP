@@ -88,6 +88,7 @@
                             minWidth="170"
                             minHeight="50"
                             text="Add to Basket"
+                            onAction="#btnAddToBasketClick"
                     />
                 </HBox>
             </VBox>

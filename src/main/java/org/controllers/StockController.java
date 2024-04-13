@@ -18,22 +18,14 @@ public class StockController extends ControllerParent {
     @FXML private BorderPane panMain;
     private List<Design> allDesigns;
 
-    public void load(Stage stage, Operator operator, String search) {
+    public void load(Stage stage, List<StockItem> items, Operator operator, String search) {
         this.operator = operator;
 
         try {
-            HBox headerBox = null;
-
-            for (Node n : panMain.getChildrenUnmodifiable()) {
-                if (Objects.equals(n.getId(), "boxHeader")) {
-                    headerBox = (HBox) n;
-                    break;
-                }
-            }
-
+            HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, headerBox, search);
+            loadHeader(stage, operator, items, headerBox, search);
 
             loadStock(search);
         }
@@ -162,7 +154,7 @@ public class StockController extends ControllerParent {
         String isoID = b.getId().split("_")[1];
         for (Design d : allDesigns) {
             if (d.getIsoID().equals(isoID)) {
-                l.showItem(stage, operator, d, isFlag);
+                l.showItem(stage, operator, items, d, isFlag);
                 break;
             }
         }

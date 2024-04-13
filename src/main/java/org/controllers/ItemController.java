@@ -37,24 +37,16 @@ public class ItemController extends ControllerParent {
     private StockItem item;
     private String selectedSize;
 
-    public void load(Stage stage, Operator operator, Design loadedDesign, Boolean isFlag) {
+    public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag) {
         this.operator = operator;
         this.loadedDesign = loadedDesign;
         this.isFlag = isFlag;
 
         try {
-            HBox headerBox = null;
-
-            for (Node n : panMain.getChildrenUnmodifiable()) {
-                if (Objects.equals(n.getId(), "boxHeader")) {
-                    headerBox = (HBox) n;
-                    break;
-                }
-            }
-
+            HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, headerBox, "");
+            loadHeader(stage, operator, items, headerBox, "");
             typeSetUp();
             populateInfo();
             listenerToggle();
@@ -232,6 +224,12 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnEditClick(ActionEvent event) throws Exception {
 
+    }
+
+    @FXML
+    protected void btnAddToBasketClick(ActionEvent event) throws Exception {
+        Loader l = new Loader();
+        l.showBasket(stage, items, operator);
     }
 
     private void populateInfo() {

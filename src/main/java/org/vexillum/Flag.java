@@ -10,6 +10,14 @@ public class Flag extends StockItem {
 
     public Flag() {}
 
+    public Flag(int flagID, String isoID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+        this.flagID = flagID;
+        this.isoID = isoID;
+        this.material = material;
+        this.hoist = hoist;
+        this.size = size;
+    }
+
     @Override
     public float calculatePrice() {
         float cost = size.getValue();
