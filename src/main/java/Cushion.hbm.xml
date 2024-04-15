@@ -3,8 +3,8 @@
         "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name = "org.vexillum.Flag" table = "flags">
-        <id name = "flagID" column = "flagid" type = "int" />
+    <class name = "org.vexillum.Cushion" table = "cushions">
+        <id name = "cushionID" column = "cushionid" type = "int" />
         <property name = "isoID" column = "isoid" type = "string"/>
         <property name = "stockID" column = "stockid" type = "int"/>
     </class>

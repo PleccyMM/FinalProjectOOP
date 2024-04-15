@@ -62,6 +62,54 @@ public class DatabaseControl {
         return list;
     }
 
+    public static String getIsoName(String isoID) {
+        openDBSession();
+        var query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        List<String> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return "";
+    }
+
+    public static Flag getFlag(String isoID) {
+        openDBSession();
+        var query = databaseSession.createQuery("from Flag where isoID = '" + isoID + "'");
+        List<Flag> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
+    }
+
+    public static Cushion getCushion(String isoID) {
+        openDBSession();
+        var query = databaseSession.createQuery("from Cushion where isoID = '" + isoID + "'");
+        List<Cushion> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
+    }
+
+    public static String getRegionName(int regionID) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select name from regions where regionid = '" + regionID + "'");
+        List<String> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return "";
+    }
+
+    public static String getTypeName(int typeID) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select name from designtypes where typeid = '" + typeID + "'");
+        List<String> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return "";
+    }
+
+    //SQL used for database setup:
+
+
     public static void AddDesigns () {
         openDBSession();
         databaseSession.beginTransaction();
@@ -83,29 +131,6 @@ public class DatabaseControl {
         catch (Exception e) {
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
-        }
-        finally {
-            closeDBSession();
-        }
-    }
-
-    public static void TestSQL() {
-        openDBSession();
-        try {
-            String sql = "SELECT * FROM sizes";
-            NativeQuery<Object[]> query = databaseSession.createNativeQuery(sql);
-            List<Object[]> results = query.getResultList();
-
-            for (Object[] row : results) {
-                int id = (int) row[0];
-                String name = (String) row[1];
-
-                System.out.println("Size: ID=" + id + ", Name=" + name);
-            }
-        }
-        catch (Exception e) {
-            System.out.println("FAILED TO TEST SQL");
-            e.printStackTrace();
         }
         finally {
             closeDBSession();
@@ -145,12 +170,105 @@ public class DatabaseControl {
         }
     }
 
-    public static String getIsoName(String isoID) {
+    public static void AddFlags() {
         openDBSession();
-        var query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
-        List<String> list = query.list();
-        closeDBSession();
-        if (list.size() > 0) return list.get(0);
-        return "";
+        databaseSession.beginTransaction();
+        try {
+            String loc = new String("src/main/java/org/Assets/flags.json");
+            File file = new File(loc);
+            String contents = new String(Files.readAllBytes(Paths.get(file.toURI())));
+            JSONObject jsonFile = new JSONObject(contents);
+            JSONObject variableList = jsonFile.getJSONObject("Designs");
+            JSONArray keys = variableList.names ();
+
+            for (int i = 0; i < keys.length (); ++i) {
+                String iso = keys.getString(i);
+                databaseSession.save(new Flag(i, iso, i));
+            }
+            databaseSession.getTransaction().commit();
+        }
+        catch (Exception e) {
+            System.out.println("FAILED TO ADD FLAGS");
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+        finally {
+            closeDBSession();
+        }
+    }
+
+    public static void AddCushions() {
+        openDBSession();
+        databaseSession.beginTransaction();
+        try {
+            String loc = new String("src/main/java/org/Assets/flags.json");
+            File file = new File(loc);
+            String contents = new String(Files.readAllBytes(Paths.get(file.toURI())));
+            JSONObject jsonFile = new JSONObject(contents);
+            JSONObject variableList = jsonFile.getJSONObject("Designs");
+            JSONArray keys = variableList.names ();
+
+            for (int i = 0; i < keys.length (); ++i) {
+                String iso = keys.getString(i);
+                databaseSession.save(new Cushion(i, iso, i + keys.length()));
+            }
+            databaseSession.getTransaction().commit();
+        }
+        catch (Exception e) {
+            System.out.println("FAILED TO ADD CUSHIONS");
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+        finally {
+            closeDBSession();
+        }
+    }
+
+    public static void AddStockItem() {
+        openDBSession();
+        try {
+            databaseSession.beginTransaction();
+
+            var query = databaseSession.createQuery("from Design");
+            List<Design> list = query.list();
+
+            String sqlInsert = "INSERT INTO stockmanager (stockid) VALUES (:stockid), (:baseprice)";
+            for (int i = 0; i < list.size() * 2; ++i) {
+                databaseSession.createNativeQuery("insert into stockmanager (stockid) values (:stockid)" )
+                        .setParameter("stockid", i)
+                        .executeUpdate();
+            }
+
+            databaseSession.getTransaction().commit();
+        } catch (Exception e) {
+            databaseSession.getTransaction().rollback();
+            System.out.println("FAILED TO ADD STOCKID");
+            e.printStackTrace();
+        } finally {
+            closeDBSession();
+        }
+    }
+
+    public static void TestSQL() {
+        openDBSession();
+        try {
+            String sql = "SELECT * FROM sizes";
+            NativeQuery<Object[]> query = databaseSession.createNativeQuery(sql);
+            List<Object[]> results = query.getResultList();
+
+            for (Object[] row : results) {
+                int id = (int) row[0];
+                String name = (String) row[1];
+
+                System.out.println("Size: ID=" + id + ", Name=" + name);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("FAILED TO TEST SQL");
+            e.printStackTrace();
+        }
+        finally {
+            closeDBSession();
+        }
     }
 }

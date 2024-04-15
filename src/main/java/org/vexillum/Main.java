@@ -24,6 +24,9 @@ public class Main extends Application
         //DatabaseControl.TestSQL();
         /*DatabaseControl.AddDesigns();
         DatabaseControl.AddTags();*/
+       /* DatabaseControl.AddStockItem();
+        DatabaseControl.AddFlags();
+        DatabaseControl.AddCushions();*/
         loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), "");
         //loader.showItem(stage, new Operator());
         //DatabaseControl.AddTags();

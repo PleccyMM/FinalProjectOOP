@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Design {
     private String isoID, name;
+    //Type Integer instead of int to handle null
     private Integer type;
     private Integer region;
 

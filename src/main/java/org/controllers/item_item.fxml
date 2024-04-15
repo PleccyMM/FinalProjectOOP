@@ -20,7 +20,11 @@
       spacing="10"
       alignment="BOTTOM_CENTER"
       styleClass="light-blue-fill">
-    <ImageView id="imgDesign"/>
+    <VBox id="imageHolder"
+          style="-fx-border-width: 1; -fx-border-color: #000000;"
+          maxWidth="1">
+        <ImageView id="imgDesign"/>
+    </VBox>
     <StackPane fx:id="stkMain">
         <ImageView id="image-corner"
                    fitWidth="65"

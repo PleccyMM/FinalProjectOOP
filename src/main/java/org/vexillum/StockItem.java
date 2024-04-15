@@ -1,12 +1,21 @@
 package org.vexillum;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public abstract class StockItem {
     protected String isoID;
     protected int stockID;
     protected int amount = 1;
     public abstract float calculatePrice();
 
+    public StockItem() {}
 
+    public StockItem(String isoID) {
+        this.isoID = isoID;
+    }
+
+    @Id
     public String getIsoID() {
         return isoID;
     }

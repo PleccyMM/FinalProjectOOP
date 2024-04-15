@@ -60,7 +60,8 @@ public class ItemController extends ControllerParent {
     private void typeSetUp() throws Exception {
         if (isFlag) {
             selectedSize = "Hand";
-            item = new Flag();
+            System.out.println("ISO ID: " + loadedDesign.getIsoID());
+            item = DatabaseControl.getFlag(loadedDesign.getIsoID());
         }
         else {
             selectedSize = "45x45cm";
@@ -69,22 +70,13 @@ public class ItemController extends ControllerParent {
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = new Cushion();
+            item = DatabaseControl.getCushion(loadedDesign.getIsoID());
         }
-        item.setIsoID(loadedDesign.getIsoID());
         createSizeSelection();
     }
 
     private void createSizeSelection() throws Exception {
-        VBox itemBox = null;
-        BorderPane borderPane = null;
-        for (Node n : panMain.getChildrenUnmodifiable()) {
-            if (Objects.equals(n.getId(), "boxItemStore")) {
-                itemBox = (VBox) n;
-                break;
-            }
-        }
-
+        VBox itemBox = (VBox) panMain.lookup("#boxItemStore");
         if (itemBox == null) { throw new Exception(); }
 
         String[] sizeVals;
@@ -95,24 +87,25 @@ public class ItemController extends ControllerParent {
             sizeVals = new String[]{"45x45cm", "55x55cm", "60x60cm", "50x30cm"};
         }
 
-        for (int i = 0; i < sizeVals.length; i++) {
+        for (String sizeVal : sizeVals) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
             Parent itemView = loader.load();
+
             VBox box = (VBox) itemView;
             box.setOnMouseClicked(boxClick);
 
             try {
                 Image img = new Image("org/Assets/FlagsSmall/" + loadedDesign.getIsoID() + ".png");
                 ImageView imgView = (ImageView) box.lookup("#imgDesign");
+
                 imgView.setFitWidth((int) (img.getWidth() * 0.5));
                 imgView.setFitHeight((int) (img.getHeight() * 0.5));
                 imgView.setImage(img);
             }
             catch (Exception ignored) { }
 
-            ((Label) box.lookup("#lblSize")).setText(sizeVals[i]);
-
-            box.setId("boxSize_" + sizeVals[i]);
+            ((Label) box.lookup("#lblSize")).setText(sizeVal);
+            box.setId("boxSize_" + sizeVal);
             itemBox.getChildren().add(box);
         }
     }
@@ -221,7 +214,14 @@ public class ItemController extends ControllerParent {
         catch (Exception ignored) { }
         finally {
             lblName.setText(loadedDesign.getName());
-            lblTags.setText("Hey\nHi");
+
+            Integer regionID = loadedDesign.getRegion();
+            String regionName = regionID == null ? "" : DatabaseControl.getRegionName(regionID) + "\n";
+
+            Integer typeID = loadedDesign.getType();
+            String typeName = typeID == null ? "" : DatabaseControl.getTypeName(typeID);
+
+            lblTags.setText("Tags:\n" + regionName + typeName);
         }
     }
 }

@@ -2,6 +2,7 @@ package org.vexillum;
 
 import javax.persistence.*;
 
+@Entity
 public class Flag extends StockItem {
     private int flagID;
     private FLAG_MATERIAL material;
@@ -10,9 +11,16 @@ public class Flag extends StockItem {
 
     public Flag() {}
 
-    public Flag(int flagID, String isoID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+    public Flag(int flagID, String isoID, int stockID) {
         this.flagID = flagID;
         this.isoID = isoID;
+        this.stockID = stockID;
+    }
+
+    public Flag(int flagID, String isoID, int stockID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+        this.flagID = flagID;
+        this.isoID = isoID;
+        this.stockID = stockID;
         this.material = material;
         this.hoist = hoist;
         this.size = size;
