@@ -16,19 +16,44 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.controllers.BasketController"
             stylesheets="@MainStyle.css"
-            fx:id="panMain">
+            fx:id="panMain"
+            style="-fx-background-color: #EEEEEE">
     <top>
-        <fx:include source="header.fxml"/>
+        <VBox>
+            <fx:include source="header.fxml"/>
+            <VBox minHeight="40"/>
+        </VBox>
     </top>
     <left>
         <Label prefWidth="16"/>
     </left>
     <right>
-        <VBox prefWidth="200">
+        <HBox minWidth="240" fillHeight="false">
             <padding>
-                <Insets right="8" top="8" left="8" bottom="8"/>
+                <Insets right="20" left="20"/>
             </padding>
-        </VBox>
+            <VBox id="white-divider" HBox.hgrow="ALWAYS">
+                <HBox id="blue-fill" minHeight="32" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets right="8" top="8" left="8" bottom="8"/>
+                    </padding>
+                    <Label id="subhead-text" text="Checkout"/>
+                </HBox>
+                <VBox spacing="10">
+                    <padding>
+                        <Insets right="12" top="8" left="12" bottom="8"/>
+                    </padding>
+                    <Label id="checkout-label" text="Subtotal:"/>
+                    <Label id="checkout-label" text="Savings:"/>
+                    <Pane id="light-blue-fill" minHeight="3"/>
+                    <Label id="checkout-label" text="Total Price:"/>
+                    <Button id="btnBlue"
+                            style="-fx-font-size: 12; -fx-background-radius: 15;"
+                            text="Checkout"
+                    />
+                </VBox>
+            </VBox>
+        </HBox>
     </right>
     <center>
         <BorderPane>

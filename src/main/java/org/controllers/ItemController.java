@@ -71,6 +71,7 @@ public class ItemController extends ControllerParent {
             cmbModifications.setPromptText("Cushion Filling");
             item = new Cushion();
         }
+        item.setIsoID(loadedDesign.getIsoID());
         createSizeSelection();
     }
 
@@ -154,12 +155,10 @@ public class ItemController extends ControllerParent {
             }
 
             f.setSize(FLAG_SIZE.fromString(selectedSize));
-
-            item = f;
         }
         else if (item instanceof Cushion c) {
             c.setJustCase(!tglSwitch.getToLeft().get());
-            item = c;
+            c.setSize(CUSHION_SIZE.fromString(selectedSize));
         }
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
@@ -229,6 +228,7 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnAddToBasketClick(ActionEvent event) throws Exception {
         Loader l = new Loader();
+        items.add(item);
         l.showBasket(stage, items, operator);
     }
 

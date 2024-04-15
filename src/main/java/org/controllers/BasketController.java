@@ -32,14 +32,15 @@ public class BasketController extends ControllerParent {
 
             loadHeader(stage, operator, items, headerBox, "");
 
-            Flag f1 = new Flag(5, "CH", FLAG_MATERIAL.POLYESTER, FLAG_HOIST.METAL, FLAG_SIZE.LARGE);
+            /*Flag f1 = new Flag(5, "CH", FLAG_MATERIAL.POLYESTER, FLAG_HOIST.METAL, FLAG_SIZE.LARGE);
             Flag f2 = new Flag(110, "CZ", FLAG_MATERIAL.PAPER, FLAG_HOIST.NONE, FLAG_SIZE.DESK);
             Flag f3 = new Flag(289, "SY", FLAG_MATERIAL.NYLON, FLAG_HOIST.WOODEN, FLAG_SIZE.SMALL);
             Flag f4 = new Flag(289, "SY", FLAG_MATERIAL.NYLON, FLAG_HOIST.FABRIC, FLAG_SIZE.LARGE);
             items.add(f1);
             items.add(f2);
             items.add(f3);
-            items.add(f4);
+            items.add(f4);*/
+
             createItems();
         }
         catch (Exception e) {
@@ -61,6 +62,10 @@ public class BasketController extends ControllerParent {
             if (i instanceof Flag f) {
                 name += " Flag ";
                 name += FLAG_SIZE.getString(f.getSize());
+            }
+            else if (i instanceof Cushion c) {
+                name += " Cushion ";
+                name += CUSHION_SIZE.getString(c.getSize());
             }
 
             ((Label) box.lookup("#lblName")).setText(name);
