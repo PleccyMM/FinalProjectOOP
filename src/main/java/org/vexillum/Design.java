@@ -1,13 +1,13 @@
 package org.vexillum;
 
-import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
 public class Design {
     private String isoID, name;
-    private TYPE type;
-    private REGION region;
+    //Type Integer instead of int to handle null
+    private Integer type;
+    private Integer region;
 
     public Design() {}
     public Design(String isoID, String name) {
@@ -16,7 +16,7 @@ public class Design {
         type = null;
         region = null;
     }
-    public Design(String isoID, String name, TYPE type, REGION region) {
+    public Design(String isoID, String name, Integer type, Integer region) {
         this.isoID = isoID;
         this.name = name;
         this.type = type;
@@ -40,19 +40,19 @@ public class Design {
         this.name = name;
     }
 
-    public TYPE getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(TYPE type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public REGION getRegion() {
+    public Integer getRegion() {
         return region;
     }
 
-    public void setRegion(REGION region) {
+    public void setRegion(Integer region) {
         this.region = region;
     }
 }

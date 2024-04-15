@@ -8,8 +8,13 @@ public enum REGION {
     OCEANIA(4),
     SOUTH_AMERICA(5);
 
-    public final int value;
-    private REGION(int value) {
+    private final int value;
+
+    REGION(int value) {
         this.value = value;
+    }
+
+    public int getValue() {
+        return value;
     }
 }

@@ -8,11 +8,7 @@
     -fx-background-color: #596FC0;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
-#light-blue-fill0,
-#light-blue-fill1,
-#light-blue-fill2,
-#light-blue-fill3,
-#light-blue-fill4,
+.light-blue-fill,
 #light-blue-fill {
     -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -62,9 +58,18 @@
 #label-tag {
     -fx-font-weight: bold;
 }
+#lblPrice,
 #title-black {
     -fx-text-fill: #000000;
     -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
+#checkout-label,
+#lblPriceSingle,
+#lblSubtotal,
+#lblName {
+    -fx-text-fill: #000000;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
@@ -84,7 +89,8 @@
     -fx-text-fill: #000000;
 }
 
-#btnBlue {
+#btnBlue,
+.btnBlue {
     -fx-background-color: #3551B4;
     -fx-text-fill: #FFFFFF;
     -fx-border-color: transparent;
@@ -94,7 +100,8 @@
     -fx-background-radius: 25;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
-#btnBlue:hover {
+#btnBlue:hover,
+.btnBlue:hover {
     -fx-background-color: #C2D0FF;
     -fx-text-fill: #FFFFFF;
 }
@@ -110,6 +117,17 @@
     -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
     -fx-graphic: url("../Assets/Icons/Minus.png");
 }
+#btnAdd:hover {
+    -fx-background-color: #C2D0FF;
+}
+#btnMinus:hover {
+    -fx-background-color: #C2D0FF;
+}
+
+#btnEdit {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Edit.png");
+}
 #lblIncriment {
     -fx-text-fill: #000000;
     -fx-font-size: 16px;
@@ -117,16 +135,23 @@
     -fx-font-weight: bold;
     -fx-text-alignment: center;
 }
+
+
 #cmbModifications {
     -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+.combo-box .text {
+    -fx-prompt-text-fill: #ff0000; /* Set the color for the prompt text */
+}
+.mid-text-black,
+#mid-text-black,
 #lblToggleL,
 #lblToggleR {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
-#lblModifications {
+#sub-title-black {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
@@ -157,12 +182,17 @@
     -fx-font-size: 14px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0.0, 0, 0);
 }
-#imgSearch {
+#btnSearch {
     -fx-background-color: transparent;
-    -fx-graphic: url("../Assets/Icons/Search.png");;
+    -fx-graphic: url("../Assets/Icons/Search.png");
 }
-#image-shopping {
-    -fx-image:url('../Assets/Icons/Shopping.png');
+#btnBasket {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Shopping.png");
+}
+#btnInformation {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Info.png");
 }
 #image-profile {
     -fx-image:url('../Assets/Icons/Profile.png');

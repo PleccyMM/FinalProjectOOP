@@ -23,7 +23,7 @@
         <padding>
             <Insets left="8"/>
         </padding>
-        <Button fx:id="imgSearch"
+        <Button fx:id="btnSearch"
         />
         <TextField fx:id="enrSearch"
                    prefWidth="580"
@@ -36,7 +36,7 @@
         <padding>
             <Insets right="20"/>
         </padding>
-        <ImageView id="image-shopping"/>
+        <Button fx:id="btnBasket"/>
         <ImageView id="image-profile"/>
     </HBox>
 </HBox>

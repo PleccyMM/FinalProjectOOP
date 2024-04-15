@@ -6,7 +6,7 @@
     <class name = "org.vexillum.Design" table = "designs">
         <id name = "isoID" column = "isoid" type = "string" />
         <property name = "name" column = "name" type = "string"/>
-        <property name = "region" column = "regionid" type = "int"/>
-        <property name = "type" column = "typeid" type = "int"/>
+        <property name = "region" column = "regionid" type = "java.lang.Integer"/>
+        <property name = "type" column = "typeid" type = "java.lang.Integer"/>
     </class>
 </hibernate-mapping>

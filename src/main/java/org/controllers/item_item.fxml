@@ -5,6 +5,12 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+<?import org.vexillum.ToggleSwitch?>
+<?import javafx.collections.FXCollections?>
 
 <VBox id="light-blue-fill"
       xmlns="http://javafx.com/javafx"
@@ -12,19 +18,21 @@
       minWidth="65"
       prefHeight="85"
       spacing="10"
-      alignment="BOTTOM_CENTER">
-    <!--<ImageView id="image-test-flag"
-               fitWidth="50"
-               fitHeight="30"
-    />
-    <StackPane>
+      alignment="BOTTOM_CENTER"
+      styleClass="light-blue-fill">
+    <VBox id="imageHolder"
+          style="-fx-border-width: 1; -fx-border-color: #000000;"
+          maxWidth="1">
+        <ImageView id="imgDesign"/>
+    </VBox>
+    <StackPane fx:id="stkMain">
         <ImageView id="image-corner"
                    fitWidth="65"
                    fitHeight="25"
         />
-        <Text style="-fx-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
-              text="90x120  "
+        <Label fx:id="lblSize"
+              style="-fx-text-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
               StackPane.alignment="BOTTOM_RIGHT"
         />
-    </StackPane>-->
+    </StackPane>
 </VBox>

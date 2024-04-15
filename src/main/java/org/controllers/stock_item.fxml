@@ -32,16 +32,18 @@
            text="£2.50-£22.00+"
     />
     <Label/>
-    <HBox alignment="center" spacing="15">
-        <Button fx:id="btnBlue"
+    <HBox fx:id="boxButons" alignment="center" spacing="15">
+        <Button fx:id="btnFlag"
                 text="Flag"
                 prefWidth="65"
                 prefHeight="27"
+                styleClass="btnBlue"
         />
-        <Button id="btnBlue"
+        <Button fx:id="btnCushion"
                 text="Cushion"
                 prefWidth="65"
                 prefHeight="27"
+                styleClass="btnBlue"
         />
     </HBox>
 </VBox>
