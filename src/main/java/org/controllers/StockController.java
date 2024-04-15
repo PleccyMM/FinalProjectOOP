@@ -66,55 +66,26 @@ public class StockController extends ControllerParent {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_item.fxml"));
                 Parent productView = loader.load();
 
-                Label lblName = null;
-                Label lblStockPrice = null;
-                ImageView imgView = null;
                 Design currentDesign = allDesigns.get(i+j);
 
-                for (Node n : productView.getChildrenUnmodifiable()) {
-                    if (Objects.equals(n.getId(), "lblStockName")) {
-                        lblName = (Label) n;
-                    }
-                    else if (Objects.equals(n.getId(), "lblStockPrice")) {
-                        lblStockPrice = (Label) n;
-                    }
-                    else if (Objects.equals(n.getId(), "imageHolder")) {
-                        List<Node> listVBox;
-                        listVBox = ((VBox) n).getChildren();
-                        for (Node n2 : listVBox) {
-                            if (Objects.equals(n2.getId(), "imgDisp")) {
-                                imgView = (ImageView) n2;
-                            }
-                        }
-                    }
-                    else if (Objects.equals(n.getId(), "boxButons")) {
-                        List<Node> listHBox;
-                        listHBox = ((HBox) n).getChildren();
-                        for (Node n2 : listHBox) {
-                            if (Objects.equals(n2.getId(), "btnFlag")) {
-                                Button btnFlag = (Button) n2;
-                                btnFlag.setId(btnFlag.getId() + "_" + currentDesign.getIsoID());
-                                btnFlag.setOnAction(btnFlagHandle);
-                            }
-                            if (Objects.equals(n2.getId(), "btnCushion")) {
-                                Button btnCushion = (Button) n2;
-                                btnCushion.setId(btnCushion.getId() + "_" + currentDesign.getIsoID());
-                                btnCushion.setOnAction(btnCushionHandle);
-                            }
-                        }
-                    }
-                }
+                Button btnFlag = ((Button) productView.lookup("#btnFlag"));
+                btnFlag.setId(btnFlag.getId() + "_" + currentDesign.getIsoID());
+                btnFlag.setOnAction(btnFlagHandle);
+
+                Button btnCushion = ((Button) productView.lookup("#btnCushion"));
+                btnCushion.setId(btnCushion.getId() + "_" + currentDesign.getIsoID());
+                btnCushion.setOnAction(btnCushionHandle);
 
                 try {
                     Image img = new Image("org/Assets/FlagsSmall/" + currentDesign.getIsoID() + ".png");
-                    imgView.setImage(img);
+                    ((ImageView) productView.lookup("#imgDisp")).setImage(img);
                 }
                 catch (Exception ignored) { }
 
-                lblName.setText(currentDesign.getName());
+                ((Label) productView.lookup("#lblStockName")).setText(currentDesign.getName());
 
                 if (currentDesign.getType() == TYPE.NATIONAL.getValue()) {
-                    lblStockPrice.setText("\u00A31.50-\u00A320.00+");
+                    ((Label) productView.lookup("#lblStockPrice")).setText("\u00A31.50-\u00A320.00+");
                 }
 
                 box.getChildren().add(productView);
