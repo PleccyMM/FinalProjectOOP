@@ -86,8 +86,6 @@ public class ItemController extends ControllerParent {
         }
 
         if (itemBox == null) { throw new Exception(); }
-        int imageViewLoc = -1;
-        int[] lblSize = new int[2];
 
         String[] sizeVals;
         if (isFlag) {
@@ -103,35 +101,16 @@ public class ItemController extends ControllerParent {
             VBox box = (VBox) itemView;
             box.setOnMouseClicked(boxClick);
 
-            if (imageViewLoc == -1) {
-                List<Node> n1 = box.getChildrenUnmodifiable();
-                for (int j = 0; j < n1.size(); j++) {
-                    if (Objects.equals(n1.get(j).getId(), "imgDesign")) {
-                        imageViewLoc = j;
-                    }
-                    else if (Objects.equals(n1.get(j).getId(), "stkMain")) {
-                        lblSize[0] = j;
-                        List<Node> n2 = ((StackPane) n1.get(j)).getChildrenUnmodifiable();
-                        for (int k = 0; k < n2.size(); k++) {
-                            if (Objects.equals(n2.get(k).getId(), "lblSize")) {
-                                lblSize[1] = k;
-                            }
-                        }
-                    }
-                }
-            }
-
             try {
                 Image img = new Image("org/Assets/FlagsSmall/" + loadedDesign.getIsoID() + ".png");
-                ImageView imgView = (ImageView) box.getChildren().get(imageViewLoc);
+                ImageView imgView = (ImageView) box.lookup("#imgDesign");
                 imgView.setFitWidth((int) (img.getWidth() * 0.5));
                 imgView.setFitHeight((int) (img.getHeight() * 0.5));
                 imgView.setImage(img);
             }
             catch (Exception ignored) { }
 
-            StackPane stk = (StackPane)box.getChildren().get(lblSize[0]);
-            ((Label)stk.getChildren().get(lblSize[1])).setText(sizeVals[i]);
+            ((Label) box.lookup("#lblSize")).setText(sizeVals[i]);
 
             box.setId("boxSize_" + sizeVals[i]);
             itemBox.getChildren().add(box);
