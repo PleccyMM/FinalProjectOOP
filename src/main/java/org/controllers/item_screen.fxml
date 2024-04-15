@@ -116,8 +116,14 @@
                     <padding>
                         <Insets right="8" top="8" left="8" bottom="8"/>
                     </padding>
-                    <Label fx:id="lblName" wrapText="true"/>
-                    <Label fx:id="lblTags"/>
+                    <Label fx:id="lblName" wrapText="true" styleClass="mid-text-black"/>
+                    <Label id="mid-text-black" text="Tags:"/>
+                    <VBox>
+                        <padding>
+                            <Insets right="8" left="8"/>
+                        </padding>
+                        <Label fx:id="lblTags" styleClass="mid-text-black"/>
+                    </VBox>
                 </VBox>
                 <VBox id="grey-fill"
                       HBox.hgrow="ALWAYS"
@@ -125,23 +131,23 @@
                     <padding>
                         <Insets right="8" top="8" left="8" bottom="8"/>
                     </padding>
-                    <HBox alignment="CENTER_LEFT">
+                    <HBox spacing="5" alignment="CENTER_LEFT">
                         <Label id="sub-title-black" text="Stock Details"/>
                         <Region HBox.hgrow="ALWAYS"/>
                         <Button fx:id="btnEdit" onAction="#btnEditClick"/>
                     </HBox>
-                    <HBox>
-                        <Label text="Current Stock:"/>
+                    <HBox spacing="5" alignment="CENTER_LEFT" VBox.vgrow="SOMETIMES">
+                        <Label text="Current Stock:" styleClass="mid-text-black"/>
                         <ImageView fx:id="imgSeverity"/>
-                        <Label fx:id="lblCurrentStock"/>
+                        <Label fx:id="lblCurrentStock" styleClass="mid-text-black"/>
                     </HBox>
-                    <HBox>
-                        <Label text="Restock Limit:"/>
-                        <Label fx:id="lblRestock"/>
+                    <HBox spacing="5" alignment="CENTER_LEFT" VBox.vgrow="SOMETIMES">
+                        <Label text="Restock Limit:" styleClass="mid-text-black"/>
+                        <Label fx:id="lblRestock" styleClass="mid-text-black"/>
                     </HBox>
-                    <HBox>
-                        <Label text="Cost to Produce:"/>
-                        <Label fx:id="lblCostToProduce"/>
+                    <HBox spacing="5" alignment="CENTER_LEFT">
+                        <Label text="Cost to Produce:" styleClass="mid-text-black"/>
+                        <Label fx:id="lblCostToProduce" styleClass="mid-text-black"/>
                     </HBox>
                 </VBox>
             </HBox>

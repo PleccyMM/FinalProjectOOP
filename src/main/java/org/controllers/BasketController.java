@@ -19,28 +19,18 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class BasketController extends ControllerParent {
-    private Operator operator;
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
 
     public void load(Stage stage, List<StockItem> items, Operator operator) {
         this.operator = operator;
+        this.items = items;
 
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
             loadHeader(stage, operator, items, headerBox, "");
-
-            /*Flag f1 = new Flag(5, "CH", FLAG_MATERIAL.POLYESTER, FLAG_HOIST.METAL, FLAG_SIZE.LARGE);
-            Flag f2 = new Flag(110, "CZ", FLAG_MATERIAL.PAPER, FLAG_HOIST.NONE, FLAG_SIZE.DESK);
-            Flag f3 = new Flag(289, "SY", FLAG_MATERIAL.NYLON, FLAG_HOIST.WOODEN, FLAG_SIZE.SMALL);
-            Flag f4 = new Flag(289, "SY", FLAG_MATERIAL.NYLON, FLAG_HOIST.FABRIC, FLAG_SIZE.LARGE);
-            items.add(f1);
-            items.add(f2);
-            items.add(f3);
-            items.add(f4);*/
-
             createItems();
         }
         catch (Exception e) {

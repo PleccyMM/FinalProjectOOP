@@ -7,6 +7,10 @@ public abstract class StockItem {
     protected String isoID;
     protected int stockID;
     protected int amount = 1;
+    protected int totalAmount;
+    protected int restock;
+    protected int sizeID;
+
     public abstract float calculatePrice();
 
     public StockItem() {}
@@ -35,5 +39,26 @@ public abstract class StockItem {
     }
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public int getRestock() {
+        return restock;
+    }
+    public void setRestock(int restock) {
+        this.restock = restock;
+    }
+
+    public int getSizeID() {
+        return sizeID;
+    }
+    public void setSizeID(int sizeID) {
+        this.sizeID = sizeID;
     }
 }

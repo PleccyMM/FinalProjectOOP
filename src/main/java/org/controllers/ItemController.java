@@ -1,11 +1,8 @@
 package org.controllers;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.*;
 import javafx.fxml.*;
-import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.text.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
@@ -13,7 +10,6 @@ import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.vexillum.*;
 
-import javax.swing.*;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -23,6 +19,10 @@ public class ItemController extends ControllerParent {
 
     @FXML private Label lblName;
     @FXML private Label lblTags;
+
+    @FXML private Label lblCurrentStock;
+    @FXML private ImageView imgSeverity;
+    @FXML private Label lblRestock;
 
     @FXML private Label lblToggleL;
     @FXML private Label lblToggleR;
@@ -61,7 +61,7 @@ public class ItemController extends ControllerParent {
         if (isFlag) {
             selectedSize = "Hand";
             System.out.println("ISO ID: " + loadedDesign.getIsoID());
-            item = DatabaseControl.getFlag(loadedDesign.getIsoID());
+            item = DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
         }
         else {
             selectedSize = "45x45cm";
@@ -70,7 +70,7 @@ public class ItemController extends ControllerParent {
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = DatabaseControl.getCushion(loadedDesign.getIsoID());
+            item = DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL);
         }
         createSizeSelection();
     }
@@ -126,12 +126,18 @@ public class ItemController extends ControllerParent {
                 case 3 -> f.setHoist(FLAG_HOIST.WOODEN);
             }
 
-            f.setSize(FLAG_SIZE.fromString(selectedSize));
+            FLAG_SIZE fs = FLAG_SIZE.fromString(selectedSize);
+            f.setSize(fs);
+            f.setSizeID(FLAG_SIZE.getSizeId(fs));
         }
         else if (item instanceof Cushion c) {
             c.setJustCase(!tglSwitch.getToLeft().get());
-            c.setSize(CUSHION_SIZE.fromString(selectedSize));
+            CUSHION_SIZE cs = CUSHION_SIZE.fromString(selectedSize);
+            c.setSize(cs);
+            c.setSizeID(CUSHION_SIZE.getSizeId(cs));
         }
+
+        DatabaseControl.setStockData(item);
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         float price = item.calculatePrice();
@@ -163,6 +169,7 @@ public class ItemController extends ControllerParent {
                 VBox box = (VBox) source;
                 selectedSize = box.getId().split("_")[1];
                 updateItem();
+                populateInfo();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -187,7 +194,8 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnAddClick(ActionEvent event) throws Exception {
         int val = Integer.parseInt(lblIncriment.getText());
-        val += 1;
+        if (val < item.getTotalAmount()) val += 1;
+
         lblIncriment.setText(String.valueOf(val));
         updateItem();
     }
@@ -221,7 +229,26 @@ public class ItemController extends ControllerParent {
             Integer typeID = loadedDesign.getType();
             String typeName = typeID == null ? "" : DatabaseControl.getTypeName(typeID);
 
-            lblTags.setText("Tags:\n" + regionName + typeName);
+            int totalAmount = item.getTotalAmount();
+            int restock = item.getRestock();
+
+            lblCurrentStock.setText(totalAmount + "");
+            lblRestock.setText(restock + "");
+
+            try {
+                String severityImg;
+                if (totalAmount <= restock) { severityImg = "IndicatorBad"; }
+                else if (totalAmount * 0.5 <= restock) { severityImg = "IndicatorMid"; }
+                else { severityImg =  "IndicatorGood"; }
+
+                Image img = new Image("org/Assets/Icons/" + severityImg + ".png");
+                imgSeverity.setFitWidth(12);
+                imgSeverity.setFitHeight(12);
+                imgSeverity.setImage(img);
+            }
+            catch (Exception ignored) {}
+
+            lblTags.setText(regionName + typeName);
         }
     }
 }

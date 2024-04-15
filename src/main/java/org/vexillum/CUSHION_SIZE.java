@@ -16,8 +16,8 @@ public enum CUSHION_SIZE {
         return value / 100.0f;
     }
 
-    public static String getString(CUSHION_SIZE f) {
-        return switch (f) {
+    public static String getString(CUSHION_SIZE c) {
+        return switch (c) {
             case SMALL -> "45x45cm";
             case MEDIUM -> "55x55cm";
             case LARGE -> "60x60cm";
@@ -30,6 +30,14 @@ public enum CUSHION_SIZE {
             case "55x55cm" -> MEDIUM;
             case "60x60cm" -> LARGE;
             default -> LONG;
+        };
+    }
+    public static int getSizeId(CUSHION_SIZE c) {
+        return switch (c) {
+            case SMALL -> 5;
+            case MEDIUM -> 6;
+            case LARGE -> 7;
+            case LONG -> 8;
         };
     }
 }

@@ -27,6 +27,7 @@ public class Main extends Application
        /* DatabaseControl.AddStockItem();
         DatabaseControl.AddFlags();
         DatabaseControl.AddCushions();*/
+        //DatabaseControl.SetAmounts();
         loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), "");
         //loader.showItem(stage, new Operator());
         //DatabaseControl.AddTags();

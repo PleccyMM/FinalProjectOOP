@@ -144,6 +144,8 @@
 .combo-box .text {
     -fx-prompt-text-fill: #ff0000; /* Set the color for the prompt text */
 }
+.mid-text-black,
+#mid-text-black,
 #lblToggleL,
 #lblToggleR {
     -fx-font-size: 12px;
