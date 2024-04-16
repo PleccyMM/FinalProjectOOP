@@ -66,8 +66,7 @@
 }
 #checkout-label,
 #lblPriceSingle,
-#lblSubtotal,
-#lblName {
+#lblSubtotal {
     -fx-text-fill: #000000;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -151,6 +150,7 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
+.sub-title-black,
 #sub-title-black {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
