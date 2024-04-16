@@ -49,6 +49,14 @@ public class DatabaseControl {
         return list;
     }
 
+    public static List<Design> getAllDesigns() {
+        openDBSession();
+        var query = databaseSession.createQuery("from Design order by name asc");
+        List<Design> list = query.list();
+        closeDBSession();
+        return list;
+    }
+
     public static List<Design> searchDesigns(SearchConditions nameSearch) {
         openDBSession();
         var query = databaseSession.createQuery("from Design where LOWER(name) like (:name) and LOWER(name) >= (:initial1) and LOWER(name) <= (:initial2) and " +

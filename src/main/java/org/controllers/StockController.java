@@ -58,7 +58,8 @@ public class StockController extends ControllerParent {
     }
 
     private void loadStock() throws Exception {
-        allDesigns = DatabaseControl.searchDesigns(sc);
+        if (sc == null) allDesigns = DatabaseControl.getAllDesigns();
+        else allDesigns = DatabaseControl.searchDesigns(sc);
 
         boxScroll.getChildren().add(new HBox());
 
@@ -156,13 +157,16 @@ public class StockController extends ControllerParent {
         switch (tagSelect) {
             case "type":
                 rdbList.add(createRdb("Any", tg, rdbType));
-                rdbList.add(createRdb("Domestic", tg, rdbType));
+                rdbList.add(createRdb("National", tg, rdbType));
                 rdbList.add(createRdb("International", tg, rdbType));
                 rdbList.add(createRdb("Pride", tg, rdbType));
 
                 Integer type = sc.getType();
                 if (type == null) rdbList.get(0).setSelected(true);
-                else rdbList.get(DatabaseControl.getTypeId(type.toString()) + 1).setSelected(true);
+                else {
+                    Integer i = DatabaseControl.getTypeId(rdbList.get(type + 1).getText());
+                    rdbList.get(i + 1).setSelected(true);
+                }
                 break;
             case "region":
                 rdbList.add(createRdb("Any", tg, rdbRegion));
@@ -175,7 +179,10 @@ public class StockController extends ControllerParent {
 
                 Integer region = sc.getRegion();
                 if (region == null) rdbList.get(0).setSelected(true);
-                else rdbList.get(DatabaseControl.getRegionId(region.toString()) + 1).setSelected(true);
+                else {
+                    Integer i = DatabaseControl.getRegionId(rdbList.get(region + 1).getText());
+                    rdbList.get(i + 1).setSelected(true);
+                }
                 break;
             case "initial":
                 rdbList.add(createRdb("All", tg, rdbInitial));
@@ -216,7 +223,7 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                sc.setType(DatabaseControl.getRegionId(r.getText()));
+                sc.setRegion(DatabaseControl.getRegionId(r.getText()));
                 performSearch();
             }
             catch (Exception e) {

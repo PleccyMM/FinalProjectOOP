@@ -52,7 +52,7 @@ public abstract class ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
-                performSearch();
+                l.showStock(stage, operator, items, new SearchConditions());
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
