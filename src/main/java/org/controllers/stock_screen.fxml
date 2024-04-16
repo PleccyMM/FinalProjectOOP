@@ -21,27 +21,16 @@
     <center>
         <BorderPane>
             <top>
-                <HBox minHeight="64"
-                      spacing="64"
-                      alignment="CENTER_LEFT">
-
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Type"/>
-                        <ImageView id="image-down-arrow"/>
+                <VBox>
+                    <HBox fx:id="boxTagOps"
+                          minHeight="64"
+                          spacing="64"
+                          alignment="CENTER_LEFT">
                     </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Design"/>
-                        <ImageView id="image-down-arrow"/>
-                    </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Region"/>
-                        <ImageView id="image-down-arrow"/>
-                    </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Initial"/>
-                        <ImageView id="image-down-arrow"/>
-                    </HBox>
-                </HBox>
+                    <VBox fx:id="boxTagSelect"
+                          alignment="CENTER_LEFT">
+                    </VBox>
+                </VBox>
             </top>
             <center>
                 <ScrollPane fx:id="scrBackground"

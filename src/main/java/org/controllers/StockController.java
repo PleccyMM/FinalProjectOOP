@@ -16,6 +16,10 @@ public class StockController extends ControllerParent {
     @FXML private VBox boxScroll;
     @FXML private ScrollPane scrBackground;
     @FXML private BorderPane panMain;
+    @FXML private HBox boxTagOps;
+    @FXML private VBox boxTagSelect;
+    private List<RadioButton> rdbList;
+    ToggleGroup tg;
     private List<Design> allDesigns;
 
     public void load(Stage stage, List<StockItem> items, Operator operator, String search) {
@@ -26,6 +30,23 @@ public class StockController extends ControllerParent {
             if (headerBox == null) { throw new Exception(); }
 
             loadHeader(stage, operator, items, headerBox, search);
+
+            String[] tagBoxes = new String[] {"Type", "Region", "Initial"};
+            for (String tagBox : tagBoxes) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_tag.fxml"));
+                Parent box = loader.load();
+
+                ((Label) box.lookup("#lblTag")).setText(tagBox);
+
+                try {
+                    Image img = new Image("org/Assets/Icons/DownArrow.png");
+                    ((ImageView) box.lookup("#imgArrow")).setImage(img);
+                }
+                catch (Exception ignored) { }
+
+                box.setOnMouseClicked(tagClick);
+                boxTagOps.getChildren().add(box);
+            }
 
             loadStock(search);
         }
@@ -131,8 +152,71 @@ public class StockController extends ControllerParent {
         }
     }
 
-    @FXML
-    protected void handleBtnTest(ActionEvent event) throws Exception {
+    private void generateRadioButtons(String tagSelect) {
+        tg = new ToggleGroup();
+        rdbList = new ArrayList<>();
 
+        switch (tagSelect) {
+            case "type":
+                rdbList.add(createRdb("Domestic", tg));
+                rdbList.add(createRdb("International", tg));
+                rdbList.add(createRdb("Pride", tg));
+                break;
+            case "region":
+                rdbList.add(createRdb("Africa", tg));
+                rdbList.add(createRdb("Asia", tg));
+                rdbList.add(createRdb("Europe", tg));
+                rdbList.add(createRdb("North America", tg));
+                rdbList.add(createRdb("Oceania", tg));
+                rdbList.add(createRdb("South America", tg));
+                break;
+            case "initial":
+                rdbList.add(createRdb("A-D", tg));
+                rdbList.add(createRdb("E-I", tg));
+                rdbList.add(createRdb("J-P", tg));
+                rdbList.add(createRdb("Q-Z", tg));
+        }
+        boxTagSelect.getChildren().addAll(rdbList);
     }
+
+    private RadioButton createRdb(String text, ToggleGroup tg) {
+        RadioButton radioButton = new RadioButton(text);
+        radioButton.setToggleGroup(tg);
+        return radioButton;
+    }
+
+    EventHandler<MouseEvent> tagClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            try {
+                Object source = event.getSource();
+                Node box = (Node) source;
+
+                Image downArr = new Image("org/Assets/Icons/DownArrow.png");
+                Image upArr = new Image("org/Assets/Icons/UpArrow.png");
+                ImageView imgView = ((ImageView) box.lookup("#imgArrow"));
+
+                boxTagSelect.getChildren().clear();
+                if (Objects.equals(box.getId(), "up")) {
+                    box.setId("down");
+                    imgView.setImage(downArr);
+                }
+                else {
+                    for (Node n : boxTagOps.getChildren()) {
+                        n.setId("down");
+                        ((ImageView) n.lookup("#imgArrow")).setImage(downArr);
+                    }
+
+                    box.setId("up");
+                    imgView.setImage(upArr);
+
+                    String labelText = ((Label) box.lookup("#lblTag")).getText().toLowerCase();
+                    generateRadioButtons(labelText);
+                }
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 }

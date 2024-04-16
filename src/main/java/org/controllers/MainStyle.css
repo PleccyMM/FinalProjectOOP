@@ -55,7 +55,7 @@
     -fx-font-family: "Inter Semi Bold";
     -fx-font-weight: bold;
 }
-#label-tag {
+#lblTag {
     -fx-font-weight: bold;
 }
 #lblPrice,
@@ -196,9 +196,6 @@
 }
 #image-profile {
     -fx-image:url('../Assets/Icons/Profile.png');
-}
-#image-down-arrow {
-    -fx-image:url('../Assets/Icons/DownArrow.png');
 }
 #image-corner {
     -fx-image:url('../Assets/Icons/Corner.png');
