@@ -49,17 +49,15 @@ public class DatabaseControl {
         return list;
     }
 
-    public static List<Design> getAllDesigns() {
+    public static List<Design> searchDesigns(SearchConditions nameSearch) {
         openDBSession();
-        var query = databaseSession.createQuery("from Design order by name asc");
-        List<Design> list = query.list();
-        closeDBSession();
-        return list;
-    }
-
-    public static List<Design> searchDesigns(String nameSearch) {
-        openDBSession();
-        var query = databaseSession.createQuery("from Design where LOWER(name) like '%" + nameSearch.toLowerCase() + "%' order by name asc");
+        var query = databaseSession.createQuery("from Design where LOWER(name) like (:name) and LOWER(name) >= (:initial1) and LOWER(name) <= (:initial2) and " +
+                                                   "(region = :region or :region is null) and (type = :type or :type is null) order by name asc")
+                .setParameter("name", nameSearch.getSearch() == null ? "%" : "%" + nameSearch.getSearch().toLowerCase() + "%")
+                .setParameter("initial1", nameSearch.getStartLetters()[0] == null ? "a" : nameSearch.getStartLetters()[0])
+                .setParameter("initial2", nameSearch.getStartLetters()[1] == null ? "z" : nameSearch.getStartLetters()[1])
+                .setParameter("region", nameSearch.getRegion() == null ? null : nameSearch.getRegion())
+                .setParameter("type", nameSearch.getType() == null ? null : nameSearch.getType());
         List<Design> list = query.list();
         closeDBSession();
         return list;
@@ -145,6 +143,26 @@ public class DatabaseControl {
         closeDBSession();
         if (list.size() > 0) return list.get(0);
         return "";
+    }
+
+    public static Integer getTypeId(String name) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select typeid from designtypes where LOWER(name) = (:name)")
+                .setParameter("name", name.toLowerCase());
+        List<Integer> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
+    }
+
+    public static Integer getRegionId(String name) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select regionid from regions where LOWER(name) = (:name)")
+                .setParameter("name", name.toLowerCase());
+        List<Integer> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
     }
 
     //SQL used for database setup:

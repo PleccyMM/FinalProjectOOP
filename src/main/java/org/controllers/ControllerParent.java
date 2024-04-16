@@ -18,6 +18,7 @@ public abstract class ControllerParent {
     protected final Loader l = new Loader();
     protected Operator operator;
     protected List<StockItem> items;
+    protected SearchConditions sc;
 
     protected void loadHeader(Stage stage, Operator operator, List<StockItem> items, HBox headerBox, String search) {
         try {
@@ -43,12 +44,15 @@ public abstract class ControllerParent {
         }
     }
 
+    protected void performSearch() throws Exception {
+        l.showStock(stage, operator, items, sc);
+    }
 
     EventHandler<ActionEvent> btnBackHandle = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             try {
-                l.showStock(stage, operator, items, "");
+                performSearch();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -59,7 +63,8 @@ public abstract class ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
-                l.showStock(stage, operator, items, enrSearch.getText());
+                sc.setSearch(enrSearch.getText());
+                performSearch();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -73,7 +78,8 @@ public abstract class ControllerParent {
                 return;
             }
             try {
-                l.showStock(stage, operator, items, enrSearch.getText());
+                sc.setSearch(enrSearch.getText());
+                performSearch();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

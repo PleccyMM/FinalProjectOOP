@@ -28,7 +28,7 @@ public class Main extends Application
         DatabaseControl.AddFlags();
         DatabaseControl.AddCushions();*/
         //DatabaseControl.SetAmounts();
-        loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), "");
+        loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), new SearchConditions());
         //loader.showItem(stage, new Operator());
         //DatabaseControl.AddTags();
     }

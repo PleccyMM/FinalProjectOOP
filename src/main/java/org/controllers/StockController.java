@@ -18,18 +18,20 @@ public class StockController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private HBox boxTagOps;
     @FXML private VBox boxTagSelect;
+
     private List<RadioButton> rdbList;
-    ToggleGroup tg;
+    private ToggleGroup tg;
     private List<Design> allDesigns;
 
-    public void load(Stage stage, List<StockItem> items, Operator operator, String search) {
+    public void load(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) {
         this.operator = operator;
+        this.sc = searchConditions;
 
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, operator, items, headerBox, search);
+            loadHeader(stage, operator, items, headerBox, sc.getSearch());
 
             String[] tagBoxes = new String[] {"Type", "Region", "Initial"};
             for (String tagBox : tagBoxes) {
@@ -48,20 +50,15 @@ public class StockController extends ControllerParent {
                 boxTagOps.getChildren().add(box);
             }
 
-            loadStock(search);
+            loadStock();
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void loadStock(String search) throws Exception {
-        if (search.isEmpty()) {
-            allDesigns = DatabaseControl.getAllDesigns();
-        }
-        else {
-            allDesigns = DatabaseControl.searchDesigns(search);
-        }
+    private void loadStock() throws Exception {
+        allDesigns = DatabaseControl.searchDesigns(sc);
 
         boxScroll.getChildren().add(new HBox());
 
@@ -158,32 +155,90 @@ public class StockController extends ControllerParent {
 
         switch (tagSelect) {
             case "type":
-                rdbList.add(createRdb("Domestic", tg));
-                rdbList.add(createRdb("International", tg));
-                rdbList.add(createRdb("Pride", tg));
+                rdbList.add(createRdb("Any", tg, rdbType));
+                rdbList.add(createRdb("Domestic", tg, rdbType));
+                rdbList.add(createRdb("International", tg, rdbType));
+                rdbList.add(createRdb("Pride", tg, rdbType));
+
+                Integer type = sc.getType();
+                if (type == null) rdbList.get(0).setSelected(true);
+                else rdbList.get(DatabaseControl.getTypeId(type.toString()) + 1).setSelected(true);
                 break;
             case "region":
-                rdbList.add(createRdb("Africa", tg));
-                rdbList.add(createRdb("Asia", tg));
-                rdbList.add(createRdb("Europe", tg));
-                rdbList.add(createRdb("North America", tg));
-                rdbList.add(createRdb("Oceania", tg));
-                rdbList.add(createRdb("South America", tg));
+                rdbList.add(createRdb("Any", tg, rdbRegion));
+                rdbList.add(createRdb("Africa", tg, rdbRegion));
+                rdbList.add(createRdb("Asia", tg, rdbRegion));
+                rdbList.add(createRdb("Europe", tg, rdbRegion));
+                rdbList.add(createRdb("North America", tg, rdbRegion));
+                rdbList.add(createRdb("Oceania", tg, rdbRegion));
+                rdbList.add(createRdb("South America", tg, rdbRegion));
+
+                Integer region = sc.getRegion();
+                if (region == null) rdbList.get(0).setSelected(true);
+                else rdbList.get(DatabaseControl.getRegionId(region.toString()) + 1).setSelected(true);
                 break;
             case "initial":
-                rdbList.add(createRdb("A-D", tg));
-                rdbList.add(createRdb("E-I", tg));
-                rdbList.add(createRdb("J-P", tg));
-                rdbList.add(createRdb("Q-Z", tg));
+                rdbList.add(createRdb("All", tg, rdbInitial));
+                rdbList.add(createRdb("A-F", tg, rdbInitial));
+                rdbList.add(createRdb("G-L", tg, rdbInitial));
+                rdbList.add(createRdb("M-S", tg, rdbInitial));
+                rdbList.add(createRdb("T-Z", tg, rdbInitial));
         }
         boxTagSelect.getChildren().addAll(rdbList);
     }
 
-    private RadioButton createRdb(String text, ToggleGroup tg) {
+    private RadioButton createRdb(String text, ToggleGroup tg, EventHandler<ActionEvent> handler) {
         RadioButton radioButton = new RadioButton(text);
         radioButton.setToggleGroup(tg);
+        radioButton.setOnAction(handler);
         return radioButton;
     }
+
+    EventHandler<ActionEvent> rdbType = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                RadioButton r = (RadioButton) source;
+
+                sc.setType(DatabaseControl.getTypeId(r.getText()));
+                performSearch();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+    EventHandler<ActionEvent> rdbRegion = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                RadioButton r = (RadioButton) source;
+
+                sc.setType(DatabaseControl.getRegionId(r.getText()));
+                performSearch();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    EventHandler<ActionEvent> rdbInitial = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                RadioButton r = (RadioButton) source;
+
+                performSearch();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     EventHandler<MouseEvent> tagClick = new EventHandler<MouseEvent>() {
         @Override

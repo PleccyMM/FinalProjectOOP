@@ -24,12 +24,12 @@ public class Loader {
         stage.show();
     }
 
-    public void showStock(Stage stage, Operator operator, List<StockItem> items, String search) throws Exception {
+    public void showStock(Stage stage, Operator operator, List<StockItem> items, SearchConditions searchConditions) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_screen.fxml"));
         Parent root = loader.load();
 
         StockController controller = loader.getController();
-        controller.load(stage, items, operator, search);
+        controller.load(stage, items, operator, searchConditions);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
