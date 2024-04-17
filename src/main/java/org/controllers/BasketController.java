@@ -23,14 +23,11 @@ public class BasketController extends ControllerParent {
     @FXML private VBox boxScroll;
 
     public void load(Stage stage, List<StockItem> items, Operator operator) {
-        this.operator = operator;
-        this.items = items;
-
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, operator, items, headerBox, "");
+            loadHeader(stage, operator, items, headerBox, new SearchConditions());
             createItems();
         }
         catch (Exception e) {

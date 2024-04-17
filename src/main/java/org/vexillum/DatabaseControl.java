@@ -102,6 +102,7 @@ public class DatabaseControl {
 
         Flag f = list.get(0);
         f.setSizeID(FLAG_SIZE.getSizeId(size));
+        f.setSize(size);
         return (Flag) setStockData(f);
     }
 
@@ -117,6 +118,7 @@ public class DatabaseControl {
 
         Cushion c = list.get(0);
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
+        c.setSize(size);
         return (Cushion) setStockData(c);
     }
 

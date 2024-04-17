@@ -26,14 +26,11 @@ public class StockController extends ControllerParent {
     private List<Design> allDesigns;
 
     public void load(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) {
-        this.operator = operator;
-        this.sc = searchConditions;
-
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, operator, items, headerBox, sc.getSearch());
+            loadHeader(stage, operator, items, headerBox, searchConditions);
 
             String[] tagBoxes = new String[] {"Type", "Region", "Initial"};
             for (String tagBox : tagBoxes) {

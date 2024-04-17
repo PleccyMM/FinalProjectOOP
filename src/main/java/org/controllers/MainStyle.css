@@ -106,6 +106,20 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.btnBlueDisabled {
+    -fx-background-color: #9D9D9D;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-size: 12px;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+.btnBlueDisabled:hover {
+    -fx-background-color: #9D9D9D;
+    -fx-text-fill: #FFFFFF;
+}
 
 #btnAdd {
     -fx-background-color: #3551B4;

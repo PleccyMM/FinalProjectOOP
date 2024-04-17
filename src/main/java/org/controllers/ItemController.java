@@ -28,6 +28,8 @@ public class ItemController extends ControllerParent {
     @FXML private Label lblToggleR;
     @FXML private Label lblTotalPrice;
     @FXML private Label lblPrice;
+    @FXML private Button btnAdd;
+    @FXML private Button btnMinus;
     @FXML private Label lblIncriment;
     @FXML private ComboBox cmbModifications;
     @FXML private ToggleSwitch tglSwitch;
@@ -41,7 +43,6 @@ public class ItemController extends ControllerParent {
     private String selectedSize;
 
     public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) {
-        this.operator = operator;
         this.loadedDesign = loadedDesign;
         this.loadedPos = loadedPos;
         this.isFlag = isFlag;
@@ -50,7 +51,7 @@ public class ItemController extends ControllerParent {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, operator, items, headerBox, "");
+            loadHeader(stage, operator, items, headerBox, new SearchConditions());
             typeSetUp();
             populateInfo();
             listenerToggle();
@@ -150,6 +151,19 @@ public class ItemController extends ControllerParent {
 
     private void updateItem() {
         if (item instanceof Flag f) {
+            FLAG_SIZE fs = FLAG_SIZE.fromString(selectedSize);
+            f.setSize(fs);
+            f.setSizeID(FLAG_SIZE.getSizeId(fs));
+
+            if (f.getSize() == FLAG_SIZE.HAND || f.getSize() == FLAG_SIZE.DESK) {
+                lblToggleL.setText("Paper");
+                lblToggleR.setText("Polyester (\u00A31)");
+            }
+            else {
+                lblToggleL.setText("Polyester (\u00A31)");
+                lblToggleR.setText("Nylon (\u00A33)");
+            }
+
             if (tglSwitch.getToLeft().get()) {
                 f.setMaterial(FLAG_MATERIAL.getType(lblToggleL.getText().split(" ")[0]));
             }
@@ -163,10 +177,6 @@ public class ItemController extends ControllerParent {
                 case 2 -> f.setHoist(FLAG_HOIST.METAL);
                 case 3 -> f.setHoist(FLAG_HOIST.WOODEN);
             }
-
-            FLAG_SIZE fs = FLAG_SIZE.fromString(selectedSize);
-            f.setSize(fs);
-            f.setSizeID(FLAG_SIZE.getSizeId(fs));
         }
         else if (item instanceof Cushion c) {
             c.setJustCase(!tglSwitch.getToLeft().get());
@@ -182,12 +192,20 @@ public class ItemController extends ControllerParent {
         String cost = eurFormatter.format(price);
         if (cmbModifications.getSelectionModel().isEmpty()) {
             lblPrice.setText(cost + "+");
+            btnAddToBasket.setDisable(true);
         }
         else {
             lblPrice.setText(cost);
+            btnAddToBasket.setDisable(false);
         }
 
-        item.setAmount(Integer.parseInt(lblIncriment.getText()));
+        int amount = Integer.parseInt(lblIncriment.getText());
+        item.setAmount(amount);
+
+        btnAdd.setDisable(false);
+        btnMinus.setDisable(false);
+        if (amount == 1) btnMinus.setDisable(true);
+        else if (amount == item.getTotalAmount()) btnAdd.setDisable(true);
 
         String totalCost = eurFormatter.format(price * item.getAmount());
         lblTotalPrice.setText(totalCost);

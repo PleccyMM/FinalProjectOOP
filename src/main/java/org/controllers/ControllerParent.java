@@ -20,10 +20,11 @@ public abstract class ControllerParent {
     protected List<StockItem> items;
     protected SearchConditions sc;
 
-    protected void loadHeader(Stage stage, Operator operator, List<StockItem> items, HBox headerBox, String search) {
+    protected void loadHeader(Stage stage, Operator operator, List<StockItem> items, HBox headerBox, SearchConditions sc) {
         try {
             this.operator = operator;
             this.items = items;
+            this.sc = sc;
 
             this.stage = stage;
             Button btnBack = ((Button) headerBox.lookup("#btnBack"));
@@ -36,7 +37,7 @@ public abstract class ControllerParent {
             btnBasket.setOnAction(basketHandleBtn);
 
             enrSearch = (TextField) headerBox.lookup("#enrSearch");
-            enrSearch.setText(search);
+            enrSearch.setText(sc.getSearch());
             enrSearch.setOnKeyPressed(searchHandleEnr);
         }
         catch (Exception e) {
