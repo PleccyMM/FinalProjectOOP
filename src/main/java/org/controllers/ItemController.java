@@ -41,6 +41,7 @@ public class ItemController extends ControllerParent {
     private Boolean isFlag;
     private StockItem item;
     private String selectedSize;
+    private VBox boxSelected;
 
     public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) {
         this.loadedDesign = loadedDesign;
@@ -89,18 +90,33 @@ public class ItemController extends ControllerParent {
 
         String[] sizeVals;
         if (isFlag) {
-            sizeVals = new String[]{"Hand", "Desk", "90x60cm", "150x90cm", "240x150cm"};
+            sizeVals = new String[5];
+            for (FLAG_SIZE size : FLAG_SIZE.values()) {
+                sizeVals[size.ordinal()] = FLAG_SIZE.getString(size);
+            }
         }
         else {
-            sizeVals = new String[]{"45x45cm", "55x55cm", "60x60cm", "50x30cm"};
+            sizeVals = new String[4];
+            for (CUSHION_SIZE size : CUSHION_SIZE.values()) {
+                sizeVals[size.ordinal()] = CUSHION_SIZE.getString(size);
+            }
         }
 
+        boolean firstRun = true;
         for (String sizeVal : sizeVals) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
             Parent itemView = loader.load();
 
-            VBox box = (VBox) itemView;
+            StackPane box = (StackPane) itemView;
+            box.setId("boxSize_" + sizeVal);
+            System.out.println("NEW ID: " + box.getId());
             box.setOnMouseClicked(boxClick);
+
+            if (firstRun) {
+                firstRun = false;
+                boxSelected = (VBox) box.lookup("#boxSelect");
+                boxSelected.setStyle("-fx-background-color: #9D9D9D88;");
+            }
 
             try {
                 Image img = new Image("org/Assets/FlagsSmall/" + loadedDesign.getIsoID() + ".png");
@@ -113,17 +129,20 @@ public class ItemController extends ControllerParent {
             catch (Exception ignored) { }
 
             ((Label) box.lookup("#lblSize")).setText(sizeVal);
-            box.setId("boxSize_" + sizeVal);
             itemBox.getChildren().add(box);
         }
     }
 
     private void setUpOptions() {
+        boxSelected.setStyle("-fx-background-color: transparent");
+
         lblIncriment.setText(item.getAmount() + "");
         var s = cmbModifications.getSelectionModel();
 
         if (item instanceof Flag f) {
             selectedSize = FLAG_SIZE.getString(f.getSize());
+            Node n = panMain.lookup("#boxSize_" + FLAG_SIZE.getString(f.getSize()));
+            boxSelected = (VBox) n.lookup("#boxSelect");
 
             switch (f.getHoist()) {
                 case NONE -> s.select(0);
@@ -140,6 +159,8 @@ public class ItemController extends ControllerParent {
         }
         else if (item instanceof Cushion c) {
             selectedSize = CUSHION_SIZE.getString(c.getSize());
+            Node n = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
+            boxSelected = (VBox) n.lookup("#boxSelect");
 
             tglSwitch.setToLeft(!c.isJustCase());
 
@@ -150,10 +171,11 @@ public class ItemController extends ControllerParent {
                 case COTTON -> s.select(3);
             }
         }
+
+        boxSelected.setStyle("-fx-background-color: #9D9D9D88");
     }
 
     private void updateItem() {
-        System.out.println("UPDATE");
         if (item instanceof Flag f) {
             FLAG_SIZE fs = FLAG_SIZE.fromString(selectedSize);
             f.setSize(fs);
@@ -243,7 +265,12 @@ public class ItemController extends ControllerParent {
         public void handle(MouseEvent event) {
             try {
                 Object source = event.getSource();
-                VBox box = (VBox) source;
+                StackPane box = (StackPane) source;
+
+                boxSelected.setStyle("-fx-background-color: transparent");
+                boxSelected = (VBox) box.lookup("#boxSelect");
+                boxSelected.setStyle("-fx-background-color: #9D9D9D88");
+
                 selectedSize = box.getId().split("_")[1];
                 updateItem();
                 populateInfo();
