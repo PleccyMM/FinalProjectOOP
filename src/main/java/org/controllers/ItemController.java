@@ -74,11 +74,11 @@ public class ItemController extends ControllerParent {
         else {
             selectedSize = "45x45cm";
             lblToggleL.setText("With filling");
-            lblToggleR.setText("No filling");
+            lblToggleR.setText("No filling (-\u00A38)");
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL);
+            item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
         }
         createSizeSelection();
     }
@@ -121,10 +121,10 @@ public class ItemController extends ControllerParent {
     private void setUpOptions() {
         lblIncriment.setText(item.getAmount() + "");
 
+        var s = cmbModifications.getSelectionModel();
+
         if (item instanceof Flag f) {
             selectedSize = FLAG_SIZE.getString(f.getSize());
-
-            var s = cmbModifications.getSelectionModel();
 
             switch (f.getHoist()) {
                 case NONE -> s.select(0);
@@ -133,17 +133,21 @@ public class ItemController extends ControllerParent {
                 case WOODEN -> s.select(3);
             }
             if (f.getSize() == FLAG_SIZE.HAND || f.getSize() == FLAG_SIZE.DESK) {
-                System.out.println("Detected hand or desk");
                 tglSwitch.setToLeft(f.getMaterial() == FLAG_MATERIAL.PAPER);
             }
             else {
-                System.out.println("Did not detect hand or desk, the size is " + f.getSize());
                 tglSwitch.setToLeft(f.getMaterial() == FLAG_MATERIAL.POLYESTER);
-                System.out.println("Now the size is " + f.getSize());
             }
         }
         else if (item instanceof Cushion c) {
             tglSwitch.setToLeft(!c.isJustCase());
+
+            switch (c.getMaterial()) {
+                case FOAM -> s.select(0);
+                case POLYESTER -> s.select(1);
+                case FEATHERS -> s.select(2);
+                case COTTON -> s.select(3);
+            }
 
             selectedSize = CUSHION_SIZE.getString(c.getSize());
         }
@@ -179,10 +183,27 @@ public class ItemController extends ControllerParent {
             }
         }
         else if (item instanceof Cushion c) {
-            c.setJustCase(!tglSwitch.getToLeft().get());
+            boolean justCase = !tglSwitch.getToLeft().get();
+
+            c.setJustCase(justCase);
+
             CUSHION_SIZE cs = CUSHION_SIZE.fromString(selectedSize);
             c.setSize(cs);
             c.setSizeID(CUSHION_SIZE.getSizeId(cs));
+
+            if (!justCase) {
+                cmbModifications.setDisable(false);
+                switch (cmbModifications.getSelectionModel().getSelectedIndex()) {
+                    case 0 -> c.setMaterial(CUSHION_MATERIAL.FOAM);
+                    case 1 -> c.setMaterial(CUSHION_MATERIAL.POLYESTER);
+                    case 2 -> c.setMaterial(CUSHION_MATERIAL.FEATHERS);
+                    case 3 -> c.setMaterial(CUSHION_MATERIAL.COTTON);
+                }
+            }
+            else {
+                cmbModifications.setDisable(true);
+                c.setMaterial(CUSHION_MATERIAL.EMPTY);
+            }
         }
 
         DatabaseControl.setStockData(item);
@@ -190,7 +211,8 @@ public class ItemController extends ControllerParent {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         float price = item.calculatePrice();
         String cost = eurFormatter.format(price);
-        if (cmbModifications.getSelectionModel().isEmpty()) {
+
+        if (cmbModifications.getSelectionModel().isEmpty() && !(!isFlag && !tglSwitch.getToLeft().get())) {
             lblPrice.setText(cost + "+");
             btnAddToBasket.setDisable(true);
         }

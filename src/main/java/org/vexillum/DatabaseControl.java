@@ -106,7 +106,7 @@ public class DatabaseControl {
         return (Flag) setStockData(f);
     }
 
-    public static Cushion createCushion(String isoID, CUSHION_SIZE size) {
+    public static Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
         openDBSession();
         System.out.println("Making Cushion");
 
@@ -119,6 +119,7 @@ public class DatabaseControl {
         Cushion c = list.get(0);
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
         c.setSize(size);
+        c.setMaterial(material);
         return (Cushion) setStockData(c);
     }
 

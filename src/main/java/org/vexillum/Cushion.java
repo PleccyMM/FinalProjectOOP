@@ -8,6 +8,7 @@ public class Cushion extends StockItem {
     private int cushionID;
     private boolean justCase;
     private CUSHION_SIZE size;
+    private CUSHION_MATERIAL material;
 
     public Cushion() {}
 
@@ -21,6 +22,7 @@ public class Cushion extends StockItem {
     public float calculatePrice() {
         float cost = size.getValue();
         if (justCase) cost -= 8;
+        else cost += material.getValue();
         return cost;
     }
 
@@ -44,5 +46,12 @@ public class Cushion extends StockItem {
     }
     public void setSize(CUSHION_SIZE size) {
         this.size = size;
+    }
+
+    public CUSHION_MATERIAL getMaterial() {
+        return material;
+    }
+    public void setMaterial(CUSHION_MATERIAL material) {
+        this.material = material;
     }
 }
