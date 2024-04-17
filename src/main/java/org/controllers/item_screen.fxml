@@ -12,146 +12,148 @@
 <?import org.vexillum.ToggleSwitch?>
 <?import javafx.collections.FXCollections?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.controllers.ItemController"
-            stylesheets="@MainStyle.css"
-            style="-fx-background-color: #FFFFFF"
-            fx:id="panMain">
-    <top>
-        <fx:include source="header.fxml"/>
-    </top>
-    <left>
-        <VBox fx:id="boxItemStore" spacing="8"
-              alignment="TOP_CENTER">
-            <padding>
-                <Insets right="8" top="8" left="8" bottom="8"/>
-            </padding>
-        </VBox>
-    </left>
-    <right>
-        <StackPane minWidth="385">
-            <padding>
-                <Insets right="8" top="8" bottom="8"/>
-            </padding>
-            <VBox id="grey-fill" minHeight="300">
+<StackPane fx:id="panStacker"
+           xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.controllers.ItemController"
+           stylesheets="@MainStyle.css">
+    <BorderPane style="-fx-background-color: #FFFFFF"
+                fx:id="panMain">
+        <top>
+            <fx:include source="header.fxml"/>
+        </top>
+        <left>
+            <VBox fx:id="boxItemStore" spacing="8"
+                  alignment="TOP_CENTER">
                 <padding>
-                    <Insets right="8" top="8" left="16" bottom="16"/>
+                    <Insets right="8" top="8" left="8" bottom="8"/>
                 </padding>
-                <Label fx:id="lblPrice"/>
-                <HBox alignment="CENTER">
+            </VBox>
+        </left>
+        <right>
+            <StackPane minWidth="385">
+                <padding>
+                    <Insets right="8" top="8" bottom="8"/>
+                </padding>
+                <VBox id="grey-fill" minHeight="300">
                     <padding>
-                        <Insets right="8" top="8" left="8" bottom="8"/>
+                        <Insets right="8" top="8" left="16" bottom="16"/>
                     </padding>
-                    <VBox id="light-blue-fill" spacing="25" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblPrice"/>
+                    <HBox alignment="CENTER">
                         <padding>
-                            <Insets right="10" top="15" left="10" bottom="15"/>
+                            <Insets right="8" top="8" left="8" bottom="8"/>
                         </padding>
-                        <Label id="sub-title-black" text="Modifications:"/>
-                        <ComboBox fx:id="cmbModifications" promptText="Hoist Attachment" minWidth="160" onAction="#cmbModificationsChange">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="None (£0.00)"/>
-                                    <String fx:value="Fabric Rings (£0.50)"/>
-                                    <String fx:value="Metal Rings (£2.50)"/>
-                                    <String fx:value="Wooden Toggles (£5.00)"/>
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-                        <HBox alignment="CENTER_LEFT" spacing="7">
-                            <Label fx:id="lblToggleL" text="Polyester (£1)"/>
-                            <ToggleSwitch fx:id="tglSwitch"/>
-                            <Label fx:id="lblToggleR" text="Nylon (£3)"/>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT">
-                            <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
-                                <Button fx:id="btnMinus" minWidth="15" minHeight="15" onAction="#btnMinusClick"/>
-                                <VBox id="lblIncriment" minWidth="65" alignment="CENTER">
-                                    <Label fx:id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
-                                </VBox>
-                                <Button fx:id="btnAdd" minWidth="15" minHeight="15" onAction="#btnAddClick"/>
+                        <VBox id="light-blue-fill" spacing="25" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets right="10" top="15" left="10" bottom="15"/>
+                            </padding>
+                            <Label id="sub-title-black" text="Modifications:"/>
+                            <ComboBox fx:id="cmbModifications" promptText="Hoist Attachment" minWidth="160" onAction="#cmbModificationsChange">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="None (£0.00)"/>
+                                        <String fx:value="Fabric Rings (£0.50)"/>
+                                        <String fx:value="Metal Rings (£2.50)"/>
+                                        <String fx:value="Wooden Toggles (£5.00)"/>
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                            <HBox alignment="CENTER_LEFT" spacing="7">
+                                <Label fx:id="lblToggleL" text="Polyester (£1)"/>
+                                <ToggleSwitch fx:id="tglSwitch"/>
+                                <Label fx:id="lblToggleR" text="Nylon (£3)"/>
                             </HBox>
+                            <HBox alignment="CENTER_LEFT">
+                                <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
+                                    <Button fx:id="btnMinus" minWidth="15" minHeight="15" onAction="#btnMinusClick"/>
+                                    <VBox id="lblIncriment" minWidth="65" alignment="CENTER">
+                                        <Label fx:id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
+                                    </VBox>
+                                    <Button fx:id="btnAdd" minWidth="15" minHeight="15" onAction="#btnAddClick"/>
+                                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <HBox alignment="CENTER_RIGHT">
+                                    <VBox alignment="CENTER_RIGHT" spacing="-4">
+                                        <Label id="lblTotalLabel" text="Total Price:"/>
+                                        <Label fx:id="lblTotalPrice"/>
+                                    </VBox>
+                                </HBox>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                    <Region VBox.vgrow="ALWAYS"/>
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button fx:id="btnAddToBasket"
+                                style="-fx-font-size: 16; -fx-background-radius: 15;"
+                                minWidth="170"
+                                minHeight="50"
+                                text="Add to Basket"
+                                onAction="#btnAddToBasketClick"
+                                styleClass="btnBlue"
+                        />
+                    </HBox>
+                </VBox>
+            </StackPane>
+        </right>
+        <center>
+            <VBox spacing="16">
+                <padding>
+                    <Insets right="8" top="8" left="8" bottom="8"/>
+                </padding>
+                <VBox id="grey-fill"
+                      minWidth="480"
+                      minHeight="305"
+                      alignment="CENTER">
+                    <VBox id="imageHolder"
+                          style="-fx-border-width: 2; -fx-border-color: #000000;"
+                          maxWidth="1">
+                        <ImageView fx:id="imgFlag"/>
+                    </VBox>
+                </VBox>
+                <HBox spacing="10" VBox.vgrow="ALWAYS">
+                    <VBox id="grey-fill"
+                          HBox.hgrow="ALWAYS"
+                          prefWidth="100">
+                        <padding>
+                            <Insets right="8" top="8" left="8" bottom="8"/>
+                        </padding>
+                        <Label fx:id="lblName" wrapText="true" styleClass="sub-title-black"/>
+                        <Label id="mid-text-black" text="Tags:"/>
+                        <VBox>
+                            <padding>
+                                <Insets right="8" left="8"/>
+                            </padding>
+                            <Label fx:id="lblTags" styleClass="mid-text-black"/>
+                        </VBox>
+                    </VBox>
+                    <VBox id="grey-fill"
+                          HBox.hgrow="ALWAYS"
+                          prefWidth="100">
+                        <padding>
+                            <Insets right="8" top="8" left="8" bottom="8"/>
+                        </padding>
+                        <HBox spacing="5" alignment="CENTER_LEFT">
+                            <Label id="sub-title-black" text="Stock Details"/>
                             <Region HBox.hgrow="ALWAYS"/>
-                            <HBox alignment="CENTER_RIGHT">
-                                <VBox alignment="CENTER_RIGHT" spacing="-4">
-                                    <Label id="lblTotalLabel" text="Total Price:"/>
-                                    <Label fx:id="lblTotalPrice"/>
-                                </VBox>
-                            </HBox>
+                            <Button fx:id="btnEdit" onAction="#btnEditClick"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" VBox.vgrow="SOMETIMES">
+                            <Label text="Current Stock:" styleClass="mid-text-black"/>
+                            <ImageView fx:id="imgSeverity"/>
+                            <Label fx:id="lblCurrentStock" styleClass="mid-text-black"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT" VBox.vgrow="SOMETIMES">
+                            <Label text="Restock Limit:" styleClass="mid-text-black"/>
+                            <Label fx:id="lblRestock" styleClass="mid-text-black"/>
+                        </HBox>
+                        <HBox spacing="5" alignment="CENTER_LEFT">
+                            <Label text="Cost to Produce:" styleClass="mid-text-black"/>
+                            <Label fx:id="lblCostToProduce" styleClass="mid-text-black"/>
                         </HBox>
                     </VBox>
                 </HBox>
-                <Region VBox.vgrow="ALWAYS"/>
-                <HBox alignment="CENTER_RIGHT">
-                    <Button fx:id="btnAddToBasket"
-                            style="-fx-font-size: 16; -fx-background-radius: 15;"
-                            minWidth="170"
-                            minHeight="50"
-                            text="Add to Basket"
-                            onAction="#btnAddToBasketClick"
-                            styleClass="btnBlue"
-                    />
-                </HBox>
             </VBox>
-        </StackPane>
-    </right>
-    <center>
-        <VBox spacing="16">
-            <padding>
-                <Insets right="8" top="8" left="8" bottom="8"/>
-            </padding>
-            <VBox id="grey-fill"
-                  minWidth="480"
-                  minHeight="305"
-                  alignment="CENTER">
-                <VBox id="imageHolder"
-                      style="-fx-border-width: 2; -fx-border-color: #000000;"
-                      maxWidth="1">
-                    <ImageView fx:id="imgFlag"/>
-                </VBox>
-            </VBox>
-            <HBox spacing="10" VBox.vgrow="ALWAYS">
-                <VBox id="grey-fill"
-                      HBox.hgrow="ALWAYS"
-                      prefWidth="100">
-                    <padding>
-                        <Insets right="8" top="8" left="8" bottom="8"/>
-                    </padding>
-                    <Label fx:id="lblName" wrapText="true" styleClass="sub-title-black"/>
-                    <Label id="mid-text-black" text="Tags:"/>
-                    <VBox>
-                        <padding>
-                            <Insets right="8" left="8"/>
-                        </padding>
-                        <Label fx:id="lblTags" styleClass="mid-text-black"/>
-                    </VBox>
-                </VBox>
-                <VBox id="grey-fill"
-                      HBox.hgrow="ALWAYS"
-                      prefWidth="100">
-                    <padding>
-                        <Insets right="8" top="8" left="8" bottom="8"/>
-                    </padding>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="sub-title-black" text="Stock Details"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="btnEdit" onAction="#btnEditClick"/>
-                    </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT" VBox.vgrow="SOMETIMES">
-                        <Label text="Current Stock:" styleClass="mid-text-black"/>
-                        <ImageView fx:id="imgSeverity"/>
-                        <Label fx:id="lblCurrentStock" styleClass="mid-text-black"/>
-                    </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT" VBox.vgrow="SOMETIMES">
-                        <Label text="Restock Limit:" styleClass="mid-text-black"/>
-                        <Label fx:id="lblRestock" styleClass="mid-text-black"/>
-                    </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label text="Cost to Produce:" styleClass="mid-text-black"/>
-                        <Label fx:id="lblCostToProduce" styleClass="mid-text-black"/>
-                    </HBox>
-                </VBox>
-            </HBox>
-        </VBox>
-    </center>
-</BorderPane>
+        </center>
+    </BorderPane>
+</StackPane>

@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class ItemController extends ControllerParent {
+    @FXML private StackPane panStacker;
     @FXML private BorderPane panMain;
     @FXML private ImageView imgFlag;
 
@@ -306,8 +307,134 @@ public class ItemController extends ControllerParent {
 
     @FXML
     protected void btnEditClick(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("item_popup.fxml"));
+        Parent itemView = loader.load();
 
+        VBox box = (VBox) itemView;
+
+        box.setOnMouseClicked(hidePopupClick);
+
+        box.lookup("#boxContainment").setOnMouseClicked(ignoreHideClick);
+
+        ((Label) box.lookup("#lblIncrimentAmount")).setText(item.getTotalAmount() + "");
+        Button b = (Button) box.lookup("#btnMinusAmount");
+        b.setOnAction(btnMinusAmountClick);
+        ((Button) box.lookup("#btnAddAmount")).setOnAction(btnAddAmountClick);
+        if (item.getTotalAmount() == 1) b.setDisable(true);
+
+        ((Label) box.lookup("#lblIncrimentRestock")).setText(item.getRestock() + "");
+        b = (Button) box.lookup("#btnMinusRestock");
+        b.setOnAction(btnMinusRestockClick);
+        ((Button) box.lookup("#btnAddRestock")).setOnAction(btnAddRestockClick);
+        if (item.getRestock() == 1) b.setDisable(true);
+
+        ((Button) box.lookup("#btnBlue")).setOnAction(btnUpdateStock);
+
+        panStacker.getChildren().add(box);
     }
+
+    EventHandler<ActionEvent> btnMinusAmountClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+
+                Node b = (Node) source;
+                Label l = (Label) b.getParent().lookup("#lblIncrimentAmount");
+
+                int newAmount = Integer.parseInt(l.getText()) - 1;
+
+                l.setText(newAmount + "");
+                if (newAmount == 1) b.setDisable(true);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+    EventHandler<ActionEvent> btnMinusRestockClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+
+                Node b = (Node) source;
+                Label l = (Label) b.getParent().lookup("#lblIncrimentRestock");
+
+                int newRestock = Integer.parseInt(l.getText()) - 1;
+
+                l.setText(newRestock + "");
+                if (newRestock == 1) b.setDisable(true);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    EventHandler<ActionEvent> btnAddAmountClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+
+                Node b = (Node) source;
+                Label l = (Label) b.getParent().lookup("#lblIncrimentAmount");
+
+                int newAmount = Integer.parseInt(l.getText()) + 1;
+
+                l.setText(newAmount + "");
+                b.getParent().lookup("#btnMinusAmount").setDisable(false);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+    EventHandler<ActionEvent> btnAddRestockClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+
+                Node b = (Node) source;
+                Label l = (Label) b.getParent().lookup("#lblIncrimentRestock");
+
+                int newRestock = Integer.parseInt(l.getText()) + 1;
+
+                l.setText(newRestock + "");
+                b.getParent().lookup("#btnMinusRestock").setDisable(false);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    EventHandler<ActionEvent> btnUpdateStock = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                System.out.println("Hey");
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+    EventHandler<MouseEvent> ignoreHideClick = MouseEvent::consume;
+    EventHandler<MouseEvent> hidePopupClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            try {
+                Object source = event.getSource();
+                panStacker.getChildren().remove(source);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     @FXML
     protected void btnAddToBasketClick(ActionEvent event) throws Exception {
