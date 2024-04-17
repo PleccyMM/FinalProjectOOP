@@ -320,7 +320,7 @@ public class ItemController extends ControllerParent {
         Button b = (Button) box.lookup("#btnMinusAmount");
         b.setOnAction(btnMinusAmountClick);
         ((Button) box.lookup("#btnAddAmount")).setOnAction(btnAddAmountClick);
-        if (item.getTotalAmount() == 1) b.setDisable(true);
+        b.setDisable(true);
 
         ((Label) box.lookup("#lblIncrimentRestock")).setText(item.getRestock() + "");
         b = (Button) box.lookup("#btnMinusRestock");
@@ -345,7 +345,7 @@ public class ItemController extends ControllerParent {
                 int newAmount = Integer.parseInt(l.getText()) - 1;
 
                 l.setText(newAmount + "");
-                if (newAmount == 1) b.setDisable(true);
+                if (newAmount == item.getTotalAmount()) b.setDisable(true);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -415,7 +415,17 @@ public class ItemController extends ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
-                System.out.println("Hey");
+                Object source = event.getSource();
+                Node b = (Node) source;
+                int amount = Integer.parseInt(((Label) b.getParent().lookup("#lblIncrimentAmount")).getText());
+                int restock = Integer.parseInt(((Label) b.getParent().lookup("#lblIncrimentRestock")).getText());
+
+                DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), amount, restock);
+
+                item.setTotalAmount(amount);
+                item.setRestock(restock);
+                lblAmountAndRestockUpdate(amount, restock);
+                hidePopup();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -427,14 +437,18 @@ public class ItemController extends ControllerParent {
         @Override
         public void handle(MouseEvent event) {
             try {
-                Object source = event.getSource();
-                panStacker.getChildren().remove(source);
+                hidePopup();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     };
+
+    private void hidePopup() {
+        Node n = panStacker.lookup("#boxDarkening");
+        panStacker.getChildren().remove(n);
+    }
 
     @FXML
     protected void btnAddToBasketClick(ActionEvent event) throws Exception {
@@ -464,24 +478,26 @@ public class ItemController extends ControllerParent {
 
             int totalAmount = item.getTotalAmount();
             int restock = item.getRestock();
-
-            lblCurrentStock.setText(totalAmount + "");
-            lblRestock.setText(restock + "");
-
-            try {
-                String severityImg;
-                if (totalAmount <= restock) { severityImg = "IndicatorBad"; }
-                else if (totalAmount * 0.5 <= restock) { severityImg = "IndicatorMid"; }
-                else { severityImg =  "IndicatorGood"; }
-
-                Image img = new Image("org/Assets/Icons/" + severityImg + ".png");
-                imgSeverity.setFitWidth(12);
-                imgSeverity.setFitHeight(12);
-                imgSeverity.setImage(img);
-            }
-            catch (Exception ignored) {}
+            lblAmountAndRestockUpdate(totalAmount, restock);
 
             lblTags.setText(regionName + typeName);
         }
+    }
+
+    private void lblAmountAndRestockUpdate(int totalAmount, int restock) {
+        lblCurrentStock.setText(totalAmount + "");
+        lblRestock.setText(restock + "");
+        try {
+            String severityImg;
+            if (totalAmount <= restock) { severityImg = "IndicatorBad"; }
+            else if (totalAmount * 0.5 <= restock) { severityImg = "IndicatorMid"; }
+            else { severityImg =  "IndicatorGood"; }
+
+            Image img = new Image("org/Assets/Icons/" + severityImg + ".png");
+            imgSeverity.setFitWidth(12);
+            imgSeverity.setFitHeight(12);
+            imgSeverity.setImage(img);
+        }
+        catch (Exception ignored) {}
     }
 }

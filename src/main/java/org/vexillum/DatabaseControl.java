@@ -186,6 +186,27 @@ public class DatabaseControl {
         return null;
     }
 
+    public static void updateAmountAndRestock(int stockID, int sizeID, int newAmount, int newRestock) {
+        openDBSession();
+        databaseSession.beginTransaction();
+        try {
+            databaseSession.createNativeQuery("update stock_amount set amount = (:amount), restock = (:restock) where stockid = (:stockid) and sizeid = (:sizeid)")
+                    .setParameter("amount", newAmount)
+                    .setParameter("restock", newRestock)
+                    .setParameter("stockid", stockID)
+                    .setParameter("sizeid", sizeID)
+                    .executeUpdate();
+            databaseSession.getTransaction().commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+        finally {
+            closeDBSession();
+        }
+    }
+
     //SQL used for database setup:
 
 
