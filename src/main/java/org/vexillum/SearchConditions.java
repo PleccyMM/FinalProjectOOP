@@ -1,16 +1,12 @@
 package org.vexillum;
 
 public class SearchConditions {
-    private String search;
-    private Integer type;
-    private Integer region;
+    private String search = null;
+    private Integer type = null;
+    private Integer region = null;
     private String[] startLetters = new String[2];
 
-    public SearchConditions() {
-        search = null;
-        type = null;
-        region = null;
-    }
+    public SearchConditions() { }
 
     public SearchConditions(String search, Integer type, Integer region, String[] startLetters) {
         this.search = search;

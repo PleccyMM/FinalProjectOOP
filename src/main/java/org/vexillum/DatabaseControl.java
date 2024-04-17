@@ -49,23 +49,22 @@ public class DatabaseControl {
         return list;
     }
 
-    public static List<Design> getAllDesigns() {
-        openDBSession();
-        var query = databaseSession.createQuery("from Design order by name asc");
-        List<Design> list = query.list();
-        closeDBSession();
-        return list;
-    }
-
     public static List<Design> searchDesigns(SearchConditions nameSearch) {
         openDBSession();
-        var query = databaseSession.createQuery("from Design where LOWER(name) like (:name) and LOWER(name) >= (:initial1) and LOWER(name) <= (:initial2) and " +
-                                                   "(region = :region or :region is null) and (type = :type or :type is null) order by name asc")
-                .setParameter("name", nameSearch.getSearch() == null ? "%" : "%" + nameSearch.getSearch().toLowerCase() + "%")
-                .setParameter("initial1", nameSearch.getStartLetters()[0] == null ? "a" : nameSearch.getStartLetters()[0])
-                .setParameter("initial2", nameSearch.getStartLetters()[1] == null ? "z" : nameSearch.getStartLetters()[1])
-                .setParameter("region", nameSearch.getRegion() == null ? null : nameSearch.getRegion())
-                .setParameter("type", nameSearch.getType() == null ? null : nameSearch.getType());
+        String name = nameSearch.getSearch();
+        String initial1 = nameSearch.getStartLetters()[0];
+        String initial2 = nameSearch.getStartLetters()[1];
+        Integer region = nameSearch.getRegion();
+        Integer type = nameSearch.getType();
+
+        var query = databaseSession.createQuery("from Design where LOWER(name) like (:name) and (LOWER(name) >= (:initial1) and LOWER(name) <= (:initial2) or LOWER(name) " +
+                                                   "like (:initial3)) and (region = :region or :region is null) and (type = :type or :type is null) order by name asc")
+                .setParameter("name", name == null ? "%" : "%" + name.toLowerCase() + "%")
+                .setParameter("initial1", initial1 == null ? "a" : initial1)
+                .setParameter("initial2", initial2 == null ? "z" : initial2)
+                .setParameter("initial3", initial2 == null ? "z%" : initial2 + "%")
+                .setParameter("region", region)
+                .setParameter("type", type);
         List<Design> list = query.list();
         closeDBSession();
         return list;

@@ -10,6 +10,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.vexillum.*;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class StockController extends ControllerParent {
@@ -58,8 +61,7 @@ public class StockController extends ControllerParent {
     }
 
     private void loadStock() throws Exception {
-        if (sc == null) allDesigns = DatabaseControl.getAllDesigns();
-        else allDesigns = DatabaseControl.searchDesigns(sc);
+        allDesigns = DatabaseControl.searchDesigns(sc);
 
         boxScroll.getChildren().add(new HBox());
 
@@ -190,6 +192,14 @@ public class StockController extends ControllerParent {
                 rdbList.add(createRdb("G-L", tg, rdbInitial));
                 rdbList.add(createRdb("M-S", tg, rdbInitial));
                 rdbList.add(createRdb("T-Z", tg, rdbInitial));
+
+                String lastInitial = sc.getStartLetters()[1];
+                if (lastInitial == null) rdbList.get(0).setSelected(true);
+                else {
+                    byte[] b = lastInitial.getBytes(StandardCharsets.UTF_8);
+                    int i = (b[0] - 65) / (6 + b[0] / 77);
+                    rdbList.get(i + 1).setSelected(true);
+                }
         }
         boxTagSelect.getChildren().addAll(rdbList);
     }
@@ -239,6 +249,13 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
+                String[] initials = r.getText().split("-");
+                if (initials.length == 1) {
+                    sc.setStartLetters(new String[2]);
+                }
+                else {
+                    sc.setStartLetters(initials);
+                }
                 performSearch();
             }
             catch (Exception e) {
