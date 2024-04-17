@@ -229,6 +229,11 @@
 .label {
     -fx-font-family: "Inter Semi Bold";
 }
+.radio-button {
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
 
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track{

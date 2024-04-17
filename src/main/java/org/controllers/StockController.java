@@ -20,6 +20,7 @@ public class StockController extends ControllerParent {
     @FXML private ScrollPane scrBackground;
     @FXML private BorderPane panMain;
     @FXML private HBox boxTagOps;
+    @FXML private Region rgnButtonPush;
     @FXML private VBox boxTagSelect;
 
     private List<RadioButton> rdbList;
@@ -281,13 +282,22 @@ public class StockController extends ControllerParent {
                     imgView.setImage(downArr);
                 }
                 else {
-                    for (Node n : boxTagOps.getChildren()) {
-                        n.setId("down");
-                        ((ImageView) n.lookup("#imgArrow")).setImage(downArr);
+                    int index = 0;
+                    for (int i = 0; i < boxTagOps.getChildren().size(); i++) {
+                        Node n = boxTagOps.getChildren().get(i);
+
+                        if (n == box) {
+                            index = i;
+                            box.setId("up");
+                            imgView.setImage(upArr);
+                        }
+                        else {
+                            n.setId("down");
+                            ((ImageView) n.lookup("#imgArrow")).setImage(downArr);
+                        }
                     }
 
-                    box.setId("up");
-                    imgView.setImage(upArr);
+                    rgnButtonPush.setMinWidth((((HBox) box).getWidth() + boxTagOps.getSpacing()) * (index));
 
                     String labelText = ((Label) box.lookup("#lblTag")).getText().toLowerCase();
                     generateRadioButtons(labelText);

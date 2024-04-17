@@ -27,9 +27,16 @@
                           spacing="64"
                           alignment="CENTER_LEFT">
                     </HBox>
-                    <VBox fx:id="boxTagSelect"
-                          alignment="CENTER_LEFT">
-                    </VBox>
+                    <HBox>
+                        <Region fx:id="rgnButtonPush" minWidth="50"/>
+                        <VBox fx:id="boxTagSelect"
+                              alignment="CENTER_LEFT"
+                              spacing="3">
+                            <padding>
+                                <Insets left="5" right="5" bottom="15"/>
+                            </padding>
+                        </VBox>
+                    </HBox>
                 </VBox>
             </top>
             <center>
