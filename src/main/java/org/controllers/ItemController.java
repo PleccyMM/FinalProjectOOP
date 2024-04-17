@@ -120,7 +120,6 @@ public class ItemController extends ControllerParent {
 
     private void setUpOptions() {
         lblIncriment.setText(item.getAmount() + "");
-
         var s = cmbModifications.getSelectionModel();
 
         if (item instanceof Flag f) {
@@ -140,6 +139,8 @@ public class ItemController extends ControllerParent {
             }
         }
         else if (item instanceof Cushion c) {
+            selectedSize = CUSHION_SIZE.getString(c.getSize());
+
             tglSwitch.setToLeft(!c.isJustCase());
 
             switch (c.getMaterial()) {
@@ -148,12 +149,11 @@ public class ItemController extends ControllerParent {
                 case FEATHERS -> s.select(2);
                 case COTTON -> s.select(3);
             }
-
-            selectedSize = CUSHION_SIZE.getString(c.getSize());
         }
     }
 
     private void updateItem() {
+        System.out.println("UPDATE");
         if (item instanceof Flag f) {
             FLAG_SIZE fs = FLAG_SIZE.fromString(selectedSize);
             f.setSize(fs);
@@ -183,13 +183,12 @@ public class ItemController extends ControllerParent {
             }
         }
         else if (item instanceof Cushion c) {
-            boolean justCase = !tglSwitch.getToLeft().get();
-
-            c.setJustCase(justCase);
-
             CUSHION_SIZE cs = CUSHION_SIZE.fromString(selectedSize);
             c.setSize(cs);
             c.setSizeID(CUSHION_SIZE.getSizeId(cs));
+
+            boolean justCase = !tglSwitch.getToLeft().get();
+            c.setJustCase(justCase);
 
             if (!justCase) {
                 cmbModifications.setDisable(false);

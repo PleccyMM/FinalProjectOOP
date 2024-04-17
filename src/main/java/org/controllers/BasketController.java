@@ -88,6 +88,7 @@ public class BasketController extends ControllerParent {
                 boolean isFlag = items.get(i) instanceof Flag;
                 Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
 
+                System.out.println("EDITING ITEM");
                 l.showItem(stage, operator, items, d, isFlag, i);
             }
             catch (Exception e) {
