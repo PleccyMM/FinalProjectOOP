@@ -83,12 +83,13 @@
                 </HBox>
                 <Region VBox.vgrow="ALWAYS"/>
                 <HBox alignment="CENTER_RIGHT">
-                    <Button id="btnBlue"
+                    <Button fx:id="btnAddToBasket"
                             style="-fx-font-size: 16; -fx-background-radius: 15;"
                             minWidth="170"
                             minHeight="50"
                             text="Add to Basket"
                             onAction="#btnAddToBasketClick"
+                            styleClass="btnBlue"
                     />
                 </HBox>
             </VBox>

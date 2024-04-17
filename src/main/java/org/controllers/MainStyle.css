@@ -21,6 +21,7 @@
     -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+.white-divider,
 #white-divider {
     -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -127,6 +128,7 @@
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Edit.png");
 }
+#lblIncrimentBox,
 #lblIncriment {
     -fx-text-fill: #000000;
     -fx-font-size: 16px;

@@ -71,4 +71,5 @@ public class ToggleSwitch extends HBox
     }
 
     public SimpleBooleanProperty getToLeft() { return toLeft; }
+    public void setToLeft(boolean b) { toLeft.set(b); }
 }

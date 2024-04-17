@@ -145,7 +145,7 @@ public class StockController extends ControllerParent {
         String isoID = b.getId().split("_")[1];
         for (Design d : allDesigns) {
             if (d.getIsoID().equals(isoID)) {
-                l.showItem(stage, operator, items, d, isFlag);
+                l.showItem(stage, operator, items, d, isFlag, null);
                 break;
             }
         }

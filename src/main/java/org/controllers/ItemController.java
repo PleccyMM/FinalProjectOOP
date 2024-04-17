@@ -32,14 +32,18 @@ public class ItemController extends ControllerParent {
     @FXML private ComboBox cmbModifications;
     @FXML private ToggleSwitch tglSwitch;
 
+    @FXML private Button btnAddToBasket;
+
     private Design loadedDesign;
+    private Integer loadedPos;
     private Boolean isFlag;
     private StockItem item;
     private String selectedSize;
 
-    public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag) {
+    public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) {
         this.operator = operator;
         this.loadedDesign = loadedDesign;
+        this.loadedPos = loadedPos;
         this.isFlag = isFlag;
 
         try {
@@ -50,6 +54,10 @@ public class ItemController extends ControllerParent {
             typeSetUp();
             populateInfo();
             listenerToggle();
+            if (loadedPos != null) {
+                setUpOptions();
+                btnAddToBasket.setText("Update Item");
+            }
             updateItem();
         }
         catch (Exception e) {
@@ -60,8 +68,7 @@ public class ItemController extends ControllerParent {
     private void typeSetUp() throws Exception {
         if (isFlag) {
             selectedSize = "Hand";
-            System.out.println("ISO ID: " + loadedDesign.getIsoID());
-            item = DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
+            item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
         }
         else {
             selectedSize = "45x45cm";
@@ -70,7 +77,7 @@ public class ItemController extends ControllerParent {
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL);
+            item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL);
         }
         createSizeSelection();
     }
@@ -107,6 +114,37 @@ public class ItemController extends ControllerParent {
             ((Label) box.lookup("#lblSize")).setText(sizeVal);
             box.setId("boxSize_" + sizeVal);
             itemBox.getChildren().add(box);
+        }
+    }
+
+    private void setUpOptions() {
+        lblIncriment.setText(item.getAmount() + "");
+
+        if (item instanceof Flag f) {
+            selectedSize = FLAG_SIZE.getString(f.getSize());
+
+            var s = cmbModifications.getSelectionModel();
+
+            switch (f.getHoist()) {
+                case NONE -> s.select(0);
+                case FABRIC -> s.select(1);
+                case METAL -> s.select(2);
+                case WOODEN -> s.select(3);
+            }
+            if (f.getSize() == FLAG_SIZE.HAND || f.getSize() == FLAG_SIZE.DESK) {
+                System.out.println("Detected hand or desk");
+                tglSwitch.setToLeft(f.getMaterial() == FLAG_MATERIAL.PAPER);
+            }
+            else {
+                System.out.println("Did not detect hand or desk, the size is " + f.getSize());
+                tglSwitch.setToLeft(f.getMaterial() == FLAG_MATERIAL.POLYESTER);
+                System.out.println("Now the size is " + f.getSize());
+            }
+        }
+        else if (item instanceof Cushion c) {
+            tglSwitch.setToLeft(!c.isJustCase());
+
+            selectedSize = CUSHION_SIZE.getString(c.getSize());
         }
     }
 
@@ -208,7 +246,9 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnAddToBasketClick(ActionEvent event) throws Exception {
         Loader l = new Loader();
-        items.add(item);
+        if (loadedPos != null) items.set(loadedPos, item);
+        else items.add(item);
+
         l.showBasket(stage, items, operator);
     }
 

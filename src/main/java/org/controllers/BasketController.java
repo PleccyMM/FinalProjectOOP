@@ -39,6 +39,7 @@ public class BasketController extends ControllerParent {
     }
 
     private void createItems() throws Exception {
+        int index = 0;
         for (StockItem i : items) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_item.fxml"));
             Parent itemView = loader.load();
@@ -68,7 +69,33 @@ public class BasketController extends ControllerParent {
             ((Label) box.lookup("#lblPriceSingle")).setText(cost);
             ((Label) box.lookup("#lblSubtotal")).setText(subtotal);
 
+            ((Label) box.lookup("#lblIncriment")).setText(i.getAmount() + "");
+
+            ((Button) box.lookup("#btnEdit")).setOnAction(btnEditClick);
+
+            box.setId(index + "");
             boxScroll.getChildren().add(box);
+            index++;
         }
     }
+
+    EventHandler<ActionEvent> btnEditClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+
+                HBox b = (HBox) ((Node) source).getParent();
+                int i = Integer.parseInt(b.getId());
+
+                boolean isFlag = items.get(i) instanceof Flag;
+                Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
+
+                l.showItem(stage, operator, items, d, isFlag, i);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 }

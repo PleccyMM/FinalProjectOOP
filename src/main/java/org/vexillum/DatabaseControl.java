@@ -49,6 +49,17 @@ public class DatabaseControl {
         return list;
     }
 
+    public static Design getDeignFromIso(String isoID) {
+        openDBSession();
+        var query = databaseSession.createQuery("from Design where isoID = (:isoid)")
+                .setParameter("isoid", isoID);
+        List<Design> list = query.list();
+        closeDBSession();
+
+        if (list.size() != 0) return list.get(0);
+        return null;
+    }
+
     public static List<Design> searchDesigns(SearchConditions nameSearch) {
         openDBSession();
         String name = nameSearch.getSearch();
