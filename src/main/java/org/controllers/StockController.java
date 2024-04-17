@@ -1,5 +1,6 @@
 package org.controllers;
 
+import org.vexillum.*;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
@@ -9,10 +10,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import org.vexillum.*;
-
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.*;
 import java.util.*;
 
 public class StockController extends ControllerParent {
