@@ -1,6 +1,6 @@
 package org.controllers;
 
-import javafx.beans.property.SimpleBooleanProperty;
+import org.vexillum.*;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
@@ -11,10 +11,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import org.vexillum.*;
-
 import javax.swing.*;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
 

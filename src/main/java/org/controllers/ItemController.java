@@ -244,12 +244,14 @@ public class ItemController extends ControllerParent {
         }
 
         int amount = Integer.parseInt(lblIncriment.getText());
-        item.setAmount(amount);
+        int newAmount = Math.min(amount, item.getTotalAmount());
+        item.setAmount(newAmount);
+        if (amount != newAmount) lblIncriment.setText(newAmount + "");
 
         btnAdd.setDisable(false);
         btnMinus.setDisable(false);
-        if (amount == 1) btnMinus.setDisable(true);
-        else if (amount == item.getTotalAmount()) btnAdd.setDisable(true);
+        if (newAmount == 1) btnMinus.setDisable(true);
+        else if (newAmount == item.getTotalAmount()) btnAdd.setDisable(true);
 
         String totalCost = eurFormatter.format(price * item.getAmount());
         lblTotalPrice.setText(totalCost);

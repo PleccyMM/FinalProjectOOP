@@ -20,17 +20,18 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
-        //loader.showLogin(stage);
 
         //DatabaseControl.AddDesigns();
+        //DatabaseControl.AddStockItem();
+
+        //DatabaseControl.AddFlags();
         //DatabaseControl.AddTags();
-       /* DatabaseControl.AddStockItem();
-        DatabaseControl.AddFlags();
-        DatabaseControl.AddCushions();*/
+
+        //DatabaseControl.AddCushions();
         //DatabaseControl.SetAmounts();
+
+        //loader.showLogin(stage);
         loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), new SearchConditions());
-        //loader.showItem(stage, new Operator());
-        //DatabaseControl.AddTags();
     }
 
     public static void main(String[] args) {
