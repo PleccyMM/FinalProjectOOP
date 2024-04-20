@@ -18,6 +18,16 @@ public class ItemController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private ImageView imgFlag;
 
+    @FXML private BorderPane panImg;
+    @FXML private HBox boxVerticalContainer;
+    @FXML private Label lblVerticalSize;
+    @FXML private VBox boxVerticalSize;
+    @FXML private VBox boxHorizontalContainer;
+    @FXML private Label lblHorizontalSize;
+    @FXML private VBox boxHorizontalSize;
+    @FXML private HBox boxVerticalMatch;
+    @FXML private VBox boxHorizontalMatch;
+
     @FXML private Label lblName;
     @FXML private Label lblTags;
 
@@ -509,27 +519,55 @@ public class ItemController extends ControllerParent {
             imgFlag.setFitWidth((int) (img.getWidth() * 0.25));
             imgFlag.setFitHeight((int) (img.getHeight() * 0.25));
             imgFlag.setImage(img);
+
+            if (!(item instanceof Flag f) || (f.getSize() != FLAG_SIZE.HAND && f.getSize() != FLAG_SIZE.DESK)) {
+                boxVerticalSize.setMaxHeight(imgFlag.getFitHeight());
+                boxHorizontalSize.setMaxWidth(imgFlag.getFitWidth());
+
+                String[] sizes = selectedSize.split("x");
+                lblVerticalSize.setText(sizes[1]);
+                lblHorizontalSize.setText(sizes[0] + "cm");
+            }
+            else {
+                lblVerticalSize.setText("");
+                lblHorizontalSize.setText("");
+                boxVerticalSize.setMaxHeight(0);
+                boxHorizontalSize.setMaxWidth(0);
+            }
+
+            double v = (panImg.getWidth() - imgFlag.getFitWidth() - 4) / 2;
+            double h = (panImg.getHeight() - imgFlag.getFitHeight() - 4) / 2;
+
+            boxVerticalMatch.setMinWidth(v);
+            boxVerticalMatch.setMaxWidth(v);
+            boxVerticalContainer.setMinWidth(v);
+            boxVerticalContainer.setMaxWidth(v);
+            boxHorizontalMatch.setMinHeight(h);
+            boxHorizontalMatch.setMaxHeight(h);
+            boxHorizontalContainer.setMinHeight(h);
+            boxHorizontalContainer.setMaxHeight(h);
         }
         catch (Exception ignored) { }
-        finally {
-            lblName.setText(loadedDesign.getName());
 
-            Integer regionID = loadedDesign.getRegion();
-            String regionName = regionID == null ? "" : DatabaseControl.getRegionName(regionID) + "\n";
+        lblName.setText(loadedDesign.getName());
 
-            Integer typeID = loadedDesign.getType();
-            String typeName = typeID == null ? "" : DatabaseControl.getTypeName(typeID);
+        Integer regionID = loadedDesign.getRegion();
+        String regionName = regionID == null ? "" : DatabaseControl.getRegionName(regionID) + "\n";
 
-            int totalAmount = item.getTotalAmount();
-            int restock = item.getRestock();
-            lblAmountAndRestockUpdate(totalAmount, restock);
+        Integer typeID = loadedDesign.getType();
+        String typeName = typeID == null ? "" : DatabaseControl.getTypeName(typeID);
 
-            NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-            String cost = eurFormatter.format(DatabaseControl.getPrice(item.getSizeID()));
-            lblCostToProduce.setText(cost);
+        int totalAmount = item.getTotalAmount();
+        int restock = item.getRestock();
+        lblAmountAndRestockUpdate(totalAmount, restock);
 
-            lblTags.setText(regionName + typeName);
-        }
+        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+        String cost = eurFormatter.format(DatabaseControl.getPrice(item.getSizeID()));
+        lblCostToProduce.setText(cost);
+
+        lblTags.setText(regionName + typeName);
+
+        updateItem();
     }
 
     private void lblAmountAndRestockUpdate(int totalAmount, int restock) {

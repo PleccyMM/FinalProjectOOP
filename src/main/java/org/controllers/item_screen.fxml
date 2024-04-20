@@ -11,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import org.vexillum.ToggleSwitch?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.transform.Rotate?>
 
 <StackPane fx:id="panStacker"
            xmlns="http://javafx.com/javafx"
@@ -101,16 +102,43 @@
                 <padding>
                     <Insets right="8" top="8" left="8" bottom="8"/>
                 </padding>
-                <VBox id="grey-fill"
-                      minWidth="480"
-                      minHeight="305"
-                      alignment="CENTER">
-                    <VBox id="imageHolder"
-                          style="-fx-border-width: 2; -fx-border-color: #000000;"
-                          maxWidth="1">
-                        <ImageView fx:id="imgFlag"/>
-                    </VBox>
-                </VBox>
+                <BorderPane fx:id="panImg"
+                            minWidth="480"
+                            minHeight="305">
+                    <center>
+                        <VBox BorderPane.alignment="CENTER" alignment="CENTER">
+                            <VBox id="imageHolder"
+                                  style="-fx-border-width: 2; -fx-border-color: #000000;"
+                                  maxWidth="1">
+                                <ImageView fx:id="imgFlag"/>
+                            </VBox>
+                        </VBox>
+                    </center>
+                    <left>
+                        <HBox fx:id="boxVerticalContainer" alignment="CENTER_RIGHT" spacing="5" minWidth="60">
+                            <padding>
+                                <Insets right="16"/>
+                            </padding>
+                            <Label fx:id="lblVerticalSize" styleClass="mid-text-black"/>
+                            <VBox fx:id="boxVerticalSize" minWidth="4" maxWidth="4" style="-fx-background-color: #000000;"/>
+                        </HBox>
+                    </left>
+                    <bottom>
+                        <VBox fx:id="boxHorizontalContainer" alignment="TOP_CENTER" spacing="5">
+                            <padding>
+                                <Insets top="16"/>
+                            </padding>
+                            <VBox fx:id="boxHorizontalSize" minHeight="4" maxHeight="4" style="-fx-background-color: #000000;"/>
+                            <Label fx:id="lblHorizontalSize" styleClass="mid-text-black"/>
+                        </VBox>
+                    </bottom>
+                    <right>
+                        <HBox fx:id="boxVerticalMatch" VBox.vgrow="NEVER"/>
+                    </right>
+                    <top>
+                        <VBox fx:id="boxHorizontalMatch" VBox.vgrow="NEVER"/>
+                    </top>
+                </BorderPane>
                 <HBox spacing="10" VBox.vgrow="ALWAYS">
                     <VBox id="grey-fill"
                           HBox.hgrow="ALWAYS"
