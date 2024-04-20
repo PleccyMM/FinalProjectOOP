@@ -48,10 +48,16 @@
                     <Button fx:id="btnAddRestock" minWidth="15" minHeight="15"/>
                 </HBox>
 
-                <Button fx:id="btnBlue"
-                        minWidth="150"
-                        style="-fx-font-size: 14; -fx-background-radius: 15;"
-                        text="Update"/>
+                <HBox alignment="CENTER" spacing="10">
+                    <Button fx:id="btnBlue"
+                            minWidth="150"
+                            minHeight="35"
+                            style="-fx-font-size: 14; -fx-background-radius: 15;"
+                            text="Update"/>
+                    <Button fx:id="btnPrint"
+                            minWidth="35"
+                            minHeight="35"/>
+                </HBox>
             </VBox>
         </VBox>
     </VBox>

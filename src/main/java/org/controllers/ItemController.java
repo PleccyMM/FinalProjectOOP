@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.vexillum.*;
 
+import java.io.*;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -369,6 +370,7 @@ public class ItemController extends ControllerParent {
         if (item.getRestock() == 1) b.setDisable(true);
 
         ((Button) box.lookup("#btnBlue")).setOnAction(btnUpdateStockClick);
+        ((Button) box.lookup("#btnPrint")).setOnAction(btnPrintClick);
 
         panStacker.getChildren().add(box);
     }
@@ -451,14 +453,69 @@ public class ItemController extends ControllerParent {
         }
     };
 
+    EventHandler<ActionEvent> btnPrintClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            String msg = "";
+            String type;
+
+            String[] sizeVals;
+            if (isFlag) {
+                sizeVals = new String[5];
+                for (FLAG_SIZE size : FLAG_SIZE.values()) {
+                    sizeVals[size.ordinal()] = FLAG_SIZE.getString(size);
+                }
+                type = "Flag";
+            }
+            else {
+                sizeVals = new String[4];
+                for (CUSHION_SIZE size : CUSHION_SIZE.values()) {
+                    sizeVals[size.ordinal()] = CUSHION_SIZE.getString(size);
+                }
+                type = "Cushion";
+            }
+
+            for (String s : sizeVals) {
+                if (Objects.equals(s, selectedSize)) {
+                    msg = "Selected size for print: " + s + "\nInformation about this size: " + item.toString() + "\n\n" + msg;
+                }
+                else {
+                    StockItem i = item.clone();
+                    if (i instanceof Flag f) {
+                        f.setSize(FLAG_SIZE.fromString(s));
+                        f.setSizeID(FLAG_SIZE.getSizeId(f.getSize()));
+                    }
+                    else if (i instanceof Cushion c) {
+                        c.setSize(CUSHION_SIZE.fromString(s));
+                        c.setSizeID(CUSHION_SIZE.getSizeId(c.getSize()));
+                    }
+                    DatabaseControl.setStockData(i);
+                    msg += "Information about size " + s + ": " + i.toString() + "\n";
+                }
+            }
+
+            msg = "Information regarding " + loadedDesign.getName() + " " + type + " with ISO ID: " + item.getIsoID() + " and stock ID: " + item.getStockID() + "\n\n" + msg;
+
+            try {
+                File f = new File(loadedDesign.getName() + "_" + item.getSizeID() + ".txt");
+                f.createNewFile();
+                FileWriter fw = new FileWriter(loadedDesign.getName() + "_" + item.getSizeID() + ".txt");
+                fw.write(msg);
+                fw.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
     EventHandler<ActionEvent> btnUpdateStockClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             try {
                 Object source = event.getSource();
                 Node b = (Node) source;
-                int amount = Integer.parseInt(((Label) b.getParent().lookup("#lblIncrimentAmount")).getText());
-                int restock = Integer.parseInt(((Label) b.getParent().lookup("#lblIncrimentRestock")).getText());
+                int amount = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrimentAmount")).getText());
+                int restock = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrimentRestock")).getText());
 
                 if (restock < amount) {
                     Node box = new VBox();

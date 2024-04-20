@@ -22,7 +22,7 @@ public abstract class StockItem {
 
     @Override
     public String toString() {
-        return "ISO ID: " + isoID + ", Stock ID: " + stockID + ", Amount: " + amount + ", Total Amount: " + totalAmount + ", Restock: " + restock + ", Size: " + sizeID;
+        return "\nTotal Amount: " + totalAmount + "\nRestock Level: " + restock + "\n";
     }
 
     @Id

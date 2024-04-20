@@ -151,6 +151,7 @@
 #btnEdit {
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Edit.png");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
 #btnEdit:hover {
     -fx-background-color: transparent;
@@ -159,10 +160,20 @@
 #btnMore {
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/More.png");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
 #btnMore:hover {
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/More_Hover.png");
+}
+#btnPrint {
+    -fx-background-color: #3551B4;
+    -fx-graphic: url("../Assets/Icons/File.png");
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#btnPrint:hover {
+    -fx-background-color: #C2D0FF;
 }
 
 #lblIncrimentBox,
