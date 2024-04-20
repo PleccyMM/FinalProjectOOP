@@ -127,7 +127,7 @@ public class ItemController extends ControllerParent {
         }
 
         boolean firstRun = true;
-        boolean[] needsRestocking = DatabaseControl.restockList(item.getStockID(), isFlag);
+        boolean[] needsRestocking = DatabaseControl.restockList(item.getStockID());
         int index = 0;
         for (String sizeVal : sizeVals) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
@@ -346,7 +346,7 @@ public class ItemController extends ControllerParent {
     }
 
     @FXML
-    protected void btnEditClick(ActionEvent event) throws Exception {
+    protected void btnMoreClick(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_popup.fxml"));
         Parent itemView = loader.load();
 
@@ -535,17 +535,16 @@ public class ItemController extends ControllerParent {
                 boxHorizontalSize.setMaxWidth(0);
             }
 
-            double v = (panImg.getWidth() - imgFlag.getFitWidth() - 4) / 2;
-            double h = (panImg.getHeight() - imgFlag.getFitHeight() - 4) / 2;
+            double v1 = panImg.getWidth() == 0 ? panImg.getMinWidth() : panImg.getWidth();
+            double h1 = panImg.getHeight() == 0 ? panImg.getMinHeight() : panImg.getHeight();
+
+            double v = (v1 - imgFlag.getFitWidth() - 4) / 2;
+            double h = (h1 - imgFlag.getFitHeight() - 4) / 2;
 
             boxVerticalMatch.setMinWidth(v);
-            boxVerticalMatch.setMaxWidth(v);
             boxVerticalContainer.setMinWidth(v);
-            boxVerticalContainer.setMaxWidth(v);
             boxHorizontalMatch.setMinHeight(h);
-            boxHorizontalMatch.setMaxHeight(h);
             boxHorizontalContainer.setMinHeight(h);
-            boxHorizontalContainer.setMaxHeight(h);
         }
         catch (Exception ignored) { }
 

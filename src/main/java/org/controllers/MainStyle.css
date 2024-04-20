@@ -156,6 +156,15 @@
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Edit_Hover.png");
 }
+#btnMore {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/More.png");
+}
+#btnMore:hover {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/More_Hover.png");
+}
+
 #lblIncrimentBox,
 #lblIncrimentAmount,
 #lblIncrimentRestock,

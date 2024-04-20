@@ -186,7 +186,7 @@ public class DatabaseControl {
         return null;
     }
 
-    public static boolean[] restockList(int stockID, boolean isFlag) {
+    public static boolean[] restockList(int stockID) {
         openDBSession();
         var queryAmount = "select amount from stock_amount where stockid = " + stockID;
         var queryRestock = "select restock from stock_amount where stockid = " + stockID;
@@ -194,22 +194,10 @@ public class DatabaseControl {
         List<Integer> listAmount = databaseSession.createNativeQuery(queryAmount).list();
         List<Integer> listRestock = databaseSession.createNativeQuery(queryRestock).list();
 
-        boolean[] b;
-        int startLoc, endLoc;
-
-        if (isFlag) {
-            b = new boolean[5];
-            startLoc = 0;
-            endLoc = 5;
-        }
-        else {
-            b = new boolean[4];
-            startLoc = 5;
-            endLoc = 9;
-        }
-
-        for (int i = startLoc; i < endLoc; i++) {
-            b[i - startLoc] = listRestock.get(i) >= listAmount.get(i);
+        boolean[] b = new boolean[listAmount.size()];
+        for (int i = 0; i < b.length; i++) {
+            System.out.println("RUN " + (listRestock.size()));
+            b[i] = listRestock.get(i) >= listAmount.get(i);
         }
         closeDBSession();
         return b;
