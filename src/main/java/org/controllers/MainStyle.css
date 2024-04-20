@@ -141,7 +141,12 @@
     -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
     -fx-graphic: url("../Assets/Icons/Minus.png");
 }
-#btnAdd:hover {
+#btnAddAmount:hover,
+#btnAddRestock:hover,
+#btnAdd:hover,
+#btnMinusAmount:hover,
+#btnMinusRestock:hover,
+#btnMinus:hover {
     -fx-background-color: #C2D0FF;
 }
 #btnMinus:hover {
