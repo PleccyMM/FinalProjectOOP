@@ -18,6 +18,25 @@ public class Cushion extends StockItem {
         this.stockID = stockID;
     }
 
+
+    public Cushion(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material) {
+        this.isoID = isoID;
+        this.stockID = stockID;
+        this.amount = amount;
+        this.totalAmount = totalAmount;
+        this.restock = restock;
+        this.sizeID = sizeID;
+        this.cushionID = cushionID;
+        this.justCase = justCase;
+        this.size = size;
+        this.material = material;
+    }
+
+    @Override
+    public StockItem clone() {
+        return new Cushion(isoID, stockID, amount, totalAmount, restock, sizeID, cushionID, justCase, size, material);
+    }
+
     @Override
     public float calculatePrice() {
         float cost = size.getValue();

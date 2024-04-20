@@ -11,12 +11,18 @@ public abstract class StockItem {
     protected int restock;
     protected int sizeID;
 
+    public abstract StockItem clone();
     public abstract float calculatePrice();
 
     public StockItem() {}
 
     public StockItem(String isoID) {
         this.isoID = isoID;
+    }
+
+    @Override
+    public String toString() {
+        return "ISO ID: " + isoID + ", Stock ID: " + stockID + ", Amount: " + amount + ", Total Amount: " + totalAmount + ", Restock: " + restock + ", Size: " + sizeID;
     }
 
     @Id

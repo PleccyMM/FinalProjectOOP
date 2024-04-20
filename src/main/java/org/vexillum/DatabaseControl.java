@@ -207,6 +207,16 @@ public class DatabaseControl {
         }
     }
 
+    public static Double getPrice(int sizeID) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)")
+                .setParameter("sizeid", sizeID);
+        List<Double> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
+    }
+
     //SQL used for database setup:
 
 

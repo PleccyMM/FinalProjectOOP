@@ -1,11 +1,7 @@
 package org.controllers;
 
 import javafx.event.*;
-import javafx.fxml.*;
-import javafx.geometry.*;
-import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
@@ -19,6 +15,8 @@ public abstract class ControllerParent {
     protected Operator operator;
     protected List<StockItem> items;
     protected SearchConditions sc;
+
+    protected abstract void stageChangeHandle();
 
     protected void loadHeader(Stage stage, Operator operator, List<StockItem> items, HBox headerBox, SearchConditions sc) {
         try {
@@ -46,6 +44,7 @@ public abstract class ControllerParent {
     }
 
     protected void performSearch() throws Exception {
+        stageChangeHandle();
         l.showStock(stage, operator, items, sc);
     }
 
@@ -53,6 +52,7 @@ public abstract class ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
+                stageChangeHandle();
                 l.showStock(stage, operator, items, new SearchConditions());
             }
             catch (Exception e) {
@@ -92,6 +92,7 @@ public abstract class ControllerParent {
         @Override
         public void handle(ActionEvent event) {
             try {
+                stageChangeHandle();
                 l.showBasket(stage, items, operator);
             }
             catch (Exception e) {

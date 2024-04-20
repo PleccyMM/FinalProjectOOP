@@ -24,6 +24,7 @@ public class ItemController extends ControllerParent {
     @FXML private Label lblCurrentStock;
     @FXML private ImageView imgSeverity;
     @FXML private Label lblRestock;
+    @FXML private Label lblCostToProduce;
 
     @FXML private Label lblToggleL;
     @FXML private Label lblToggleR;
@@ -44,6 +45,14 @@ public class ItemController extends ControllerParent {
     private String selectedSize;
     private VBox boxSelected;
 
+    @Override
+    protected void stageChangeHandle() {
+        if (loadedPos == null) return;
+
+        item = items.get(loadedPos);
+        DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
+    }
+
     public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) {
         this.loadedDesign = loadedDesign;
         this.loadedPos = loadedPos;
@@ -55,12 +64,16 @@ public class ItemController extends ControllerParent {
 
             loadHeader(stage, operator, items, headerBox, new SearchConditions());
             typeSetUp();
-            populateInfo();
             listenerToggle();
             if (loadedPos != null) {
+                int newAmount = item.getTotalAmount() + item.getAmount();
+                item.setTotalAmount(newAmount);
+                DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+
                 setUpOptions();
                 btnAddToBasket.setText("Update Item");
             }
+            populateInfo();
             updateItem();
         }
         catch (Exception e) {
@@ -71,7 +84,7 @@ public class ItemController extends ControllerParent {
     private void typeSetUp() throws Exception {
         if (isFlag) {
             selectedSize = "Hand";
-            item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
+            item = loadedPos != null ? items.get(loadedPos).clone() : DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
         }
         else {
             selectedSize = "45x45cm";
@@ -80,7 +93,7 @@ public class ItemController extends ControllerParent {
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam (\u00A38.00)", "Polyester (\u00A39.00)", "Feathers (\u00A311.00)", "Cotton (\u00A312.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
+            item = loadedPos != null ? items.get(loadedPos).clone() : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
         }
         createSizeSelection();
     }
@@ -465,6 +478,10 @@ public class ItemController extends ControllerParent {
         if (loadedPos != null) items.set(loadedPos, item);
         else items.add(item);
 
+        int newAmount = item.getTotalAmount() - item.getAmount();
+        item.setTotalAmount(newAmount);
+        DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+
         l.showBasket(stage, items, operator);
     }
 
@@ -488,6 +505,10 @@ public class ItemController extends ControllerParent {
             int totalAmount = item.getTotalAmount();
             int restock = item.getRestock();
             lblAmountAndRestockUpdate(totalAmount, restock);
+
+            NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+            String cost = eurFormatter.format(DatabaseControl.getPrice(item.getSizeID()));
+            lblCostToProduce.setText(cost);
 
             lblTags.setText(regionName + typeName);
         }

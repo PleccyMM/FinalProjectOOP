@@ -25,6 +25,9 @@ public class StockController extends ControllerParent {
     private ToggleGroup tg;
     private List<Design> allDesigns;
 
+    @Override
+    protected void stageChangeHandle() {}
+
     public void load(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) {
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");

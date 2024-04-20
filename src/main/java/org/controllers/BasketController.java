@@ -19,6 +19,9 @@ public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
 
+    @Override
+    protected void stageChangeHandle() {}
+
     public void load(Stage stage, List<StockItem> items, Operator operator) {
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
