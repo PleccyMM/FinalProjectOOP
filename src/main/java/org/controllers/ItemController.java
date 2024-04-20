@@ -117,19 +117,20 @@ public class ItemController extends ControllerParent {
         }
 
         boolean firstRun = true;
+        boolean[] needsRestocking = DatabaseControl.restockList(item.getStockID(), isFlag);
+        int index = 0;
         for (String sizeVal : sizeVals) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
             Parent itemView = loader.load();
 
             StackPane box = (StackPane) itemView;
             box.setId("boxSize_" + sizeVal);
-            System.out.println("NEW ID: " + box.getId());
             box.setOnMouseClicked(boxClick);
 
             if (firstRun) {
                 firstRun = false;
                 boxSelected = (VBox) box.lookup("#boxSelect");
-                boxSelected.setStyle("-fx-background-color: #9D9D9D88;");
+                boxSelected.setStyle("-fx-background-color: #00000099;");
             }
 
             try {
@@ -143,7 +144,14 @@ public class ItemController extends ControllerParent {
             catch (Exception ignored) { }
 
             ((Label) box.lookup("#lblSize")).setText(sizeVal);
+
+            if (needsRestocking[index]) {
+                ((Label) box.lookup("#lblWarning")).setText("RESTOCK");
+                box.lookup("#boxWarning").setStyle("-fx-background-color: #FF0000;");
+            }
+
             itemBox.getChildren().add(box);
+            index++;
         }
     }
 
@@ -292,7 +300,7 @@ public class ItemController extends ControllerParent {
 
                 boxSelected.setStyle("-fx-background-color: transparent");
                 boxSelected = (VBox) box.lookup("#boxSelect");
-                boxSelected.setStyle("-fx-background-color: #9D9D9D88");
+                boxSelected.setStyle("-fx-background-color: #00000099");
 
                 selectedSize = box.getId().split("_")[1];
                 updateItem();
@@ -350,7 +358,7 @@ public class ItemController extends ControllerParent {
         ((Button) box.lookup("#btnAddRestock")).setOnAction(btnAddRestockClick);
         if (item.getRestock() == 1) b.setDisable(true);
 
-        ((Button) box.lookup("#btnBlue")).setOnAction(btnUpdateStock);
+        ((Button) box.lookup("#btnBlue")).setOnAction(btnUpdateStockClick);
 
         panStacker.getChildren().add(box);
     }
@@ -433,7 +441,7 @@ public class ItemController extends ControllerParent {
         }
     };
 
-    EventHandler<ActionEvent> btnUpdateStock = new EventHandler<ActionEvent>() {
+    EventHandler<ActionEvent> btnUpdateStockClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             try {
@@ -441,6 +449,16 @@ public class ItemController extends ControllerParent {
                 Node b = (Node) source;
                 int amount = Integer.parseInt(((Label) b.getParent().lookup("#lblIncrimentAmount")).getText());
                 int restock = Integer.parseInt(((Label) b.getParent().lookup("#lblIncrimentRestock")).getText());
+
+                if (restock < amount) {
+                    Node box = new VBox();
+                    if (item instanceof Flag f) box = panMain.lookup("#boxSize_" + FLAG_SIZE.getString(f.getSize()));
+                    else if (item instanceof Cushion c) box = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
+
+                    ((Label) box.lookup("#lblWarning")).setText("");
+                    box.lookup("#boxWarning").setStyle("-fx-background-color: transparent;");
+
+                }
 
                 DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), amount, restock);
 
