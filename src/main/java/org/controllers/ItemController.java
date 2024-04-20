@@ -75,10 +75,10 @@ public class ItemController extends ControllerParent {
         }
         else {
             selectedSize = "45x45cm";
-            lblToggleL.setText("With filling");
-            lblToggleR.setText("No filling (-\u00A38)");
+            lblToggleL.setText("With filling (\u00A38+)");
+            lblToggleR.setText("No filling");
             cmbModifications.getItems().clear();
-            cmbModifications.getItems().addAll("Foam", "Polyester (\u00A31.00)", "Feathers (\u00A33.00)", "Cotton (\u00A34.00)");
+            cmbModifications.getItems().addAll("Foam (\u00A38.00)", "Polyester (\u00A39.00)", "Feathers (\u00A311.00)", "Cotton (\u00A312.00)");
             cmbModifications.setPromptText("Cushion Filling");
             item = loadedPos != null ? items.get(loadedPos) : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
         }
@@ -198,11 +198,18 @@ public class ItemController extends ControllerParent {
                 f.setMaterial(FLAG_MATERIAL.getType(lblToggleR.getText().split(" ")[0]));
             }
 
-            switch (cmbModifications.getSelectionModel().getSelectedIndex()) {
-                case 0 -> f.setHoist(FLAG_HOIST.NONE);
-                case 1 -> f.setHoist(FLAG_HOIST.FABRIC);
-                case 2 -> f.setHoist(FLAG_HOIST.METAL);
-                case 3 -> f.setHoist(FLAG_HOIST.WOODEN);
+            if (f.getSize() != FLAG_SIZE.HAND && f.getSize() != FLAG_SIZE.DESK) {
+                cmbModifications.setDisable(false);
+                switch (cmbModifications.getSelectionModel().getSelectedIndex()) {
+                    case 0 -> f.setHoist(FLAG_HOIST.NONE);
+                    case 1 -> f.setHoist(FLAG_HOIST.FABRIC);
+                    case 2 -> f.setHoist(FLAG_HOIST.METAL);
+                    case 3 -> f.setHoist(FLAG_HOIST.WOODEN);
+                }
+            }
+            else {
+                cmbModifications.setDisable(true);
+                f.setHoist(FLAG_HOIST.NONE);
             }
         }
         else if (item instanceof Cushion c) {
@@ -234,13 +241,13 @@ public class ItemController extends ControllerParent {
         float price = item.calculatePrice();
         String cost = eurFormatter.format(price);
 
-        if (cmbModifications.getSelectionModel().isEmpty() && !(!isFlag && !tglSwitch.getToLeft().get())) {
-            lblPrice.setText(cost + "+");
-            btnAddToBasket.setDisable(true);
-        }
-        else {
+        if (!cmbModifications.getSelectionModel().isEmpty() || (!isFlag && !tglSwitch.getToLeft().get()) || (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND))) {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
+        }
+        else {
+            lblPrice.setText(cost + "+");
+            btnAddToBasket.setDisable(true);
         }
 
         int amount = Integer.parseInt(lblIncriment.getText());

@@ -21,8 +21,7 @@ public class Cushion extends StockItem {
     @Override
     public float calculatePrice() {
         float cost = size.getValue();
-        if (justCase) cost -= 8;
-        else cost += material.getValue();
+        if (!justCase) cost += material.getValue();
         return cost;
     }
 

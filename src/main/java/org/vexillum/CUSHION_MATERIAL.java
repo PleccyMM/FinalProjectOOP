@@ -2,10 +2,10 @@ package org.vexillum;
 
 public enum CUSHION_MATERIAL {
     EMPTY(0),
-    FOAM(0),
-    POLYESTER(100),
-    FEATHERS(300),
-    COTTON(400);
+    FOAM(800),
+    POLYESTER(900),
+    FEATHERS(1100),
+    COTTON(1200);
 
     private final int value;
 

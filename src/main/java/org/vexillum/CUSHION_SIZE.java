@@ -1,10 +1,10 @@
 package org.vexillum;
 
 public enum CUSHION_SIZE {
-    SMALL(1000),
-    MEDIUM(1800),
-    LARGE(2200),
-    LONG(1200);
+    SMALL(200),
+    MEDIUM(1000),
+    LARGE(1400),
+    LONG(400);
 
     private final int value;
 
