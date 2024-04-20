@@ -12,27 +12,40 @@
 <?import org.vexillum.ToggleSwitch?>
 <?import javafx.collections.FXCollections?>
 
-<VBox id="light-blue-fill"
-      xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      minWidth="65"
-      prefHeight="85"
-      spacing="10"
-      alignment="BOTTOM_CENTER"
-      styleClass="light-blue-fill">
-    <VBox id="imageHolder"
-          style="-fx-border-width: 1; -fx-border-color: #000000;"
-          maxWidth="1">
-        <ImageView id="imgDesign"/>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml">
+    <VBox id="light-blue-fill"
+          minWidth="65"
+          prefHeight="85"
+          alignment="TOP_CENTER"
+          styleClass="light-blue-fill"
+          maxHeight="88">
+            <VBox alignment="TOP_CENTER"
+                  spacing="3">
+                <VBox fx:id="boxWarning" style="-fx-background-color: transparent;" alignment="CENTER" minHeight="10">
+                    <Label fx:id="lblWarning"/>
+                </VBox>
+                <VBox id="imageHolder"
+                      style="-fx-border-width: 1; -fx-border-color: #000000;"
+                      maxWidth="1">
+                    <ImageView id="imgDesign"/>
+                </VBox>
+            </VBox>
+        <Region VBox.vgrow="ALWAYS"/>
+            <StackPane fx:id="stkMain">
+                <ImageView id="image-corner"
+                           fitWidth="65"
+                           fitHeight="25"
+                />
+                <HBox StackPane.alignment="BOTTOM_RIGHT" alignment="BOTTOM_RIGHT">
+                    <padding>
+                        <Insets right="3"/>
+                    </padding>
+                    <Label fx:id="lblSize"
+                           style="-fx-text-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
+                    />
+                </HBox>
+            </StackPane>
     </VBox>
-    <StackPane fx:id="stkMain">
-        <ImageView id="image-corner"
-                   fitWidth="65"
-                   fitHeight="25"
-        />
-        <Label fx:id="lblSize"
-              style="-fx-text-fill: #FFFFFF; -fx-font-size: 8; -fx-font-weight: bold"
-              StackPane.alignment="BOTTOM_RIGHT"
-        />
-    </StackPane>
-</VBox>
+    <VBox fx:id="boxSelect" style="-fx-background-color: transparent"/>
+</StackPane>

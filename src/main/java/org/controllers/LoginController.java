@@ -35,7 +35,7 @@ public class LoginController {
                 System.out.println("SUCCESS, LOGGED IN");
                 Stage stage = (Stage) enrName.getScene().getWindow();
                 Loader loader = new Loader();
-                loader.showStock(stage, o, new ArrayList<StockItem>(), "");
+                loader.showStock(stage, o, new ArrayList<StockItem>(), new SearchConditions());
                 return;
             }
         }

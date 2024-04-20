@@ -13,6 +13,7 @@
     -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+#panImg,
 #grey-fill {
     -fx-background-color: #EEEEEE;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -21,6 +22,7 @@
     -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+.white-divider,
 #white-divider {
     -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
@@ -55,7 +57,7 @@
     -fx-font-family: "Inter Semi Bold";
     -fx-font-weight: bold;
 }
-#label-tag {
+#lblTag {
     -fx-font-weight: bold;
 }
 #lblPrice,
@@ -66,9 +68,13 @@
 }
 #checkout-label,
 #lblPriceSingle,
-#lblSubtotal,
-#lblName {
+#lblSubtotal {
     -fx-text-fill: #000000;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+#lblWarning {
+    -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
@@ -106,12 +112,30 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.btnBlueDisabled {
+    -fx-background-color: #9D9D9D;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-size: 12px;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+.btnBlueDisabled:hover {
+    -fx-background-color: #9D9D9D;
+    -fx-text-fill: #FFFFFF;
+}
 
+#btnAddAmount,
+#btnAddRestock,
 #btnAdd {
     -fx-background-color: #3551B4;
     -fx-shape: "M 44,10 C 44,4.47715 39.52285,0 34,0 H 0 v 44 h 34 c 5.52285,0 10,-4.4772 10,-10 z";
     -fx-graphic: url("../Assets/Icons/Add.png");
 }
+#btnMinusAmount,
+#btnMinusRestock,
 #btnMinus {
     -fx-background-color: #3551B4;
     -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
@@ -127,7 +151,34 @@
 #btnEdit {
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Edit.png");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+#btnEdit:hover {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Edit_Hover.png");
+}
+#btnMore {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/More.png");
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#btnMore:hover {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/More_Hover.png");
+}
+#btnPrint {
+    -fx-background-color: #3551B4;
+    -fx-graphic: url("../Assets/Icons/File.png");
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#btnPrint:hover {
+    -fx-background-color: #C2D0FF;
+}
+
+#lblIncrimentBox,
+#lblIncrimentAmount,
+#lblIncrimentRestock,
 #lblIncriment {
     -fx-text-fill: #000000;
     -fx-font-size: 16px;
@@ -151,6 +202,7 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
+.sub-title-black,
 #sub-title-black {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
@@ -197,9 +249,6 @@
 #image-profile {
     -fx-image:url('../Assets/Icons/Profile.png');
 }
-#image-down-arrow {
-    -fx-image:url('../Assets/Icons/DownArrow.png');
-}
 #image-corner {
     -fx-image:url('../Assets/Icons/Corner.png');
 }
@@ -231,6 +280,11 @@
 }
 .label {
     -fx-font-family: "Inter Semi Bold";
+}
+.radio-button {
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
 }
 
 .scroll-bar:horizontal .track,

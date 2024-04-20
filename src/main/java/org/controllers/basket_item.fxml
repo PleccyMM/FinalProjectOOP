@@ -12,20 +12,22 @@
 <?import org.vexillum.ToggleSwitch?>
 <?import javafx.collections.FXCollections?>
 
-<HBox id="white-divider"
-      prefHeight="105"
+<HBox prefHeight="105"
       prefWidth="660"
       alignment="CENTER_LEFT"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       stylesheets="@MainStyle.css"
-      spacing="20">
+      spacing="20"
+      styleClass="white-divider">
 
     <padding>
         <Insets right="16" top="8" left="8" bottom="8"/>
     </padding>
-
-    <ImageView fx:id="imgDesign"/>
+    <VBox id="imageHolder" style="-fx-border-width: 2; -fx-border-color: #000000;"
+          maxWidth="1" maxHeight="1">
+        <ImageView fx:id="imgDesign"/>
+    </VBox>
     <Region HBox.hgrow="ALWAYS"/>
     <Label fx:id="lblName" minWidth="170" maxWidth="170" maxHeight="40" wrapText="true" textAlignment="CENTER"/>
 
@@ -34,12 +36,12 @@
 
     <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
         <Button fx:id="btnMinus" minWidth="15" minHeight="15"/>
-        <VBox id="lblIncriment" minWidth="40" alignment="CENTER">
+        <VBox id="lblIncrimentBox" minWidth="40" alignment="CENTER">
             <Label fx:id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
         </VBox>
         <Button fx:id="btnAdd" minWidth="15" minHeight="15"/>
     </HBox>
 
     <Label fx:id="lblSubtotal" minWidth="70" maxWidth="70"/>
-    <Label fx:id="btnEdit"/>
+    <Button fx:id="btnEdit"/>
 </HBox>

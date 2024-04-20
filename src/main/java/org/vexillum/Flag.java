@@ -17,13 +17,22 @@ public class Flag extends StockItem {
         this.stockID = stockID;
     }
 
-    public Flag(int flagID, String isoID, int stockID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
-        this.flagID = flagID;
+    public Flag(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
         this.isoID = isoID;
         this.stockID = stockID;
+        this.amount = amount;
+        this.totalAmount = totalAmount;
+        this.restock = restock;
+        this.sizeID = sizeID;
+        this.flagID = flagID;
         this.material = material;
         this.hoist = hoist;
         this.size = size;
+    }
+
+    @Override
+    public StockItem clone() {
+        return new Flag(isoID, stockID, amount, totalAmount, restock, sizeID, flagID, material, hoist, size);
     }
 
     @Override

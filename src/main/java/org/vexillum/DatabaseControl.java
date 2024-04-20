@@ -49,17 +49,33 @@ public class DatabaseControl {
         return list;
     }
 
-    public static List<Design> getAllDesigns() {
+    public static Design getDeignFromIso(String isoID) {
         openDBSession();
-        var query = databaseSession.createQuery("from Design order by name asc");
+        var query = databaseSession.createQuery("from Design where isoID = (:isoid)")
+                .setParameter("isoid", isoID);
         List<Design> list = query.list();
         closeDBSession();
-        return list;
+
+        if (list.size() != 0) return list.get(0);
+        return null;
     }
 
-    public static List<Design> searchDesigns(String nameSearch) {
+    public static List<Design> searchDesigns(SearchConditions nameSearch) {
         openDBSession();
-        var query = databaseSession.createQuery("from Design where LOWER(name) like '%" + nameSearch.toLowerCase() + "%' order by name asc");
+        String name = nameSearch.getSearch();
+        String initial1 = nameSearch.getStartLetters()[0];
+        String initial2 = nameSearch.getStartLetters()[1];
+        Integer region = nameSearch.getRegion();
+        Integer type = nameSearch.getType();
+
+        var query = databaseSession.createQuery("from Design where LOWER(name) like (:name) and (LOWER(name) >= (:initial1) and LOWER(name) <= (:initial2) or LOWER(name) " +
+                                                   "like (:initial3)) and (region = :region or :region is null) and (type = :type or :type is null) order by name asc")
+                .setParameter("name", name == null ? "%" : "%" + name.toLowerCase() + "%")
+                .setParameter("initial1", initial1 == null ? "a" : initial1)
+                .setParameter("initial2", initial2 == null ? "z" : initial2)
+                .setParameter("initial3", initial2 == null ? "z%" : initial2 + "%")
+                .setParameter("region", region)
+                .setParameter("type", type);
         List<Design> list = query.list();
         closeDBSession();
         return list;
@@ -86,10 +102,11 @@ public class DatabaseControl {
 
         Flag f = list.get(0);
         f.setSizeID(FLAG_SIZE.getSizeId(size));
+        f.setSize(size);
         return (Flag) setStockData(f);
     }
 
-    public static Cushion createCushion(String isoID, CUSHION_SIZE size) {
+    public static Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
         openDBSession();
         System.out.println("Making Cushion");
 
@@ -101,6 +118,8 @@ public class DatabaseControl {
 
         Cushion c = list.get(0);
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
+        c.setSize(size);
+        c.setMaterial(material);
         return (Cushion) setStockData(c);
     }
 
@@ -145,6 +164,74 @@ public class DatabaseControl {
         closeDBSession();
         if (list.size() > 0) return list.get(0);
         return "";
+    }
+
+    public static Integer getTypeId(String name) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select typeid from designtypes where LOWER(name) = (:name)")
+                .setParameter("name", name.toLowerCase());
+        List<Integer> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
+    }
+
+    public static Integer getRegionId(String name) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select regionid from regions where LOWER(name) = (:name)")
+                .setParameter("name", name.toLowerCase());
+        List<Integer> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
+    }
+
+    public static boolean[] restockList(int stockID) {
+        openDBSession();
+        var queryAmount = "select amount from stock_amount where stockid = " + stockID;
+        var queryRestock = "select restock from stock_amount where stockid = " + stockID;
+
+        List<Integer> listAmount = databaseSession.createNativeQuery(queryAmount).list();
+        List<Integer> listRestock = databaseSession.createNativeQuery(queryRestock).list();
+
+        boolean[] b = new boolean[listAmount.size()];
+        for (int i = 0; i < b.length; i++) {
+            System.out.println("RUN " + (listRestock.size()));
+            b[i] = listRestock.get(i) >= listAmount.get(i);
+        }
+        closeDBSession();
+        return b;
+    }
+
+    public static void updateAmountAndRestock(int stockID, int sizeID, int newAmount, int newRestock) {
+        openDBSession();
+        databaseSession.beginTransaction();
+        try {
+            databaseSession.createNativeQuery("update stock_amount set amount = (:amount), restock = (:restock) where stockid = (:stockid) and sizeid = (:sizeid)")
+                    .setParameter("amount", newAmount)
+                    .setParameter("restock", newRestock)
+                    .setParameter("stockid", stockID)
+                    .setParameter("sizeid", sizeID)
+                    .executeUpdate();
+            databaseSession.getTransaction().commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+        finally {
+            closeDBSession();
+        }
+    }
+
+    public static Double getPrice(int sizeID) {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)")
+                .setParameter("sizeid", sizeID);
+        List<Double> list = query.list();
+        closeDBSession();
+        if (list.size() > 0) return list.get(0);
+        return null;
     }
 
     //SQL used for database setup:

@@ -21,27 +21,23 @@
     <center>
         <BorderPane>
             <top>
-                <HBox minHeight="64"
-                      spacing="64"
-                      alignment="CENTER_LEFT">
-
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Type"/>
-                        <ImageView id="image-down-arrow"/>
+                <VBox>
+                    <HBox fx:id="boxTagOps"
+                          minHeight="64"
+                          spacing="64"
+                          alignment="CENTER_LEFT">
                     </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Design"/>
-                        <ImageView id="image-down-arrow"/>
+                    <HBox>
+                        <Region fx:id="rgnButtonPush" minWidth="50"/>
+                        <VBox fx:id="boxTagSelect"
+                              alignment="CENTER_LEFT"
+                              spacing="3">
+                            <padding>
+                                <Insets left="5" right="5" bottom="15"/>
+                            </padding>
+                        </VBox>
                     </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Region"/>
-                        <ImageView id="image-down-arrow"/>
-                    </HBox>
-                    <HBox spacing="5" alignment="CENTER_LEFT">
-                        <Label id="label-tag" text="Initial"/>
-                        <ImageView id="image-down-arrow"/>
-                    </HBox>
-                </HBox>
+                </VBox>
             </top>
             <center>
                 <ScrollPane fx:id="scrBackground"

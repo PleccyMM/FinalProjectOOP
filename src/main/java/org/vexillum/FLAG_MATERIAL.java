@@ -17,8 +17,10 @@ public enum FLAG_MATERIAL {
 
     public static FLAG_MATERIAL getType(String s1) {
         String s = s1.toUpperCase();
-        if (s.equals("PAPER")) return PAPER;
-        else if (s.equals("POLYESTER")) return POLYESTER;
-        else return NYLON;
+        return switch (s) {
+            case "PAPER" -> PAPER;
+            case "POLYESTER" -> POLYESTER;
+            default -> NYLON;
+        };
     }
 }

@@ -1,6 +1,6 @@
 package org.controllers;
 
-import javafx.beans.property.SimpleBooleanProperty;
+import org.vexillum.*;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
@@ -11,10 +11,7 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import org.vexillum.*;
-
 import javax.swing.*;
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -22,15 +19,15 @@ public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
 
-    public void load(Stage stage, List<StockItem> items, Operator operator) {
-        this.operator = operator;
-        this.items = items;
+    @Override
+    protected void stageChangeHandle() {}
 
+    public void load(Stage stage, List<StockItem> items, Operator operator) {
         try {
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
-            loadHeader(stage, operator, items, headerBox, "");
+            loadHeader(stage, operator, items, headerBox, new SearchConditions());
             createItems();
         }
         catch (Exception e) {
@@ -39,6 +36,7 @@ public class BasketController extends ControllerParent {
     }
 
     private void createItems() throws Exception {
+        int index = 0;
         for (StockItem i : items) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_item.fxml"));
             Parent itemView = loader.load();
@@ -68,7 +66,34 @@ public class BasketController extends ControllerParent {
             ((Label) box.lookup("#lblPriceSingle")).setText(cost);
             ((Label) box.lookup("#lblSubtotal")).setText(subtotal);
 
+            ((Label) box.lookup("#lblIncriment")).setText(i.getAmount() + "");
+
+            ((Button) box.lookup("#btnEdit")).setOnAction(btnEditClick);
+
+            box.setId(index + "");
             boxScroll.getChildren().add(box);
+            index++;
         }
     }
+
+    EventHandler<ActionEvent> btnEditClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+
+                HBox b = (HBox) ((Node) source).getParent();
+                int i = Integer.parseInt(b.getId());
+
+                boolean isFlag = items.get(i) instanceof Flag;
+                Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
+
+                System.out.println("EDITING ITEM");
+                l.showItem(stage, operator, items, d, isFlag, i);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 }

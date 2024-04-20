@@ -24,24 +24,24 @@ public class Loader {
         stage.show();
     }
 
-    public void showStock(Stage stage, Operator operator, List<StockItem> items, String search) throws Exception {
+    public void showStock(Stage stage, Operator operator, List<StockItem> items, SearchConditions searchConditions) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_screen.fxml"));
         Parent root = loader.load();
 
         StockController controller = loader.getController();
-        controller.load(stage, items, operator, search);
+        controller.load(stage, items, operator, searchConditions);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void showItem(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag) throws Exception {
+    public void showItem(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
         Parent root = loader.load();
 
         ItemController controller = loader.getController();
-        controller.load(stage, operator, items, loadedDesign, isFlag);
+        controller.load(stage, operator, items, loadedDesign, isFlag, loadedPos);
 
         Scene scene = new Scene(root, 960, 540);
         stage.setScene(scene);
