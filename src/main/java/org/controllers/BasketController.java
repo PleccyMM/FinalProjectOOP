@@ -58,15 +58,11 @@ public class BasketController extends ControllerParent {
 
             ((Label) box.lookup("#lblName")).setText(name);
 
-            NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-            float price = i.calculatePrice();
-            String cost = eurFormatter.format(price);
-            String subtotal = eurFormatter.format(price * i.getAmount());
-
-            ((Label) box.lookup("#lblPriceSingle")).setText(cost);
-            ((Label) box.lookup("#lblSubtotal")).setText(subtotal);
+            setCosts(box, i);
 
             ((Label) box.lookup("#lblIncriment")).setText(i.getAmount() + "");
+            ((Button) box.lookup("#btnMinus")).setOnAction(btnMinusClick);
+            ((Button) box.lookup("#btnAdd")).setOnAction(btnAddClick);
 
             ((Button) box.lookup("#btnEdit")).setOnAction(btnEditClick);
 
@@ -75,6 +71,81 @@ public class BasketController extends ControllerParent {
             index++;
         }
     }
+
+    private void setCosts(Node b, StockItem i) {
+        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+        float price = i.calculatePrice();
+        String cost = eurFormatter.format(price);
+        String subtotal = eurFormatter.format(price * i.getAmount());
+
+        ((Label) b.lookup("#lblPriceSingle")).setText(cost);
+        ((Label) b.lookup("#lblSubtotal")).setText(subtotal);
+    }
+
+    EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                Node n = (Node) source;
+                Node box = n.getParent().getParent();
+                Label l = (Label) box.lookup("#lblIncriment");
+
+                int val = Integer.parseInt(l.getText()) - 1;
+                int index = Integer.parseInt(box.getId());
+
+                StockItem i = items.get(index);
+                DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
+                i.setAmount(val);
+                i.setTotalAmount(i.getTotalAmount() + 1);
+
+                if (val == 0) {
+                    items.remove(i);
+                    boxScroll.getChildren().remove(box);
+                    return;
+                }
+
+                l.setText(val + "");
+                i.setAmount(val);
+
+                box.lookup("#btnAdd").setDisable(false);
+                setCosts(box, i);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+    EventHandler<ActionEvent> btnAddClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                Node n = (Node) source;
+                Node box = n.getParent().getParent();
+                Label l = (Label) box.lookup("#lblIncriment");
+
+                int val = Integer.parseInt(l.getText()) + 1;
+                l.setText(val + "");
+
+                int index = Integer.parseInt(box.getId());
+
+                StockItem i = items.get(index);
+                DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
+                i.setAmount(val);
+                i.setTotalAmount(i.getTotalAmount() - 1);
+
+                if (i.getTotalAmount() == 0) {
+                    n.setDisable(true);
+                }
+
+                setCosts(box, i);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     EventHandler<ActionEvent> btnEditClick = new EventHandler<ActionEvent>() {
         @Override

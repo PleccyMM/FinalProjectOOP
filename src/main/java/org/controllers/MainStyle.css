@@ -262,6 +262,7 @@
     -fx-image:url('../Assets/FlagsSmall/jp.png');
 }
 
+#lblName,
 #lblStockPrice {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
