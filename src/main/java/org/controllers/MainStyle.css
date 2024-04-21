@@ -66,6 +66,7 @@
     -fx-font-size: 48px;
     -fx-font-weight: bold;
 }
+.checkout-label,
 #checkout-label,
 #lblPriceSingle,
 #lblSubtotal {

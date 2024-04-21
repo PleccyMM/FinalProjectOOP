@@ -18,6 +18,9 @@ import java.util.*;
 public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
+    @FXML private Label lblSubtotal;
+    @FXML private Label lblSavings;
+    @FXML private Label lblTotal;
 
     @Override
     protected void stageChangeHandle() {}
@@ -70,6 +73,7 @@ public class BasketController extends ControllerParent {
             boxScroll.getChildren().add(box);
             index++;
         }
+        calculateTotalCost();
     }
 
     private void setCosts(Node b, StockItem i) {
@@ -80,6 +84,34 @@ public class BasketController extends ControllerParent {
 
         ((Label) b.lookup("#lblPriceSingle")).setText(cost);
         ((Label) b.lookup("#lblSubtotal")).setText(subtotal);
+    }
+
+    private void calculateTotalCost() {
+        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+
+        float totalPrice = 0;
+        for (StockItem i : items) {
+            totalPrice += i.calculatePrice() * i.getAmount();
+        }
+        lblSubtotal.setText(eurFormatter.format(totalPrice));
+
+        lblTotal.setText(eurFormatter.format(totalPrice));
+    }
+
+    @FXML
+    protected void btnCheckoutClick(ActionEvent event) throws Exception {
+        for (int i = 0; i < items.size(); i++) {
+            Node b = boxScroll.lookup("#" + i);
+            boxScroll.getChildren().remove(b);
+        }
+
+        items.clear();
+        calculateTotalCost();
+    }
+
+    @FXML
+    protected void btnPrintClick(ActionEvent event) throws Exception {
+
     }
 
     EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
@@ -102,6 +134,7 @@ public class BasketController extends ControllerParent {
                 if (val == 0) {
                     items.remove(i);
                     boxScroll.getChildren().remove(box);
+                    calculateTotalCost();
                     return;
                 }
 
@@ -110,6 +143,7 @@ public class BasketController extends ControllerParent {
 
                 box.lookup("#btnAdd").setDisable(false);
                 setCosts(box, i);
+                calculateTotalCost();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -140,6 +174,7 @@ public class BasketController extends ControllerParent {
                 }
 
                 setCosts(box, i);
+                calculateTotalCost();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
