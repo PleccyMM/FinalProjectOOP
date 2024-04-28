@@ -193,6 +193,11 @@
     -fx-text-alignment: center;
 }
 
+#cmbProfile {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../Assets/Icons/Profile.png");
+    -fx-background-repeat: no-repeat;
+}
 
 #cmbModifications {
     -fx-background-color: #FFFFFF;
@@ -230,7 +235,7 @@
 
 #btnBack {
     -fx-background-color: transparent;
-    -fx-graphic: url("../Assets/Icons/BackEnabled.png");;
+    -fx-graphic: url("../Assets/Icons/BackEnabled.png");
 }
 #enrSearch {
     -fx-border-color: transparent;
@@ -251,9 +256,6 @@
 #btnInformation {
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Info.png");
-}
-#image-profile {
-    -fx-image:url('../Assets/Icons/Profile.png');
 }
 #image-corner {
     -fx-image:url('../Assets/Icons/Corner.png');

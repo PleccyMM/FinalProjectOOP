@@ -6,6 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.ComboBox?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="boxHeader"
@@ -37,6 +38,6 @@
             <Insets right="20"/>
         </padding>
         <Button fx:id="btnBasket"/>
-        <ImageView id="image-profile"/>
+        <ComboBox fx:id="cmbProfile"/>
     </HBox>
 </HBox>

@@ -59,4 +59,16 @@ public class Loader {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void showAdmin(Stage stage, List<StockItem> items, Operator operator) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_screen.fxml"));
+        Parent root = loader.load();
+
+        AdminController controller = loader.getController();
+        controller.load(stage, items, operator);
+
+        Scene scene = new Scene(root, 960, 540);
+        stage.setScene(scene);
+        stage.show();
+    }
 }
