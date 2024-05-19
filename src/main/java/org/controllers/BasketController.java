@@ -12,8 +12,10 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import javax.swing.*;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
@@ -40,7 +42,36 @@ public class BasketController extends ControllerParent {
 
     private void createItems() throws Exception {
         int index = 0;
+
+        HashMap<Integer, StockItem> importItems = new HashMap<>();
+        HashMap<Integer, StockItem> exportItems = new HashMap<>();
+
         for (StockItem i : items) {
+            if (i.getAmount() < 0) importItems.put(index, i);
+            else exportItems.put(index, i);
+            index++;
+        }
+
+        HBox boxImport = new HBox();
+        boxImport.setStyle("-fx-background-color: #0000FF;");
+        boxImport.setMinHeight(32);
+        boxScroll.getChildren().add(boxImport);
+        addItem(importItems);
+
+        HBox boxExport = new HBox();
+        boxExport.setStyle("-fx-background-color: #00FF00;");
+        boxExport.setMinHeight(32);
+        boxScroll.getChildren().add(boxExport);
+        addItem(exportItems);
+
+        calculateTotalCost();
+    }
+
+    private void addItem(HashMap<Integer, StockItem> itemsMap) throws IOException {
+        for(var item : itemsMap.entrySet()) {
+            Integer index = item.getKey();
+            StockItem i = item.getValue();
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_item.fxml"));
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
@@ -63,7 +94,7 @@ public class BasketController extends ControllerParent {
 
             setCosts(box, i);
 
-            ((Label) box.lookup("#lblIncriment")).setText(i.getAmount() + "");
+            ((Label) box.lookup("#lblIncriment")).setText(i.getPrintAmount() + "");
             ((Button) box.lookup("#btnMinus")).setOnAction(btnMinusClick);
             ((Button) box.lookup("#btnAdd")).setOnAction(btnAddClick);
 
@@ -71,16 +102,14 @@ public class BasketController extends ControllerParent {
 
             box.setId(index + "");
             boxScroll.getChildren().add(box);
-            index++;
         }
-        calculateTotalCost();
     }
 
     private void setCosts(Node b, StockItem i) {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         float price = i.calculatePrice();
         String cost = eurFormatter.format(price);
-        String subtotal = eurFormatter.format(price * i.getAmount());
+        String subtotal = eurFormatter.format(price * i.getPrintAmount());
 
         ((Label) b.lookup("#lblPriceSingle")).setText(cost);
         ((Label) b.lookup("#lblSubtotal")).setText(subtotal);
@@ -128,8 +157,12 @@ public class BasketController extends ControllerParent {
 
                 StockItem i = items.get(index);
                 DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
-                i.setAmount(val);
-                i.setTotalAmount(i.getTotalAmount() + 1);
+
+                if (i.getAmount() < 0) i.setAmount(val * -1);
+                else {
+                    i.setAmount(val * i.getAmount());
+                    i.setTotalAmount(i.getTotalAmount() + 1);
+                }
 
                 if (val == 0) {
                     items.remove(i);
@@ -139,7 +172,6 @@ public class BasketController extends ControllerParent {
                 }
 
                 l.setText(val + "");
-                i.setAmount(val);
 
                 box.lookup("#btnAdd").setDisable(false);
                 setCosts(box, i);
@@ -166,10 +198,14 @@ public class BasketController extends ControllerParent {
 
                 StockItem i = items.get(index);
                 DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
-                i.setAmount(val);
-                i.setTotalAmount(i.getTotalAmount() - 1);
 
-                if (i.getTotalAmount() == 0) {
+                if (i.getAmount() < 0) i.setAmount(val * -1);
+                else {
+                    i.setAmount(val * i.getAmount());
+                    i.setTotalAmount(i.getTotalAmount() - 1);
+                }
+
+                if (i.getAmount() > 0 && i.getTotalAmount() == 0) {
                     n.setDisable(true);
                 }
 

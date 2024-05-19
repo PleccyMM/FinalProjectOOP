@@ -46,6 +46,10 @@ public abstract class StockItem {
     public void setAmount(int amount) {
         this.amount = amount;
     }
+    public int getPrintAmount() {
+        if (amount < 0) return amount * -1;
+        return amount;
+    }
 
     public int getTotalAmount() {
         return totalAmount;

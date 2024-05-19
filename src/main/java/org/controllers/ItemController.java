@@ -57,6 +57,8 @@ public class ItemController extends ControllerParent {
     private String selectedSize;
     private VBox boxSelected;
 
+    private String btnBasketPrefix;
+
     @Override
     protected void stageChangeHandle() {
         if (loadedPos == null) return;
@@ -84,7 +86,10 @@ public class ItemController extends ControllerParent {
                 DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
 
                 setUpOptions();
-                btnAddToBasket.setText("Update Item");
+                btnBasketPrefix = "Update";
+            }
+            else {
+                btnBasketPrefix = "Add to";
             }
             populateInfo();
             updateItem();
@@ -171,7 +176,7 @@ public class ItemController extends ControllerParent {
     private void setUpOptions() {
         boxSelected.setStyle("-fx-background-color: transparent");
 
-        lblIncriment.setText(item.getAmount() + "");
+        lblIncriment.setText(item.getPrintAmount() + "");
         var s = cmbModifications.getSelectionModel();
 
         if (item instanceof Flag f) {
@@ -207,6 +212,7 @@ public class ItemController extends ControllerParent {
             }
         }
 
+        tglImportExport.setToLeft(item.getAmount() < 0);
         boxSelected.setStyle("-fx-background-color: #9D9D9D88");
     }
 
@@ -286,7 +292,10 @@ public class ItemController extends ControllerParent {
 
         int amount = Integer.parseInt(lblIncriment.getText());
         int newAmount = Math.min(amount, item.getTotalAmount());
-        item.setAmount(newAmount);
+
+        if (tglImportExport.getToLeft().get()) item.setAmount(newAmount * -1);
+        else item.setAmount(newAmount);
+
         if (amount != newAmount) lblIncriment.setText(newAmount + "");
 
         btnAdd.setDisable(false);
@@ -294,7 +303,10 @@ public class ItemController extends ControllerParent {
         if (newAmount == 1) btnMinus.setDisable(true);
         else if (newAmount == item.getTotalAmount()) btnAdd.setDisable(true);
 
-        String totalCost = eurFormatter.format(price * item.getAmount());
+        if (tglImportExport.getToLeft().get()) btnAddToBasket.setText(btnBasketPrefix + " Import");
+        else btnAddToBasket.setText(btnBasketPrefix + " Export");
+
+        String totalCost = eurFormatter.format(price * newAmount);
         lblTotalPrice.setText(totalCost);
     }
 
@@ -304,6 +316,7 @@ public class ItemController extends ControllerParent {
         });
     }
     private void listenerToggleImport() {
+        tglImportExport.setToLeft(false);
         tglImportExport.getToLeft().addListener((observable, oldValue, newValue) -> {
             updateItem();
         });
