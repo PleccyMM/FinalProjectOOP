@@ -43,14 +43,40 @@
                     <padding>
                         <Insets right="12" top="8" left="12" bottom="8"/>
                     </padding>
-                    <Label id="checkout-label" text="Subtotal:"/>
-                    <Label id="checkout-label" text="Savings:"/>
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Export Sales:"/>
+                        <Label fx:id="lblExportSales" styleClass="checkout-label"/>
+                    </HBox>
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Export Costs:"/>
+                        <Label fx:id="lblExportCosts" styleClass="checkout-label"/>
+                    </HBox>
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Export Subtotal:"/>
+                        <Label fx:id="lblExportSubtotal" styleClass="checkout-label"/>
+                    </HBox>
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Import Costs:"/>
+                        <Label fx:id="lblImportCosts" styleClass="checkout-label"/>
+                    </HBox>
                     <Pane id="light-blue-fill" minHeight="3"/>
-                    <Label id="checkout-label" text="Total Price:"/>
-                    <Button id="btnBlue"
-                            style="-fx-font-size: 12; -fx-background-radius: 15;"
-                            text="Checkout"
-                    />
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Total Profit:"/>
+                        <Label fx:id="lblTotal" styleClass="checkout-label"/>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button id="btnBlue"
+                                style="-fx-font-size: 12; -fx-background-radius: 15;"
+                                text="Checkout"
+                                onAction="#btnCheckoutClick"
+                        />
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button id="btnPrint"
+                                minWidth="35"
+                                minHeight="35"
+                                onAction="#btnPrintClick"/>
+                    </HBox>
+
                 </VBox>
             </VBox>
         </HBox>

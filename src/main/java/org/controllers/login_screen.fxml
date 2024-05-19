@@ -48,11 +48,11 @@
 
         <TextField fx:id="enrName"
                    promptText="Username"
-                   text="Mark"
+                   text="Katherine"
         />
         <PasswordField fx:id="enrPassword"
                        promptText="Password"
-                       text="testpassword1"
+                       text="testpassword2"
         />
 
         <Label id="white-label"

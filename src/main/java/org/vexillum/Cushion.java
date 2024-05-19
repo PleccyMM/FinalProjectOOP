@@ -38,8 +38,10 @@ public class Cushion extends StockItem {
     }
 
     @Override
-    public float calculatePrice() {
-        float cost = size.getValue();
+    public double calculatePrice() {
+        if (amount < 0) return DatabaseControl.getPrice(this.getSizeID());
+
+        double cost = size.getValue();
         if (!justCase) cost += material.getValue();
         return cost;
     }

@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2f88d7d3-992b-4ffa-83d1-0889a0e04492" name="Changes" comment="Checkout works, and some design changes" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="FinalProject" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="Class" />
+        <option value="FxmlFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;PleccyMM&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/PleccyMM/FinalProjectOOP.git&quot;,
+    &quot;accountId&quot;: &quot;91667289-f2a5-4c96-ba46-3b73d0c5dde1&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;PleccyMM&quot;,
+    &quot;repository&quot;: &quot;FinalProjectOOP&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2eVueCcy1yKtD5iZ1VBSiF2GWWo" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Gradle.FinalProject [buildDependents].executor": "Run",
+    "Gradle.FinalProject [build].executor": "Run",
+    "Gradle.FinalProject [classes].executor": "Run",
+    "Gradle.FinalProject [clean].executor": "Run",
+    "Gradle.FinalProject [jar].executor": "Run",
+    "Gradle.FinalProject [run].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main-dev",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/plecc/OneDrive - The University of Winchester/Year 2/BS2202 - Object Oriented Programming/FinalProject",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\plecc\OneDrive - The University of Winchester\Year 2\BS2202 - Object Oriented Programming\repo\FinalProject\src\main\java\org\Assets\Icons" />
+      <recent name="C:\Users\plecc\OneDrive - The University of Winchester\Year 2\BS2202 - Object Oriented Programming\repo\FinalProject\src\main\java\org" />
+      <recent name="C:\Users\plecc\OneDrive - The University of Winchester\Year 2\BS2202 - Object Oriented Programming\repo\FinalProject\src\main\java" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.FinalProject [run]">
+    <configuration name="FinalProject [buildDependents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="buildDependents" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="FinalProject [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="FinalProject [classes]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="classes" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="FinalProject [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="FinalProject [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="run" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.FinalProject [run]" />
+        <item itemvalue="Gradle.FinalProject [clean]" />
+        <item itemvalue="Gradle.FinalProject [build]" />
+        <item itemvalue="Gradle.FinalProject [buildDependents]" />
+        <item itemvalue="Gradle.FinalProject [classes]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f88d7d3-992b-4ffa-83d1-0889a0e04492" name="Changes" comment="" />
+      <created>1712002160306</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712002160306</updated>
+      <workItem from="1712002161385" duration="13074000" />
+      <workItem from="1712051255682" duration="5312000" />
+      <workItem from="1712076236449" duration="6082000" />
+      <workItem from="1712101409856" duration="1146000" />
+      <workItem from="1712135402045" duration="17688000" />
+      <workItem from="1712159147281" duration="12502000" />
+      <workItem from="1712222196609" duration="4102000" />
+      <workItem from="1712233572465" duration="14080000" />
+      <workItem from="1712394292730" duration="27183000" />
+      <workItem from="1712489308949" duration="10727000" />
+      <workItem from="1712500650992" duration="5650000" />
+      <workItem from="1712506433403" duration="2022000" />
+      <workItem from="1712518285372" duration="53000" />
+      <workItem from="1712518627579" duration="11733000" />
+      <workItem from="1712565909726" duration="4099000" />
+      <workItem from="1712608108352" duration="1307000" />
+      <workItem from="1712655992752" duration="9251000" />
+      <workItem from="1712677752290" duration="92000" />
+      <workItem from="1712690058537" duration="8488000" />
+      <workItem from="1712953762687" duration="761000" />
+      <workItem from="1713000838272" duration="18016000" />
+      <workItem from="1713085597646" duration="3304000" />
+      <workItem from="1713193032801" duration="13982000" />
+      <workItem from="1713258701324" duration="13907000" />
+      <workItem from="1713281905810" duration="827000" />
+      <workItem from="1713341818232" duration="26495000" />
+      <workItem from="1713440736249" duration="4362000" />
+      <workItem from="1713469527197" duration="2249000" />
+      <workItem from="1713526273018" duration="10764000" />
+      <workItem from="1713610297022" duration="21790000" />
+      <workItem from="1713641439142" duration="8648000" />
+      <workItem from="1713693108200" duration="12012000" />
+      <workItem from="1713920491867" duration="619000" />
+      <workItem from="1714213953711" duration="131000" />
+    </task>
+    <task id="LOCAL-00010" summary="Initial functional loading of stock and scrolling">
+      <option name="closed" value="true" />
+      <created>1712161750264</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1712161750264</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Mostly finalised stock screen">
+      <option name="closed" value="true" />
+      <created>1712174204652</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1712174204652</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Made login_screen a VBox rather than grid">
+      <option name="closed" value="true" />
+      <created>1712222611226</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1712222611226</updated>
+    </task>
+    <task id="LOCAL-00013" summary="some small changes">
+      <option name="closed" value="true" />
+      <created>1712240615173</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1712240615173</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Started work on itemview screen">
+      <option name="closed" value="true" />
+      <created>1712397226379</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1712397226379</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Initial searching working, getting pretty messy now">
+      <option name="closed" value="true" />
+      <created>1712429334828</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1712429334828</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Fixed some names">
+      <option name="closed" value="true" />
+      <created>1712430910721</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1712430910721</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Some progress on item screen, pretty barebones still and WIP">
+      <option name="closed" value="true" />
+      <created>1712501373167</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1712501373167</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Lovely and CSS styled">
+      <option name="closed" value="true" />
+      <created>1712504832692</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1712504832692</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added header functionality to parent for screens, implemented search functionality into item screen">
+      <option name="closed" value="true" />
+      <created>1712505884413</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1712505884413</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Minor final changes for full merge">
+      <option name="closed" value="true" />
+      <created>1712506203262</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1712506203262</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Started working on tags, maybe revist how to do enum in database">
+      <option name="closed" value="true" />
+      <created>1712525297946</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1712525297946</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Working on itemcontroller">
+      <option name="closed" value="true" />
+      <created>1712658599766</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1712658599766</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Pricing better, pushing for moving workstation">
+      <option name="closed" value="true" />
+      <created>1712674268254</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1712674268254</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Lots of progress on item view">
+      <option name="closed" value="true" />
+      <created>1713004868882</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1713004868882</updated>
+    </task>
+    <task id="LOCAL-00025" summary="County flag stuff">
+      <option name="closed" value="true" />
+      <created>1713006955747</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1713006955747</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Initial work on basket">
+      <option name="closed" value="true" />
+      <created>1713015651977</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1713015651977</updated>
+    </task>
+    <task id="LOCAL-00027" summary="More work on basket screen, time for tags">
+      <option name="closed" value="true" />
+      <created>1713193161046</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1713193161046</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Itemcontroller uses lookup">
+      <option name="closed" value="true" />
+      <created>1713193372585</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1713193372585</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Database connections and mapping for key stock items">
+      <option name="closed" value="true" />
+      <created>1713198355852</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1713198355852</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Refactored stock controller to use lookup">
+      <option name="closed" value="true" />
+      <created>1713216333847</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1713216333847</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Added functional stock and restock, and UI improvements">
+      <option name="closed" value="true" />
+      <created>1713220872949</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1713220872949</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Fixed some tags">
+      <option name="closed" value="true" />
+      <created>1713222294864</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1713222294864</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Minor tweaks to design">
+      <option name="closed" value="true" />
+      <created>1713258834376</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1713258834376</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Groundwork for tag selection">
+      <option name="closed" value="true" />
+      <created>1713262746446</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1713262746446</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Working on sql query changes">
+      <option name="closed" value="true" />
+      <created>1713278984048</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1713278984048</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Fixes">
+      <option name="closed" value="true" />
+      <created>1713281712264</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1713281712264</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Fully functional tag searching">
+      <option name="closed" value="true" />
+      <created>1713344802620</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1713344802620</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Radiobutton designs">
+      <option name="closed" value="true" />
+      <created>1713345826191</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1713345826192</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Minor import change">
+      <option name="closed" value="true" />
+      <created>1713350296504</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1713350296504</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Modification of items in basket possible">
+      <option name="closed" value="true" />
+      <created>1713360570885</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1713360570885</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Disabling of buttons and cleanup and bugfixing for searching outside of stockcontrol">
+      <option name="closed" value="true" />
+      <created>1713363011670</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1713363011670</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Modifications of cushions fully possible">
+      <option name="closed" value="true" />
+      <created>1713364278239</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1713364278239</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Minor fix for size editing on cushions">
+      <option name="closed" value="true" />
+      <created>1713366190166</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1713366190166</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Size highlighting">
+      <option name="closed" value="true" />
+      <created>1713369158926</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1713369158926</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Added popup, no database functionality">
+      <option name="closed" value="true" />
+      <created>1713392379333</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1713392379333</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Restocking database functionality">
+      <option name="closed" value="true" />
+      <created>1713393461406</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1713393461406</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Fixed over ordering when changing sizes">
+      <option name="closed" value="true" />
+      <created>1713537909748</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1713537909748</updated>
+    </task>
+    <task id="LOCAL-00048" summary="New flags and flag fixes">
+      <option name="closed" value="true" />
+      <created>1713542861137</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1713542861137</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Hoists can't be added to smaller flags">
+      <option name="closed" value="true" />
+      <created>1713611923429</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1713611923429</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Adding to basket now subtracts the stock, also fixed potential bug where items could be overadded">
+      <option name="closed" value="true" />
+      <created>1713617482159</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1713617482160</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Restock warnings and fix to the small size display">
+      <option name="closed" value="true" />
+      <created>1713623714229</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1713623714229</updated>
+    </task>
+    <task id="LOCAL-00052" summary="New icon">
+      <option name="closed" value="true" />
+      <created>1713624091485</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1713624091485</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Sizes displayed">
+      <option name="closed" value="true" />
+      <created>1713629988345</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1713629988345</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Fixes for sizes and button change">
+      <option name="closed" value="true" />
+      <created>1713630725650</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1713630725650</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Printing of individual stock information, item screen completely finished">
+      <option name="closed" value="true" />
+      <created>1713642133416</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1713642133417</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Fix for hover not changing colour of some buttons">
+      <option name="closed" value="true" />
+      <created>1713642953699</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1713642953699</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Modification of amounts on stock screen, and removal">
+      <option name="closed" value="true" />
+      <created>1713697573247</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1713697573247</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Checkout works, and some design changes">
+      <option name="closed" value="true" />
+      <created>1713700437635</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1713700437635</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Groundwork for tag selection" />
+    <MESSAGE value="Working on sql query changes" />
+    <MESSAGE value="Fixes" />
+    <MESSAGE value="Fully functional tag searching" />
+    <MESSAGE value="Radiobutton designs" />
+    <MESSAGE value="Minor import change" />
+    <MESSAGE value="Modification of items in basket possible" />
+    <MESSAGE value="Disabling of buttons and cleanup and bugfixing for searching outside of stockcontrol" />
+    <MESSAGE value="Modifications of cushions fully possible" />
+    <MESSAGE value="Minor fix for size editing on cushions" />
+    <MESSAGE value="Size highlighting" />
+    <MESSAGE value="Added popup, no database functionality" />
+    <MESSAGE value="Restocking database functionality" />
+    <MESSAGE value="Fixed over ordering when changing sizes" />
+    <MESSAGE value="New flags and flag fixes" />
+    <MESSAGE value="Hoists can't be added to smaller flags" />
+    <MESSAGE value="Adding to basket now subtracts the stock, also fixed potential bug where items could be overadded" />
+    <MESSAGE value="Restock warnings and fix to the small size display" />
+    <MESSAGE value="New icon" />
+    <MESSAGE value="Sizes displayed" />
+    <MESSAGE value="Fixes for sizes and button change" />
+    <MESSAGE value="Printing of individual stock information, item screen completely finished" />
+    <MESSAGE value="Fix for hover not changing colour of some buttons" />
+    <MESSAGE value="Modification of amounts on stock screen, and removal" />
+    <MESSAGE value="Checkout works, and some design changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Checkout works, and some design changes" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

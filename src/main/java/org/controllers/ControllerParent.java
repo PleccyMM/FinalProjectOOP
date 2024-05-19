@@ -1,6 +1,8 @@
 package org.controllers;
 
 import javafx.event.*;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -37,6 +39,13 @@ public abstract class ControllerParent {
             enrSearch = (TextField) headerBox.lookup("#enrSearch");
             enrSearch.setText(sc.getSearch());
             enrSearch.setOnKeyPressed(searchHandleEnr);
+
+            ComboBox cmbProfile = ((ComboBox) headerBox.lookup("#cmbProfile"));
+            cmbProfile.setOnAction(cmbProfileChange);
+            if (operator.isAdministrator()) {
+                cmbProfile.getItems().add("Admin Panel");
+            }
+            cmbProfile.getItems().add("Logout");
         }
         catch (Exception e) {
             throw new RuntimeException();
@@ -94,6 +103,26 @@ public abstract class ControllerParent {
             try {
                 stageChangeHandle();
                 l.showBasket(stage, items, operator);
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    EventHandler<ActionEvent> cmbProfileChange = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                ComboBox c = (ComboBox) source;
+
+                if (c.getValue() == "Admin Panel") {
+                    l.showAdmin(stage, items, operator);
+                }
+                else {
+                    l.showLogin(stage);
+                }
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

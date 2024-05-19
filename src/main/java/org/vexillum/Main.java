@@ -9,12 +9,9 @@ import javafx.scene.control.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import org.controllers.Loader;
-
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
-public class Main extends Application
-{
+public class Main extends Application {
     private final Loader loader = new Loader();
 
     @Override
@@ -30,8 +27,8 @@ public class Main extends Application
         //DatabaseControl.AddCushions();
         //DatabaseControl.SetAmounts();
 
-        //loader.showLogin(stage);
-        loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), new SearchConditions());
+        loader.showLogin(stage);
+        //loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), new SearchConditions());
     }
 
     public static void main(String[] args) {

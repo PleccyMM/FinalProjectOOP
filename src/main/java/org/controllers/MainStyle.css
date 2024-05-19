@@ -61,11 +61,13 @@
     -fx-font-weight: bold;
 }
 #lblPrice,
+#lblImportExport,
 #title-black {
     -fx-text-fill: #000000;
     -fx-font-size: 48px;
     -fx-font-weight: bold;
 }
+.checkout-label,
 #checkout-label,
 #lblPriceSingle,
 #lblSubtotal {
@@ -141,7 +143,12 @@
     -fx-shape: "M0 10C0 4.47715 4.47715 0 10 0H44V44H10C4.47715 44 0 39.5228 0 34V10Z";
     -fx-graphic: url("../Assets/Icons/Minus.png");
 }
-#btnAdd:hover {
+#btnAddAmount:hover,
+#btnAddRestock:hover,
+#btnAdd:hover,
+#btnMinusAmount:hover,
+#btnMinusRestock:hover,
+#btnMinus:hover {
     -fx-background-color: #C2D0FF;
 }
 #btnMinus:hover {
@@ -187,6 +194,11 @@
     -fx-text-alignment: center;
 }
 
+#cmbProfile {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../Assets/Icons/Profile.png");
+    -fx-background-repeat: no-repeat;
+}
 
 #cmbModifications {
     -fx-background-color: #FFFFFF;
@@ -197,6 +209,7 @@
 }
 .mid-text-black,
 #mid-text-black,
+#lblToggle,
 #lblToggleL,
 #lblToggleR {
     -fx-font-size: 12px;
@@ -224,7 +237,7 @@
 
 #btnBack {
     -fx-background-color: transparent;
-    -fx-graphic: url("../Assets/Icons/BackEnabled.png");;
+    -fx-graphic: url("../Assets/Icons/BackEnabled.png");
 }
 #enrSearch {
     -fx-border-color: transparent;
@@ -246,9 +259,6 @@
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Info.png");
 }
-#image-profile {
-    -fx-image:url('../Assets/Icons/Profile.png');
-}
 #image-corner {
     -fx-image:url('../Assets/Icons/Corner.png');
 }
@@ -257,6 +267,7 @@
     -fx-image:url('../Assets/FlagsSmall/jp.png');
 }
 
+#lblName,
 #lblStockPrice {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
