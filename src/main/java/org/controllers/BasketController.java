@@ -20,8 +20,10 @@ import java.util.Map.Entry;
 public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
-    @FXML private Label lblSubtotal;
-    @FXML private Label lblSavings;
+    @FXML private Label lblImportSales;
+    @FXML private Label lblImportCosts;
+    @FXML private Label lblImportSubtotal;
+    @FXML private Label lblExportCosts;
     @FXML private Label lblTotal;
 
     private HashMap<Integer, StockItem> importItems = new HashMap<>();
@@ -125,13 +127,24 @@ public class BasketController extends ControllerParent {
     private void calculateTotalCost() {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
 
-        float totalPrice = 0;
-        for (StockItem i : items) {
-            totalPrice += i.calculatePrice() * i.getAmount();
+        double importSales = 0;
+        double importCosts = 0;
+        double exportCosts = 0;
+        for (var item : exportItems.entrySet()) {
+            StockItem i = item.getValue();
+            importSales += i.calculatePrice() * i.getAmount();
+            importCosts += DatabaseControl.getPrice(i.getSizeID()) * i.getAmount();
         }
-        lblSubtotal.setText(eurFormatter.format(totalPrice));
+        for (var item : importItems.entrySet()) {
+            StockItem i = item.getValue();
+            exportCosts += i.calculatePrice() * i.getPrintAmount();
+        }
 
-        lblTotal.setText(eurFormatter.format(totalPrice));
+        lblImportSales.setText(eurFormatter.format(importSales));
+        lblImportCosts.setText(eurFormatter.format(importCosts));
+        lblImportSubtotal.setText(eurFormatter.format(importSales - importCosts));
+        lblExportCosts.setText(eurFormatter.format(exportCosts));
+        lblTotal.setText(eurFormatter.format(importSales - importCosts - exportCosts));
     }
 
     @FXML

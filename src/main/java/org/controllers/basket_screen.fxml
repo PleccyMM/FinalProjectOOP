@@ -44,16 +44,24 @@
                         <Insets right="12" top="8" left="12" bottom="8"/>
                     </padding>
                     <HBox spacing="5">
-                        <Label id="checkout-label" text="Subtotal:"/>
-                        <Label fx:id="lblSubtotal" styleClass="checkout-label"/>
+                        <Label id="checkout-label" text="Import Sales:"/>
+                        <Label fx:id="lblImportSales" styleClass="checkout-label"/>
                     </HBox>
                     <HBox spacing="5">
-                        <Label id="checkout-label" text="Savings:"/>
-                        <Label fx:id="lblSavings" styleClass="checkout-label"/>
+                        <Label id="checkout-label" text="Import Costs:"/>
+                        <Label fx:id="lblImportCosts" styleClass="checkout-label"/>
+                    </HBox>
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Import Subtotal:"/>
+                        <Label fx:id="lblImportSubtotal" styleClass="checkout-label"/>
+                    </HBox>
+                    <HBox spacing="5">
+                        <Label id="checkout-label" text="Export Costs:"/>
+                        <Label fx:id="lblExportCosts" styleClass="checkout-label"/>
                     </HBox>
                     <Pane id="light-blue-fill" minHeight="3"/>
                     <HBox spacing="5">
-                        <Label id="checkout-label" text="Total Price:"/>
+                        <Label id="checkout-label" text="Total Profit:"/>
                         <Label fx:id="lblTotal" styleClass="checkout-label"/>
                     </HBox>
                     <HBox spacing="10" alignment="CENTER_LEFT">
