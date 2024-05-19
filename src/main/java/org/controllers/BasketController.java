@@ -24,6 +24,9 @@ public class BasketController extends ControllerParent {
     @FXML private Label lblSavings;
     @FXML private Label lblTotal;
 
+    private HashMap<Integer, StockItem> importItems = new HashMap<>();
+    private HashMap<Integer, StockItem> exportItems = new HashMap<>();
+
     @Override
     protected void stageChangeHandle() {}
 
@@ -43,25 +46,25 @@ public class BasketController extends ControllerParent {
     private void createItems() throws Exception {
         int index = 0;
 
-        HashMap<Integer, StockItem> importItems = new HashMap<>();
-        HashMap<Integer, StockItem> exportItems = new HashMap<>();
-
         for (StockItem i : items) {
             if (i.getAmount() < 0) importItems.put(index, i);
             else exportItems.put(index, i);
             index++;
         }
 
-        HBox boxImport = new HBox();
-        boxImport.setStyle("-fx-background-color: #0000FF;");
-        boxImport.setMinHeight(32);
-        boxScroll.getChildren().add(boxImport);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
+        Parent itemView = loader.load();
+        HBox box = (HBox) itemView;
+        ((Label) box.lookup("#lblImportExport")).setText("Imports");
+        boxScroll.getChildren().add(box);
         addItem(importItems);
 
-        HBox boxExport = new HBox();
-        boxExport.setStyle("-fx-background-color: #00FF00;");
-        boxExport.setMinHeight(32);
-        boxScroll.getChildren().add(boxExport);
+        loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
+        itemView = loader.load();
+        box = (HBox) itemView;
+        ((Label) box.lookup("#lblImportExport")).setText("Exports");
+        boxScroll.getChildren().add(box);
         addItem(exportItems);
 
         calculateTotalCost();
@@ -100,6 +103,10 @@ public class BasketController extends ControllerParent {
 
             ((Button) box.lookup("#btnEdit")).setOnAction(btnEditClick);
 
+            if (i.getAmount() < 0) {
+                box.getChildren().remove(box.lookup("#btnInformation"));
+            }
+
             box.setId(index + "");
             boxScroll.getChildren().add(box);
         }
@@ -129,12 +136,18 @@ public class BasketController extends ControllerParent {
 
     @FXML
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
+        for(var item : importItems.entrySet()) {
+            StockItem i = item.getValue();
+            DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+        }
         for (int i = 0; i < items.size(); i++) {
             Node b = boxScroll.lookup("#" + i);
             boxScroll.getChildren().remove(b);
         }
 
         items.clear();
+        importItems.clear();
+        exportItems.clear();
         calculateTotalCost();
     }
 

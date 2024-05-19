@@ -81,9 +81,11 @@ public class ItemController extends ControllerParent {
             listenerToggleMat();
             listenerToggleImport();
             if (loadedPos != null) {
-                int newAmount = item.getTotalAmount() + item.getAmount();
-                item.setTotalAmount(newAmount);
-                DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+                if (item.getAmount() > 0) {
+                    int newAmount = item.getTotalAmount() + item.getAmount();
+                    item.setTotalAmount(newAmount);
+                    DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+                }
 
                 setUpOptions();
                 btnBasketPrefix = "Update";
@@ -277,21 +279,9 @@ public class ItemController extends ControllerParent {
 
         DatabaseControl.setStockData(item);
 
-        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        double price = item.calculatePrice();
-        String cost = eurFormatter.format(price);
-
-        if (!cmbModifications.getSelectionModel().isEmpty() || (!isFlag && !tglMaterial.getToLeft().get()) || (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND))) {
-            lblPrice.setText(cost);
-            btnAddToBasket.setDisable(false);
-        }
-        else {
-            lblPrice.setText(cost + "+");
-            btnAddToBasket.setDisable(true);
-        }
 
         int amount = Integer.parseInt(lblIncriment.getText());
-        int newAmount = Math.min(amount, item.getTotalAmount());
+        int newAmount = tglImportExport.getToLeft().get() ? amount : Math.min(amount, item.getTotalAmount());
 
         if (tglImportExport.getToLeft().get()) item.setAmount(newAmount * -1);
         else item.setAmount(newAmount);
@@ -301,10 +291,32 @@ public class ItemController extends ControllerParent {
         btnAdd.setDisable(false);
         btnMinus.setDisable(false);
         if (newAmount == 1) btnMinus.setDisable(true);
-        else if (newAmount == item.getTotalAmount()) btnAdd.setDisable(true);
+        if (newAmount >= item.getTotalAmount() && item.getAmount() > 0) btnAdd.setDisable(true);
 
         if (tglImportExport.getToLeft().get()) btnAddToBasket.setText(btnBasketPrefix + " Import");
         else btnAddToBasket.setText(btnBasketPrefix + " Export");
+
+
+        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+        double price = item.calculatePrice();
+        String cost = eurFormatter.format(price);
+
+        if (!cmbModifications.getSelectionModel().isEmpty() ||
+            (!isFlag && !tglMaterial.getToLeft().get()) ||
+            (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND)) ||
+            item.getAmount() < 0) {
+            lblPrice.setText(cost);
+            btnAddToBasket.setDisable(false);
+
+            if (item.getAmount() < 0) {
+                cmbModifications.setDisable(true);
+                tglMaterial.setDisable(true);
+            }
+        }
+        else {
+            lblPrice.setText(cost + "+");
+            btnAddToBasket.setDisable(true);
+        }
 
         String totalCost = eurFormatter.format(price * newAmount);
         lblTotalPrice.setText(totalCost);
@@ -351,7 +363,7 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnMinusClick(ActionEvent event) throws Exception {
         int val = Integer.parseInt(lblIncriment.getText());
-        if (val > 1) val -= 1;
+        val -= 1;
 
         lblIncriment.setText(String.valueOf(val));
         updateItem();
@@ -360,7 +372,7 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnAddClick(ActionEvent event) throws Exception {
         int val = Integer.parseInt(lblIncriment.getText());
-        if (val < item.getTotalAmount()) val += 1;
+        val += 1;
 
         lblIncriment.setText(String.valueOf(val));
         updateItem();
@@ -538,9 +550,11 @@ public class ItemController extends ControllerParent {
         if (loadedPos != null) items.set(loadedPos, item);
         else items.add(item);
 
-        int newAmount = item.getTotalAmount() - item.getAmount();
-        item.setTotalAmount(newAmount);
-        DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+        if (item.getAmount() > 0) {
+            int newAmount = item.getTotalAmount() - item.getAmount();
+            item.setTotalAmount(newAmount);
+            DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+        }
 
         l.showBasket(stage, items, operator);
     }
