@@ -36,8 +36,10 @@ public class Flag extends StockItem {
     }
 
     @Override
-    public float calculatePrice() {
-        float cost = size.getValue();
+    public double calculatePrice() {
+        if (amount < 0) return DatabaseControl.getPrice(this.getSizeID());
+
+        double cost = size.getValue();
         cost += material.getValue();
         cost += hoist.getValue();
         return cost;

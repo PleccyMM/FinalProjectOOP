@@ -107,7 +107,7 @@ public class BasketController extends ControllerParent {
 
     private void setCosts(Node b, StockItem i) {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        float price = i.calculatePrice();
+        double price = i.calculatePrice();
         String cost = eurFormatter.format(price);
         String subtotal = eurFormatter.format(price * i.getPrintAmount());
 

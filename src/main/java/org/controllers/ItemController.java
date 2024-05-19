@@ -278,7 +278,7 @@ public class ItemController extends ControllerParent {
         DatabaseControl.setStockData(item);
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        float price = item.calculatePrice();
+        double price = item.calculatePrice();
         String cost = eurFormatter.format(price);
 
         if (!cmbModifications.getSelectionModel().isEmpty() || (!isFlag && !tglMaterial.getToLeft().get()) || (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND))) {

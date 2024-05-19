@@ -12,7 +12,7 @@ public abstract class StockItem {
     protected int sizeID;
 
     public abstract StockItem clone();
-    public abstract float calculatePrice();
+    public abstract double calculatePrice();
 
     public StockItem() {}
 
