@@ -208,6 +208,7 @@
 }
 .mid-text-black,
 #mid-text-black,
+#lblToggle,
 #lblToggleL,
 #lblToggleR {
     -fx-font-size: 12px;

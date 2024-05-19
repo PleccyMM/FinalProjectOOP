@@ -45,7 +45,8 @@ public class ItemController extends ControllerParent {
     @FXML private Button btnMinus;
     @FXML private Label lblIncriment;
     @FXML private ComboBox cmbModifications;
-    @FXML private ToggleSwitch tglSwitch;
+    @FXML private ToggleSwitch tglMaterial;
+    @FXML private ToggleSwitch tglImportExport;
 
     @FXML private Button btnAddToBasket;
 
@@ -75,7 +76,8 @@ public class ItemController extends ControllerParent {
 
             loadHeader(stage, operator, items, headerBox, new SearchConditions());
             typeSetUp();
-            listenerToggle();
+            listenerToggleMat();
+            listenerToggleImport();
             if (loadedPos != null) {
                 int newAmount = item.getTotalAmount() + item.getAmount();
                 item.setTotalAmount(newAmount);
@@ -184,10 +186,10 @@ public class ItemController extends ControllerParent {
                 case WOODEN -> s.select(3);
             }
             if (f.getSize() == FLAG_SIZE.HAND || f.getSize() == FLAG_SIZE.DESK) {
-                tglSwitch.setToLeft(f.getMaterial() == FLAG_MATERIAL.PAPER);
+                tglMaterial.setToLeft(f.getMaterial() == FLAG_MATERIAL.PAPER);
             }
             else {
-                tglSwitch.setToLeft(f.getMaterial() == FLAG_MATERIAL.POLYESTER);
+                tglMaterial.setToLeft(f.getMaterial() == FLAG_MATERIAL.POLYESTER);
             }
         }
         else if (item instanceof Cushion c) {
@@ -195,7 +197,7 @@ public class ItemController extends ControllerParent {
             Node n = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
             boxSelected = (VBox) n.lookup("#boxSelect");
 
-            tglSwitch.setToLeft(!c.isJustCase());
+            tglMaterial.setToLeft(!c.isJustCase());
 
             switch (c.getMaterial()) {
                 case FOAM -> s.select(0);
@@ -223,7 +225,7 @@ public class ItemController extends ControllerParent {
                 lblToggleR.setText("Nylon (\u00A33)");
             }
 
-            if (tglSwitch.getToLeft().get()) {
+            if (tglMaterial.getToLeft().get()) {
                 f.setMaterial(FLAG_MATERIAL.getType(lblToggleL.getText().split(" ")[0]));
             }
             else {
@@ -249,7 +251,7 @@ public class ItemController extends ControllerParent {
             c.setSize(cs);
             c.setSizeID(CUSHION_SIZE.getSizeId(cs));
 
-            boolean justCase = !tglSwitch.getToLeft().get();
+            boolean justCase = !tglMaterial.getToLeft().get();
             c.setJustCase(justCase);
 
             if (!justCase) {
@@ -273,7 +275,7 @@ public class ItemController extends ControllerParent {
         float price = item.calculatePrice();
         String cost = eurFormatter.format(price);
 
-        if (!cmbModifications.getSelectionModel().isEmpty() || (!isFlag && !tglSwitch.getToLeft().get()) || (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND))) {
+        if (!cmbModifications.getSelectionModel().isEmpty() || (!isFlag && !tglMaterial.getToLeft().get()) || (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND))) {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
         }
@@ -296,8 +298,13 @@ public class ItemController extends ControllerParent {
         lblTotalPrice.setText(totalCost);
     }
 
-    private void listenerToggle() {
-        tglSwitch.getToLeft().addListener((observable, oldValue, newValue) -> {
+    private void listenerToggleMat() {
+        tglMaterial.getToLeft().addListener((observable, oldValue, newValue) -> {
+            updateItem();
+        });
+    }
+    private void listenerToggleImport() {
+        tglImportExport.getToLeft().addListener((observable, oldValue, newValue) -> {
             updateItem();
         });
     }
@@ -357,14 +364,8 @@ public class ItemController extends ControllerParent {
 
         box.lookup("#boxContainment").setOnMouseClicked(ignoreHideClick);
 
-        ((Label) box.lookup("#lblIncrimentAmount")).setText(item.getTotalAmount() + "");
-        Button b = (Button) box.lookup("#btnMinusAmount");
-        b.setOnAction(btnMinusAmountClick);
-        ((Button) box.lookup("#btnAddAmount")).setOnAction(btnAddAmountClick);
-        b.setDisable(true);
-
         ((Label) box.lookup("#lblIncrimentRestock")).setText(item.getRestock() + "");
-        b = (Button) box.lookup("#btnMinusRestock");
+        Button b = (Button) box.lookup("#btnMinusRestock");
         b.setOnAction(btnMinusRestockClick);
         ((Button) box.lookup("#btnAddRestock")).setOnAction(btnAddRestockClick);
         if (item.getRestock() == 1) b.setDisable(true);
@@ -375,25 +376,6 @@ public class ItemController extends ControllerParent {
         panStacker.getChildren().add(box);
     }
 
-    EventHandler<ActionEvent> btnMinusAmountClick = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            try {
-                Object source = event.getSource();
-
-                Node b = (Node) source;
-                Label l = (Label) b.getParent().lookup("#lblIncrimentAmount");
-
-                int newAmount = Integer.parseInt(l.getText()) - 1;
-
-                l.setText(newAmount + "");
-                if (newAmount == item.getTotalAmount()) b.setDisable(true);
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    };
     EventHandler<ActionEvent> btnMinusRestockClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -407,26 +389,6 @@ public class ItemController extends ControllerParent {
 
                 l.setText(newRestock + "");
                 if (newRestock == 1) b.setDisable(true);
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    };
-
-    EventHandler<ActionEvent> btnAddAmountClick = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            try {
-                Object source = event.getSource();
-
-                Node b = (Node) source;
-                Label l = (Label) b.getParent().lookup("#lblIncrimentAmount");
-
-                int newAmount = Integer.parseInt(l.getText()) + 1;
-
-                l.setText(newAmount + "");
-                b.getParent().lookup("#btnMinusAmount").setDisable(false);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -514,7 +476,7 @@ public class ItemController extends ControllerParent {
             try {
                 Object source = event.getSource();
                 Node b = (Node) source;
-                int amount = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrimentAmount")).getText());
+                int amount = item.getTotalAmount();
                 int restock = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrimentRestock")).getText());
 
                 if (restock < amount) {
