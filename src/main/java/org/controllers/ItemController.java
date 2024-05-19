@@ -308,6 +308,7 @@ public class ItemController extends ControllerParent {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
 
+            tglMaterial.setDisable(false);
             if (item.getAmount() < 0) {
                 cmbModifications.setDisable(true);
                 tglMaterial.setDisable(true);

@@ -20,10 +20,10 @@ import java.util.Map.Entry;
 public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
-    @FXML private Label lblImportSales;
-    @FXML private Label lblImportCosts;
-    @FXML private Label lblImportSubtotal;
+    @FXML private Label lblExportSales;
     @FXML private Label lblExportCosts;
+    @FXML private Label lblExportSubtotal;
+    @FXML private Label lblImportCosts;
     @FXML private Label lblTotal;
 
     private HashMap<Integer, StockItem> importItems = new HashMap<>();
@@ -127,24 +127,24 @@ public class BasketController extends ControllerParent {
     private void calculateTotalCost() {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
 
-        double importSales = 0;
-        double importCosts = 0;
+        double exportSales = 0;
         double exportCosts = 0;
+        double importCosts = 0;
         for (var item : exportItems.entrySet()) {
             StockItem i = item.getValue();
-            importSales += i.calculatePrice() * i.getAmount();
-            importCosts += DatabaseControl.getPrice(i.getSizeID()) * i.getAmount();
+            exportSales += i.calculatePrice() * i.getAmount();
+            exportCosts += DatabaseControl.getPrice(i.getSizeID()) * i.getAmount();
         }
         for (var item : importItems.entrySet()) {
             StockItem i = item.getValue();
-            exportCosts += i.calculatePrice() * i.getPrintAmount();
+            importCosts += i.calculatePrice() * i.getPrintAmount();
         }
 
-        lblImportSales.setText(eurFormatter.format(importSales));
-        lblImportCosts.setText(eurFormatter.format(importCosts));
-        lblImportSubtotal.setText(eurFormatter.format(importSales - importCosts));
+        lblExportSales.setText(eurFormatter.format(exportSales));
         lblExportCosts.setText(eurFormatter.format(exportCosts));
-        lblTotal.setText(eurFormatter.format(importSales - importCosts - exportCosts));
+        lblExportSubtotal.setText(eurFormatter.format(exportSales - exportCosts));
+        lblImportCosts.setText(eurFormatter.format(importCosts));
+        lblTotal.setText(eurFormatter.format(exportSales - exportCosts - importCosts));
     }
 
     @FXML
