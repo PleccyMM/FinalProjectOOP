@@ -38,6 +38,7 @@
     -fx-background-color: #C2D0FF;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
 }
+#lblTitle,
 #title-text {
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 48px;
@@ -48,6 +49,7 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
+#lblCreateAccount,
 #white-label {
     -fx-text-fill: #FFFFFF;
     -fx-font-weight: bold;

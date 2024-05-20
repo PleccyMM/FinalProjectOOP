@@ -7,9 +7,7 @@ import org.hibernate.cfg.Configuration;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import org.json.*;
 
@@ -33,20 +31,36 @@ public class DatabaseControl {
         System.out.println("Closed");
     }
 
-    public static List<Operator> getOperators() {
-        openDBSession();
-        var query = databaseSession.createQuery("from Operator");
-        List<Operator> list = query.list();
-        closeDBSession();
-        return list;
-    }
-
     public static List<Operator> getSpecificOperator(String nameSearch) {
         openDBSession();
         var query = databaseSession.createQuery("from Operator where name = '" + nameSearch + "'");
         List<Operator> list = query.list();
         closeDBSession();
         return list;
+    }
+
+    public static List<Integer> getExistentIDs() {
+        openDBSession();
+        var query = databaseSession.createQuery("select operatorID from Operator");
+        List<Integer> list = query.list();
+        closeDBSession();
+        return list;
+    }
+
+    public static void addRequest(int id, String name, String password, Date applicationTime) {
+        openDBSession();
+        databaseSession.beginTransaction();
+        databaseSession.createNativeQuery("insert into operators values ((:id), (:name), (:password), 0, 0)")
+                .setParameter("id", id)
+                .setParameter("name", name)
+                .setParameter("password", password)
+                .executeUpdate();
+        databaseSession.createNativeQuery("insert into operator_approvals values ((:id), (:time))")
+                .setParameter("id", id)
+                .setParameter("time", applicationTime)
+                .executeUpdate();
+        databaseSession.getTransaction().commit();
+        closeDBSession();
     }
 
     public static Design getDeignFromIso(String isoID) {
