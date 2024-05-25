@@ -5,6 +5,12 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+<?import org.vexillum.ToggleSwitch?>
+<?import javafx.collections.FXCollections?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -15,5 +21,9 @@
     <top>
         <fx:include source="header.fxml"/>
     </top>
-
+    <center>
+        <ScrollPane fx:id="scrMain">
+            <VBox fx:id="boxScroll"/>
+        </ScrollPane>
+    </center>
 </BorderPane>

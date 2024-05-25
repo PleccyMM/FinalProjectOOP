@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+<?import org.vexillum.ToggleSwitch?>
+<?import javafx.collections.FXCollections?>
+
+<VBox fx:id="boxDarkening"
+       xmlns="http://javafx.com/javafx"
+       xmlns:fx="http://javafx.com/fxml"
+       stylesheets="@MainStyle.css"
+       style="-fx-background-color: #D9D9D966">
+<VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+    <VBox fx:id="boxContainment" styleClass="white-divider" spacing="10" alignment="CENTER" maxWidth="300">
+        <HBox id="blue-fill" minHeight="32" alignment="CENTER">
+            <padding>
+                <Insets right="8" top="8" left="8" bottom="8"/>
+            </padding>
+            <Label id="subhead-text" text="Modify stock"/>
+        </HBox>
+        <VBox alignment="CENTER" spacing="15">
+            <padding>
+                <Insets right="8" top="8" left="8" bottom="16"/>
+            </padding>
+            <Label id="mid-text-black"
+                   text="Your application has been successful, an operator will decide whether to approve you soon"
+                   wrapText="true"
+            />
+            <Button fx:id="btnBlue"
+                    minWidth="150"
+                    minHeight="35"
+                    style="-fx-font-size: 14; -fx-background-radius: 15;"
+                    text="Okay"/>
+        </VBox>
+    </VBox>
+</VBox>
+</VBox>
