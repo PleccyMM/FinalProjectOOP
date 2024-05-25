@@ -29,6 +29,11 @@ public class AdminController extends ControllerParent {
         if (headerBox == null) { throw new Exception(); }
 
         loadHeader(stage, operator, items, headerBox, new SearchConditions());
+        addOperatorItem();
+    }
+
+    private void addOperatorItem() throws Exception {
+        boxScroll.getChildren().clear();
 
         HashMap<Date, Integer> map = DatabaseControl.getApprovals();
 
@@ -76,14 +81,34 @@ public class AdminController extends ControllerParent {
     EventHandler<ActionEvent> btnAcceptClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
+            Object source = event.getSource();
+            Node n = (Node) source;
+            Node box = n.getParent();
 
+            int id = Integer.parseInt(box.getId());
+            DatabaseControl.acceptOperator(id);
+            try {
+                addOperatorItem();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     };
 
     EventHandler<ActionEvent> btnDenyClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
+            Object source = event.getSource();
+            Node n = (Node) source;
+            Node box = n.getParent();
 
+            int id = Integer.parseInt(box.getId());
+            DatabaseControl.denyOperator(id);
+            try {
+                addOperatorItem();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     };
 

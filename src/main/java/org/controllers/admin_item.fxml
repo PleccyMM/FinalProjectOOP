@@ -14,7 +14,7 @@
 
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      stylesheets="MainStyle.css"
+      stylesheets="@MainStyle.css"
       fx:id="boxControl"
       alignment="CENTER_LEFT"
       spacing="32"

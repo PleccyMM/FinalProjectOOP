@@ -41,10 +41,54 @@ public class DatabaseControl {
     public static List<Operator> getOperatorsByID(Integer[] ids) {
         openDBSession();
         var query = databaseSession.createQuery("from Operator where id in (:ids) order by id asc")
-                .setParameter("ids", ids);
+                .setParameter("ids", Arrays.asList(ids));
         List<Operator> list = query.list();
         closeDBSession();
         return list;
+    }
+
+    public static void acceptOperator(int id) {
+        Transaction transaction = null;
+        try {
+            openDBSession();
+            transaction = databaseSession.beginTransaction();
+            var q1 = databaseSession.createNativeQuery("update operators set approved = 1 where operatorid = (:id)")
+                    .setParameter("id", id);
+            var q2 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
+                    .setParameter("id", id);
+            q1.executeUpdate();
+            q2.executeUpdate();
+            transaction.commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        }
+        finally {
+            closeDBSession();
+        }
+    }
+
+    public static void denyOperator(int id) {
+        Transaction transaction = null;
+        try {
+            openDBSession();
+            transaction = databaseSession.beginTransaction();
+            var q1 = databaseSession.createNativeQuery("delete from operators where operatorid = (:id)")
+                    .setParameter("id", id);
+            var q2 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
+                    .setParameter("id", id);
+            q1.executeUpdate();
+            q2.executeUpdate();
+            transaction.commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            transaction.rollback();
+        }
+        finally {
+            closeDBSession();
+        }
     }
 
     public static List<Integer> getExistentIDs() {
