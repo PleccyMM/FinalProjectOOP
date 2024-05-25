@@ -52,9 +52,9 @@ public class DatabaseControl {
         try {
             openDBSession();
             transaction = databaseSession.beginTransaction();
-            var q1 = databaseSession.createNativeQuery("update operators set approved = 1 where operatorid = (:id)")
+            var q1 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
                     .setParameter("id", id);
-            var q2 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
+            var q2 = databaseSession.createNativeQuery("update operators set approved = 1 where operatorid = (:id)")
                     .setParameter("id", id);
             q1.executeUpdate();
             q2.executeUpdate();
@@ -74,9 +74,9 @@ public class DatabaseControl {
         try {
             openDBSession();
             transaction = databaseSession.beginTransaction();
-            var q1 = databaseSession.createNativeQuery("delete from operators where operatorid = (:id)")
+            var q1 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
                     .setParameter("id", id);
-            var q2 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
+            var q2 = databaseSession.createNativeQuery("delete from operators where operatorid = (:id)")
                     .setParameter("id", id);
             q1.executeUpdate();
             q2.executeUpdate();
