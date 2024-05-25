@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.image.ImageView?>
+<?import org.vexillum.ToggleSwitch?>
+<?import javafx.collections.FXCollections?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      stylesheets="MainStyle.css"
+      fx:id="boxControl"
+      alignment="CENTER_LEFT"
+      spacing="32"
+      styleClass="white-divider">
+    <padding>
+        <Insets right="8" top="8" left="8" bottom="8"/>
+    </padding>
+
+    <Label fx:id="lblName"/>
+    <Label fx:id="lblApplicationTime"/>
+    <Button fx:id="btnAccept" text="Accept"/>
+    <Button fx:id="btnDeny" text="Deny"/>
+</HBox>

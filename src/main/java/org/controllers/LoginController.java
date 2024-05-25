@@ -28,16 +28,28 @@ public class LoginController {
     @FXML private Button btnLogin;
 
     @FXML
-    protected void handleBtnLogin(ActionEvent event) throws Exception {
-        if (btnLogin.getText().equals("Login")) {
+    private void handleBtnLogin(ActionEvent event) throws Exception {
+        attemptLogin();
+    }
+    @FXML
+    private void textHandleEnr(KeyEvent event) {
+        if (event.getCode() != KeyCode.ENTER) {
+            return;
+        }
+        try {
             attemptLogin();
         }
-        else {
-            newAccount();
+        catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     private void attemptLogin() throws Exception {
+        if (!btnLogin.getText().equals("Login")) {
+            newAccount();
+            return;
+        }
+
         resetLogin();
         List<Operator> operatorCatch = DatabaseControl.getSpecificOperator(enrName.getText());
 

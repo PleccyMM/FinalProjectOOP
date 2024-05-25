@@ -49,14 +49,17 @@
 
             <TextField fx:id="enrName"
                        promptText="Username"
+                       onKeyPressed="#textHandleEnr"
             />
     <!--                   text="Katherine"-->
             <PasswordField fx:id="enrPassword"
                            promptText="Password"
+                           onKeyPressed="#textHandleEnr"
             />
     <!--                       text="testpassword2"-->
             <PasswordField fx:id="enrPasswordAgain"
                            promptText="Enter Password Again"
+                           onKeyPressed="#textHandleEnr"
                            visible="false"
             />
 

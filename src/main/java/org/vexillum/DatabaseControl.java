@@ -38,6 +38,14 @@ public class DatabaseControl {
         closeDBSession();
         return list;
     }
+    public static List<Operator> getOperatorsByID(Integer[] ids) {
+        openDBSession();
+        var query = databaseSession.createQuery("from Operator where id in (:ids) order by id asc")
+                .setParameter("ids", ids);
+        List<Operator> list = query.list();
+        closeDBSession();
+        return list;
+    }
 
     public static List<Integer> getExistentIDs() {
         openDBSession();
@@ -61,6 +69,21 @@ public class DatabaseControl {
                 .executeUpdate();
         databaseSession.getTransaction().commit();
         closeDBSession();
+    }
+
+    public static HashMap<Date, Integer> getApprovals() {
+        openDBSession();
+        var query = databaseSession.createNativeQuery("select operatorid from operator_approvals");
+        List<Integer> listID = query.list();
+        query = databaseSession.createNativeQuery("select time_submitted from operator_approvals");
+        List<Date> listTime = query.list();
+        closeDBSession();
+
+        HashMap<Date, Integer> map = new HashMap<>();
+        for (int i = 0; i < listID.size(); i++) {
+            map.put(listTime.get(i), listID.get(i));
+        }
+        return map;
     }
 
     public static Design getDeignFromIso(String isoID) {
