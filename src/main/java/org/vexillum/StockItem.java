@@ -10,6 +10,7 @@ public abstract class StockItem {
     protected int totalAmount;
     protected int restock;
     protected int sizeID;
+    protected double costToProduce;
 
     public abstract StockItem clone();
     public abstract double calculatePrice();
@@ -70,5 +71,12 @@ public abstract class StockItem {
     }
     public void setSizeID(int sizeID) {
         this.sizeID = sizeID;
+    }
+
+    public double getCostToProduce() {
+        return costToProduce;
+    }
+    public void setCostToProduce(double costToProduce) {
+        this.costToProduce = costToProduce;
     }
 }

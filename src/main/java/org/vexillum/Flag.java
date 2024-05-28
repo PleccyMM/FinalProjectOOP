@@ -17,13 +17,15 @@ public class Flag extends StockItem {
         this.stockID = stockID;
     }
 
-    public Flag(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+    public Flag(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, double costToProduce,
+                int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
         this.isoID = isoID;
         this.stockID = stockID;
         this.amount = amount;
         this.totalAmount = totalAmount;
         this.restock = restock;
         this.sizeID = sizeID;
+        this.costToProduce = costToProduce;
         this.flagID = flagID;
         this.material = material;
         this.hoist = hoist;
@@ -32,7 +34,7 @@ public class Flag extends StockItem {
 
     @Override
     public StockItem clone() {
-        return new Flag(isoID, stockID, amount, totalAmount, restock, sizeID, flagID, material, hoist, size);
+        return new Flag(isoID, stockID, amount, totalAmount, restock, sizeID, costToProduce, flagID, material, hoist, size);
     }
 
     @Override

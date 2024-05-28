@@ -44,4 +44,13 @@ public enum FLAG_SIZE {
             case LARGE -> 4;
         };
     }
+    public static FLAG_SIZE fromSizeId(int i) {
+        return switch (i) {
+            case 0 -> HAND;
+            case 1 -> DESK;
+            case 2 -> SMALL;
+            case 3 -> MEDIUM;
+            default -> LARGE;
+        };
+    }
 }

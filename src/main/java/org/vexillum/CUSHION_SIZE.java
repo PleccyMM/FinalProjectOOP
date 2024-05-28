@@ -40,4 +40,12 @@ public enum CUSHION_SIZE {
             case LONG -> 8;
         };
     }
+    public static CUSHION_SIZE fromSizeId(int i) {
+        return switch (i) {
+            case 5 -> SMALL;
+            case 6 -> MEDIUM;
+            case 7 -> LARGE;
+            default -> LONG;
+        };
+    }
 }

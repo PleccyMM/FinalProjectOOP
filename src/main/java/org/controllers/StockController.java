@@ -10,7 +10,12 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.*;
+import java.text.NumberFormat;
 import java.util.*;
 
 public class StockController extends ControllerParent {
@@ -36,6 +41,8 @@ public class StockController extends ControllerParent {
             loadHeader(stage, operator, items, headerBox, searchConditions);
 
             String[] tagBoxes = new String[] {"Type", "Region", "Initial"};
+
+            int i = 0;
             for (String tagBox : tagBoxes) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_tag.fxml"));
                 Parent box = loader.load();
@@ -49,7 +56,7 @@ public class StockController extends ControllerParent {
                 catch (Exception ignored) { }
 
                 box.setOnMouseClicked(tagClick);
-                boxTagOps.getChildren().add(box);
+                boxTagOps.getChildren().add(i++, box);
             }
 
             loadStock();
@@ -210,6 +217,89 @@ public class StockController extends ControllerParent {
         return radioButton;
     }
 
+    @FXML
+    protected void btnPrintClick(ActionEvent event) throws Exception {
+        String msg = "";
+
+        List<Design> designs = DatabaseControl.searchDesigns(new SearchConditions());
+        HashMap<String, Flag> flags = DatabaseControl.getAllFlags();
+        HashMap<String, Cushion> cushions = DatabaseControl.getAllCushions();
+
+        NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+
+        double totalValueFlag = 0;
+        double totalValueCushion = 0;
+
+        double totalSellFlag = 0;
+        double totalSellCushion = 0;
+
+        for (Design d : designs) {
+            msg += "==== " + d.getName() + " ====\n";
+
+            msg +="\n== Flags ==\n";
+            for (FLAG_SIZE size : FLAG_SIZE.values()) {
+                Flag f = flags.get(d.getIsoID() + "_" + FLAG_SIZE.getSizeId(size));
+
+                if (size == FLAG_SIZE.HAND || size == FLAG_SIZE.DESK) f.setMaterial(FLAG_MATERIAL.PAPER);
+                else f.setMaterial(FLAG_MATERIAL.POLYESTER);
+
+                double totalValue = f.getCostToProduce() * f.getTotalAmount();
+                double totalSell = f.calculatePrice() * f.getTotalAmount();
+
+                totalValueFlag += totalValue;
+                totalSellFlag += totalSell;
+
+                msg += "\nSize: " + FLAG_SIZE.getString(size) +
+                        "\nCost to produce single: " + eurFormatter.format(f.getCostToProduce()) +
+                        "\nBase sell price single: " + eurFormatter.format(f.calculatePrice()) +
+                        "\nAmount in stock: " + f.getTotalAmount() +
+                        "\nLimit before needing restock: " + f.getRestock() +
+                        "\nTotal cost to produce: " + eurFormatter.format(totalValue) +
+                        "\nTotal sell price: " + eurFormatter.format(totalSell) + "\n";
+            }
+
+            msg +="\n== Cushions ==\n";
+            for (CUSHION_SIZE size : CUSHION_SIZE.values()) {
+                Cushion c = cushions.get(d.getIsoID() + "_" + CUSHION_SIZE.getSizeId(size));
+
+                double totalValue = c.getCostToProduce() * c.getTotalAmount();
+                double totalSell = c.calculatePrice() * c.getTotalAmount();
+
+                totalValueCushion += totalValue;
+                totalSellCushion += totalSell;
+
+                msg += "\nSize: " + CUSHION_SIZE.getString(size) +
+                        "\nCost to produce single: " + eurFormatter.format(c.getCostToProduce()) +
+                        "\nBase sell price single: " + eurFormatter.format(c.calculatePrice()) +
+                        "\nAmount in stock: " + c.getTotalAmount() +
+                        "\nLimit before needing restock: " + c.getRestock() +
+                        "\nTotal cost to produce: " + eurFormatter.format(totalValue) +
+                        "\nTotal sell price: " + eurFormatter.format(totalSell) + "\n";
+            }
+            msg += "\n\n";
+        }
+
+        msg = "Total Stock Report for Vexillum Management\nThe overall cost to purchase all held stock is:\n"
+                + eurFormatter.format(totalValueFlag) + " for flags\n"
+                + eurFormatter.format(totalValueCushion) + " for cushions\n"
+                + eurFormatter.format(totalValueFlag + totalValueCushion) + " overall\n\n"
+                + "The base sell price for all held stock is:\n"
+                + eurFormatter.format(totalSellFlag) + " for flags\n"
+                + eurFormatter.format(totalSellCushion) + " for cushions\n"
+                + eurFormatter.format(totalSellFlag + totalSellFlag) + " overall\n\n"
+                + "Beneath is a individual breakdown by design of all stock held in the system:\n\n\n" + msg;
+
+        try {
+            File f = new File("AllStock.txt");
+            f.createNewFile();
+            FileWriter fw = new FileWriter("AllStock.txt");
+            fw.write(msg);
+            fw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     EventHandler<ActionEvent> rdbType = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -281,7 +371,7 @@ public class StockController extends ControllerParent {
                 }
                 else {
                     int index = 0;
-                    for (int i = 0; i < boxTagOps.getChildren().size(); i++) {
+                    for (int i = 0; i < boxTagOps.getChildren().size() - 2; i++) {
                         Node n = boxTagOps.getChildren().get(i);
 
                         if (n == box) {
