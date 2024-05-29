@@ -227,7 +227,7 @@ public class BasketController extends ControllerParent {
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
-                    i.setAmount(val * i.getAmount());
+                    i.setAmount(i.getAmount() + 1);
                     i.setTotalAmount(i.getTotalAmount() - 1);
                 }
 

@@ -2,7 +2,7 @@ package org.vexillum;
 
 import org.hibernate.*;
 import org.hibernate.query.*;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.*;
 
 import java.io.File;
 import java.nio.file.Files;
