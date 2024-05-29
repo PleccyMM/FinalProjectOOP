@@ -1,5 +1,8 @@
 package org.vexillum;
 
+/**
+ * An {@code enum} used to store information about flag hoists and their cost
+ */
 public enum FLAG_HOIST {
     NONE(0),
     FABRIC(50),
@@ -12,7 +15,7 @@ public enum FLAG_HOIST {
         this.value = value;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value / 100.0f;
     }
 

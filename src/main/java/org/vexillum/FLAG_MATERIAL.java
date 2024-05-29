@@ -1,5 +1,8 @@
 package org.vexillum;
 
+/**
+ * An {@code enum} used to store information about flag materials and their cost
+ */
 public enum FLAG_MATERIAL {
     PAPER(0),
     POLYESTER(100),
@@ -11,7 +14,7 @@ public enum FLAG_MATERIAL {
         this.value = value;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value / 100.0f;
     }
 

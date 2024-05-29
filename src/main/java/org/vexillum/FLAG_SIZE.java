@@ -1,5 +1,8 @@
 package org.vexillum;
 
+/**
+ * An {@code enum} used to store information about flag sizes and their cost
+ */
 public enum FLAG_SIZE {
     HAND(250),
     DESK(400),
@@ -13,7 +16,7 @@ public enum FLAG_SIZE {
         this.value = value;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value / 100.0f;
     }
 

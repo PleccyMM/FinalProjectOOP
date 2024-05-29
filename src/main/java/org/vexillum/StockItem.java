@@ -12,14 +12,21 @@ public abstract class StockItem {
     protected int sizeID;
     protected double costToProduce;
 
+    /**
+     * Used to create a new version of {@code StockItem}, when it is needed not by reference
+     *
+     * @return an exact new copy of itself
+     */
     public abstract StockItem clone();
+
+    /**
+     * Calculates the price for this {@code StockItem}
+     *
+     * @return a decimal value for the price of a single version of the item
+     */
     public abstract double calculatePrice();
 
     public StockItem() {}
-
-    public StockItem(String isoID) {
-        this.isoID = isoID;
-    }
 
     @Override
     public String toString() {

@@ -2,25 +2,30 @@ package org.vexillum;
 
 import javax.persistence.*;
 
+/**
+ * Object used to store the design of a flag, which is then stored in StockItems
+ * <p>
+ * Utilises hibernate mapping
+ */
 @Entity
 public class Design {
     private String isoID, name;
-    //Type Integer instead of int to handle null
-    private Integer type;
-    private Integer region;
+    //Integer over int must be used as it has to be capable of storing null value
+    private Integer type, region;
 
+    /**
+     * Empty constructor only for hibernate
+     */
     public Design() {}
+
+    /**
+     * Constructor primarily used for creation of a new version of the object
+     */
     public Design(String isoID, String name) {
         this.isoID = isoID;
         this.name = name;
         type = null;
         region = null;
-    }
-    public Design(String isoID, String name, Integer type, Integer region) {
-        this.isoID = isoID;
-        this.name = name;
-        this.type = type;
-        this.region = region;
     }
 
     @Id

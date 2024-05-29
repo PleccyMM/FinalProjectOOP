@@ -1,16 +1,12 @@
 package org.vexillum;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.text.*;
 import javafx.stage.Stage;
 import org.controllers.Loader;
-import java.util.ArrayList;
 
+/**
+ * The main boot location of the program
+ */
 public class Main extends Application {
     private final Loader loader = new Loader();
 
@@ -28,7 +24,6 @@ public class Main extends Application {
         //DatabaseControl.SetAmounts();
 
         loader.showLogin(stage);
-        //loader.showStock(stage, new Operator(), new ArrayList<StockItem>(), new SearchConditions());
     }
 
     public static void main(String[] args) {
