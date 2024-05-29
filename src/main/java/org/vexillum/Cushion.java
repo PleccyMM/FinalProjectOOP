@@ -1,8 +1,12 @@
 package org.vexillum;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+/**
+ * One of two {@code StockItem} children in the program
+ * <p>
+ * Utilises hibernate mapping
+ */
 @Entity
 public class Cushion extends StockItem {
     private int cushionID;
@@ -10,22 +14,32 @@ public class Cushion extends StockItem {
     private CUSHION_SIZE size;
     private CUSHION_MATERIAL material;
 
+    /**
+     * Empty constructor only for hibernate
+     */
     public Cushion() {}
 
+    /**
+     * Constructor primarily used for creation of a new version of the object
+     */
     public Cushion(int cushionID, String isoID, int stockID) {
         this.cushionID = cushionID;
         this.isoID = isoID;
         this.stockID = stockID;
     }
 
-
-    public Cushion(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material) {
+    /**
+     * Constructor only used for the {@code .clone()} method
+     */
+    public Cushion(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, double costToProduce,
+                   int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material) {
         this.isoID = isoID;
         this.stockID = stockID;
         this.amount = amount;
         this.totalAmount = totalAmount;
         this.restock = restock;
         this.sizeID = sizeID;
+        this.costToProduce = costToProduce;
         this.cushionID = cushionID;
         this.justCase = justCase;
         this.size = size;
@@ -34,7 +48,7 @@ public class Cushion extends StockItem {
 
     @Override
     public StockItem clone() {
-        return new Cushion(isoID, stockID, amount, totalAmount, restock, sizeID, cushionID, justCase, size, material);
+        return new Cushion(isoID, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, justCase, size, material);
     }
 
     @Override

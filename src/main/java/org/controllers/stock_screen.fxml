@@ -26,6 +26,11 @@
                           minHeight="64"
                           spacing="64"
                           alignment="CENTER_LEFT">
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button id="btnPrint"
+                                minWidth="35"
+                                minHeight="35"
+                                onAction="#btnPrintClick"/>
                     </HBox>
                     <HBox>
                         <Region fx:id="rgnButtonPush" minWidth="50"/>

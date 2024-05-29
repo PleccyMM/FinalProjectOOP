@@ -1,5 +1,8 @@
 package org.vexillum;
 
+/**
+ * An {@code enum} used to store information about cushion fillings and their cost
+ */
 public enum CUSHION_MATERIAL {
     EMPTY(0),
     FOAM(800),
@@ -13,7 +16,7 @@ public enum CUSHION_MATERIAL {
         this.value = value;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value / 100.0f;
     }
 

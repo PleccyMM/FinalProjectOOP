@@ -3,13 +3,26 @@ package org.vexillum;
 import java.util.Objects;
 import javax.persistence.*;
 
+/**
+ * Object used to store the current logged-in user
+ * <p>
+ * Utilises hibernate mapping
+ */
 @Entity
 public class Operator {
     private int operatorID;
     private String name, password;
     private boolean approved, administrator;
 
-    public Operator() {}
+
+    /**
+     * Empty constructor only for hibernate
+     */
+    public Operator() { }
+
+    /**
+     * Constructor primarily used for creation of a new version of the object
+     */
     public Operator(String name, String password)
     {
         operatorID = generateID();

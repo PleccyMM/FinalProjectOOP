@@ -64,17 +64,17 @@
                         <Label id="checkout-label" text="Total Profit:"/>
                         <Label fx:id="lblTotal" styleClass="checkout-label"/>
                     </HBox>
-                    <HBox spacing="10" alignment="CENTER_LEFT">
+                    <HBox spacing="10" alignment="CENTER">
                         <Button id="btnBlue"
                                 style="-fx-font-size: 12; -fx-background-radius: 15;"
                                 text="Checkout"
                                 onAction="#btnCheckoutClick"
                         />
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Button id="btnPrint"
-                                minWidth="35"
-                                minHeight="35"
-                                onAction="#btnPrintClick"/>
+<!--                        <Region HBox.hgrow="ALWAYS"/>-->
+<!--                        <Button id="btnPrint"-->
+<!--                                minWidth="35"-->
+<!--                                minHeight="35"-->
+<!--                                onAction="#btnPrintClick"/>-->
                     </HBox>
 
                 </VBox>

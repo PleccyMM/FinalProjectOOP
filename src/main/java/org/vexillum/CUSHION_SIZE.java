@@ -1,5 +1,8 @@
 package org.vexillum;
 
+/**
+ * An {@code enum} used to store information about cushion sizes and their cost
+ */
 public enum CUSHION_SIZE {
     SMALL(200),
     MEDIUM(1000),
@@ -12,7 +15,7 @@ public enum CUSHION_SIZE {
         this.value = value;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value / 100.0f;
     }
 
@@ -38,6 +41,14 @@ public enum CUSHION_SIZE {
             case MEDIUM -> 6;
             case LARGE -> 7;
             case LONG -> 8;
+        };
+    }
+    public static CUSHION_SIZE fromSizeId(int i) {
+        return switch (i) {
+            case 5 -> SMALL;
+            case 6 -> MEDIUM;
+            case 7 -> LARGE;
+            default -> LONG;
         };
     }
 }

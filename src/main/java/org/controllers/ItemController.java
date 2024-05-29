@@ -29,7 +29,7 @@ public class ItemController extends ControllerParent {
     @FXML private HBox boxVerticalMatch;
     @FXML private VBox boxHorizontalMatch;
 
-    @FXML private Label lblName;
+    @FXML private Label lblDesignName;
     @FXML private Label lblTags;
 
     @FXML private Label lblCurrentStock;
@@ -595,7 +595,7 @@ public class ItemController extends ControllerParent {
         }
         catch (Exception ignored) { }
 
-        lblName.setText(loadedDesign.getName());
+        lblDesignName.setText(loadedDesign.getName());
 
         Integer regionID = loadedDesign.getRegion();
         String regionName = regionID == null ? "" : DatabaseControl.getRegionName(regionID) + "\n";

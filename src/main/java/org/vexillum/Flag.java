@@ -2,6 +2,11 @@ package org.vexillum;
 
 import javax.persistence.*;
 
+/**
+ * One of two {@code StockItem} children in the program
+ * <p>
+ * Utilises hibernate mapping
+ */
 @Entity
 public class Flag extends StockItem {
     private int flagID;
@@ -9,21 +14,32 @@ public class Flag extends StockItem {
     private FLAG_HOIST hoist = FLAG_HOIST.NONE;
     private FLAG_SIZE size;
 
+    /**
+     * Empty constructor only for hibernate
+     */
     public Flag() {}
 
+    /**
+     * Constructor primarily used for creation of a new version of the object
+     */
     public Flag(int flagID, String isoID, int stockID) {
         this.flagID = flagID;
         this.isoID = isoID;
         this.stockID = stockID;
     }
 
-    public Flag(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+    /**
+     * Constructor only used for the {@code .clone()} method
+     */
+    public Flag(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, double costToProduce,
+                int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
         this.isoID = isoID;
         this.stockID = stockID;
         this.amount = amount;
         this.totalAmount = totalAmount;
         this.restock = restock;
         this.sizeID = sizeID;
+        this.costToProduce = costToProduce;
         this.flagID = flagID;
         this.material = material;
         this.hoist = hoist;
@@ -32,7 +48,7 @@ public class Flag extends StockItem {
 
     @Override
     public StockItem clone() {
-        return new Flag(isoID, stockID, amount, totalAmount, restock, sizeID, flagID, material, hoist, size);
+        return new Flag(isoID, stockID, amount, totalAmount, restock, sizeID, costToProduce, flagID, material, hoist, size);
     }
 
     @Override

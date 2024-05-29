@@ -2,11 +2,9 @@ package org.vexillum;
 
 import org.hibernate.*;
 import org.hibernate.query.*;
-import org.hibernate.cfg.Configuration;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import org.hibernate.cfg.*;
+import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 
 import org.json.*;
@@ -313,6 +311,63 @@ public class DatabaseControl {
         closeDBSession();
         if (list.size() > 0) return list.get(0);
         return null;
+    }
+
+    public static HashMap<String, Flag> getAllFlags() {
+        openDBSession();
+        String sql = "select f.flagid, f.isoid, f.stockid, sa.sizeid, sa.amount, sa.restock, sz.price " +
+                "from flags f " +
+                "join stock_amount sa on f.stockid = sa.stockid " +
+                "join sizes sz on sa.sizeid = sz.sizeid";
+
+        var query = databaseSession.createNativeQuery(sql);
+        List<Object[]> list = query.getResultList();
+        closeDBSession();
+
+        HashMap<String, Flag> map = new HashMap<>();
+        for (Object[] o : list) {
+            Flag f = new Flag();
+            f.setFlagID((int)o[0]);
+            f.setIsoID((String) o[1]);
+            f.setStockID((int) o[2]);
+            f.setSizeID((int)o[3]);
+            f.setSize(FLAG_SIZE.fromSizeId(f.getSizeID()));
+            f.setTotalAmount((int)o[4]);
+            f.setRestock((int)o[5]);
+            f.setCostToProduce((double)o[6]);
+
+            map.put(f.getIsoID() + "_" + f.getSizeID(), f);
+        }
+        return map;
+    }
+
+    public static HashMap<String, Cushion> getAllCushions() {
+        openDBSession();
+        String sql = "select c.cushionid, c.isoid, c.stockid, sa.sizeid, sa.amount, sa.restock, sz.price " +
+                "from cushions c " +
+                "join stock_amount sa on c.stockid = sa.stockid " +
+                "join sizes sz on sa.sizeid = sz.sizeid";
+
+        var query = databaseSession.createNativeQuery(sql);
+        List<Object[]> list = query.getResultList();
+        closeDBSession();
+
+        HashMap<String, Cushion> map = new HashMap<>();
+        for (Object[] o : list) {
+            Cushion c = new Cushion();
+            c.setCushionID((int)o[0]);
+            c.setIsoID((String) o[1]);
+            c.setStockID((int) o[2]);
+            c.setSizeID((int)o[3]);
+            c.setSize(CUSHION_SIZE.fromSizeId(c.getSizeID()));
+            c.setTotalAmount((int)o[4]);
+            c.setRestock((int)o[5]);
+            c.setCostToProduce((double)o[6]);
+            c.setMaterial(CUSHION_MATERIAL.EMPTY);
+
+            map.put(c.getIsoID() + "_" + c.getSizeID(), c);
+        }
+        return map;
     }
 
     //SQL used for database setup:
