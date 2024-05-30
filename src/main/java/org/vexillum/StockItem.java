@@ -6,10 +6,12 @@ import javax.persistence.*;
 public abstract class StockItem {
     protected String isoID;
     protected int stockID;
+    //A negative amount means that it's being imported and not exported
     protected int amount = 1;
     protected int totalAmount;
     protected int restock;
     protected int sizeID;
+    //This value is only used when printing to file, and is left unassigned most of the time
     protected double costToProduce;
 
     /**

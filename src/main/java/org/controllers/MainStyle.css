@@ -222,6 +222,7 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+#small-title-black,
 #lblTotalLabel,
 #lblTotalPrice {
     -fx-font-size: 18px;

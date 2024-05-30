@@ -301,6 +301,7 @@ public class ItemController extends ControllerParent {
         double price = item.calculatePrice();
         String cost = eurFormatter.format(price);
 
+        tglMaterial.setDisable(false);
         if (!cmbModifications.getSelectionModel().isEmpty() ||
             (!isFlag && !tglMaterial.getToLeft().get()) ||
             (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND)) ||
@@ -308,7 +309,6 @@ public class ItemController extends ControllerParent {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
 
-            tglMaterial.setDisable(false);
             if (item.getAmount() < 0) {
                 cmbModifications.setDisable(true);
                 tglMaterial.setDisable(true);
@@ -463,6 +463,11 @@ public class ItemController extends ControllerParent {
                 type = "Cushion";
             }
 
+            NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+
+            double totalValue = 0;
+            double totalSell = 0;
+
             for (String s : sizeVals) {
                 if (Objects.equals(s, selectedSize)) {
                     msg = "Selected size for print: " + s + "\nInformation about this size: " + item.toString() + "\n\n" + msg;
@@ -482,7 +487,8 @@ public class ItemController extends ControllerParent {
                 }
             }
 
-            msg = "Information regarding " + loadedDesign.getName() + " " + type + " with ISO ID: " + item.getIsoID() + " and stock ID: " + item.getStockID() + "\n\n" + msg;
+            msg = "Information regarding " + loadedDesign.getName() + " " + type + " with ISO ID: " + item.getIsoID() +
+                    " and stock ID: " + item.getStockID() + "\n\n" + msg;
 
             try {
                 File f = new File(loadedDesign.getName() + "_" + item.getSizeID() + ".txt");

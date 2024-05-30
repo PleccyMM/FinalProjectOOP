@@ -164,11 +164,6 @@ public class BasketController extends ControllerParent {
         calculateTotalCost();
     }
 
-    @FXML
-    protected void btnPrintClick(ActionEvent event) throws Exception {
-
-    }
-
     EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -256,8 +251,7 @@ public class BasketController extends ControllerParent {
                 boolean isFlag = items.get(i) instanceof Flag;
                 Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
 
-                System.out.println("EDITING ITEM");
-                l.showItem(stage, operator, items, d, isFlag, i);
+                l.showItem(stage, items, operator, d, isFlag, i);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

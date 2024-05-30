@@ -41,8 +41,13 @@ public class Operator {
         return 0;
     }
 
+    /**
+     * Used to perform the login logic check for the {@code LoginController}
+     * @param password a string to be compared against the already loaded password attribute
+     * @return a true value if the password provided matches the operator's one, and the operator is approved
+     */
     public boolean attemptLogin(String password) {
-        return Objects.equals(password, this.password);
+        return Objects.equals(password, this.password) && approved;
     }
 
     @Id
