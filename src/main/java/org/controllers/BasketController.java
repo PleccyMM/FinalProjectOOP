@@ -54,7 +54,6 @@ public class BasketController extends ControllerParent {
             index++;
         }
 
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
         Parent itemView = loader.load();
         HBox box = (HBox) itemView;
@@ -99,7 +98,7 @@ public class BasketController extends ControllerParent {
 
             setCosts(box, i);
 
-            ((Label) box.lookup("#lblIncriment")).setText(i.getPrintAmount() + "");
+            ((Label) box.lookup("#lblIncrement")).setText(i.getPrintAmount() + "");
             ((Button) box.lookup("#btnMinus")).setOnAction(btnMinusClick);
             ((Button) box.lookup("#btnAdd")).setOnAction(btnAddClick);
 
@@ -171,7 +170,7 @@ public class BasketController extends ControllerParent {
                 Object source = event.getSource();
                 Node n = (Node) source;
                 Node box = n.getParent().getParent();
-                Label l = (Label) box.lookup("#lblIncriment");
+                Label l = (Label) box.lookup("#lblIncrement");
 
                 int val = Integer.parseInt(l.getText()) - 1;
                 int index = Integer.parseInt(box.getId());
@@ -210,7 +209,7 @@ public class BasketController extends ControllerParent {
                 Object source = event.getSource();
                 Node n = (Node) source;
                 Node box = n.getParent().getParent();
-                Label l = (Label) box.lookup("#lblIncriment");
+                Label l = (Label) box.lookup("#lblIncrement");
 
                 int val = Integer.parseInt(l.getText()) + 1;
                 l.setText(val + "");

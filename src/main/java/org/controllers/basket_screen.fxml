@@ -65,7 +65,8 @@
                         <Label fx:id="lblTotal" styleClass="checkout-label"/>
                     </HBox>
                     <HBox spacing="10" alignment="CENTER">
-                        <Button id="btnBlue"
+                        <Button id="btnCheckout"
+                                styleClass="btnBlue"
                                 style="-fx-font-size: 12; -fx-background-radius: 15;"
                                 text="Checkout"
                                 onAction="#btnCheckoutClick"

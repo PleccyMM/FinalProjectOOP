@@ -561,7 +561,6 @@ public class ItemController extends ControllerParent {
             item.setTotalAmount(newAmount);
             DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
         }
-
         l.showBasket(stage, items, operator);
     }
 
