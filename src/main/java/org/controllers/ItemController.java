@@ -43,7 +43,7 @@ public class ItemController extends ControllerParent {
     @FXML private Label lblPrice;
     @FXML private Button btnAdd;
     @FXML private Button btnMinus;
-    @FXML private Label lblIncriment;
+    @FXML private Label lblIncrement;
     @FXML private ComboBox cmbModifications;
     @FXML private ToggleSwitch tglMaterial;
     @FXML private ToggleSwitch tglImportExport;
@@ -150,7 +150,7 @@ public class ItemController extends ControllerParent {
             if (firstRun) {
                 firstRun = false;
                 boxSelected = (VBox) box.lookup("#boxSelect");
-                boxSelected.setStyle("-fx-background-color: #00000099;");
+                boxSelected.setVisible(true);
             }
 
             try {
@@ -176,9 +176,9 @@ public class ItemController extends ControllerParent {
     }
 
     private void setUpOptions() {
-        boxSelected.setStyle("-fx-background-color: transparent");
+        boxSelected.setVisible(false);
 
-        lblIncriment.setText(item.getPrintAmount() + "");
+        lblIncrement.setText(item.getPrintAmount() + "");
         var s = cmbModifications.getSelectionModel();
 
         if (item instanceof Flag f) {
@@ -215,7 +215,6 @@ public class ItemController extends ControllerParent {
         }
 
         tglImportExport.setToLeft(item.getAmount() < 0);
-        boxSelected.setStyle("-fx-background-color: #9D9D9D88");
     }
 
     private void updateItem() {
@@ -280,13 +279,13 @@ public class ItemController extends ControllerParent {
         DatabaseControl.setStockData(item);
 
 
-        int amount = Integer.parseInt(lblIncriment.getText());
+        int amount = Integer.parseInt(lblIncrement.getText());
         int newAmount = tglImportExport.getToLeft().get() ? amount : Math.min(amount, item.getTotalAmount());
 
         if (tglImportExport.getToLeft().get()) item.setAmount(newAmount * -1);
         else item.setAmount(newAmount);
 
-        if (amount != newAmount) lblIncriment.setText(newAmount + "");
+        if (amount != newAmount) lblIncrement.setText(newAmount + "");
 
         btnAdd.setDisable(false);
         btnMinus.setDisable(false);
@@ -342,9 +341,9 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
                 StackPane box = (StackPane) source;
 
-                boxSelected.setStyle("-fx-background-color: transparent");
+                boxSelected.setVisible(false);
                 boxSelected = (VBox) box.lookup("#boxSelect");
-                boxSelected.setStyle("-fx-background-color: #00000099");
+                boxSelected.setVisible(true);
 
                 selectedSize = box.getId().split("_")[1];
                 updateItem();
@@ -363,19 +362,19 @@ public class ItemController extends ControllerParent {
 
     @FXML
     protected void btnMinusClick(ActionEvent event) throws Exception {
-        int val = Integer.parseInt(lblIncriment.getText());
+        int val = Integer.parseInt(lblIncrement.getText());
         val -= 1;
 
-        lblIncriment.setText(String.valueOf(val));
+        lblIncrement.setText(String.valueOf(val));
         updateItem();
     }
 
     @FXML
     protected void btnAddClick(ActionEvent event) throws Exception {
-        int val = Integer.parseInt(lblIncriment.getText());
+        int val = Integer.parseInt(lblIncrement.getText());
         val += 1;
 
-        lblIncriment.setText(String.valueOf(val));
+        lblIncrement.setText(String.valueOf(val));
         updateItem();
     }
 

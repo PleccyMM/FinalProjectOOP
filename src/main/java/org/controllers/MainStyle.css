@@ -185,10 +185,10 @@
     -fx-background-color: #C2D0FF;
 }
 
-#lblIncrimentBox,
-#lblIncrimentAmount,
-#lblIncrimentRestock,
-#lblIncriment {
+#lblIncrementBox,
+#lblIncrementAmount,
+#lblIncrementRestock,
+#lblIncrement {
     -fx-text-fill: #000000;
     -fx-font-size: 16px;
     -fx-background-color: #FFFFFF;

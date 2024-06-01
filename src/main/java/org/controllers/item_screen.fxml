@@ -68,8 +68,8 @@
                             <HBox alignment="CENTER_LEFT">
                                 <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
                                     <Button fx:id="btnMinus" minWidth="15" minHeight="15" onAction="#btnMinusClick"/>
-                                    <VBox id="lblIncriment" minWidth="65" alignment="CENTER">
-                                        <Label fx:id="lblIncriment" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
+                                    <VBox id="white-divider" minWidth="65" alignment="CENTER">
+                                        <Label fx:id="lblIncrement" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
                                     </VBox>
                                     <Button fx:id="btnAdd" minWidth="15" minHeight="15" onAction="#btnAddClick"/>
                                 </HBox>

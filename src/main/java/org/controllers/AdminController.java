@@ -22,23 +22,21 @@ public class AdminController extends ControllerParent {
         if (headerBox == null) { throw new Exception(); }
 
         loadHeader(stage, operator, items, headerBox, new SearchConditions());
-        addOperatorItem();
+        addOperatorItem(DatabaseControl.getApprovals());
     }
 
-    private void addOperatorItem() throws Exception {
+    public void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
         boxScroll.getChildren().clear();
 
-        HashMap<Date, Integer> map = DatabaseControl.getApprovals();
-
-        Integer[] ids = new Integer[map.size()];
+        Integer[] ids = new Integer[operatorMap.size()];
         int i = 0;
-        for(var m : map.entrySet()) {
+        for(var m : operatorMap.entrySet()) {
             ids[i++] = m.getValue();
         }
 
         List<Operator> operators = DatabaseControl.getOperatorsByID(ids);
 
-        for(var m : map.entrySet()) {
+        for(var m : operatorMap.entrySet()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
@@ -81,7 +79,7 @@ public class AdminController extends ControllerParent {
             int id = Integer.parseInt(box.getId());
             DatabaseControl.acceptOperator(id);
             try {
-                addOperatorItem();
+                addOperatorItem(DatabaseControl.getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -98,7 +96,7 @@ public class AdminController extends ControllerParent {
             int id = Integer.parseInt(box.getId());
             DatabaseControl.denyOperator(id);
             try {
-                addOperatorItem();
+                addOperatorItem(DatabaseControl.getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

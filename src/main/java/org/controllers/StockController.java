@@ -53,6 +53,7 @@ public class StockController extends ControllerParent {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_tag.fxml"));
                 Parent box = loader.load();
 
+                box.setId(tagBox);
                 ((Label) box.lookup("#lblTag")).setText(tagBox);
 
                 try {
@@ -79,6 +80,7 @@ public class StockController extends ControllerParent {
      */
     private void loadStock() throws Exception {
         allDesigns = DatabaseControl.searchDesigns(sc);
+        boxScroll.getChildren().clear();
 
         boxScroll.getChildren().add(new HBox());
 
@@ -96,8 +98,8 @@ public class StockController extends ControllerParent {
             box.setSpacing(48);
             box.setAlignment(Pos.CENTER);
 
+            //This deals with the logic for when the amount of designs is not divisible by 3 and must form a partial row
             if (i + 2 >= designsToLoad) {
-                System.out.println("Reducing run because " + i + " + 2 >= " + designsToLoad);
                 runAmount = designsToLoad - i;
             }
 
@@ -137,6 +139,7 @@ public class StockController extends ControllerParent {
         }
 
         boxScroll.getChildren().add(new HBox());
+        System.out.println("CHILDREN " + boxScroll.getChildren().size());
     }
 
     EventHandler<ActionEvent> btnFlagHandle = new EventHandler<ActionEvent>() {
@@ -264,6 +267,7 @@ public class StockController extends ControllerParent {
 
     private RadioButton createRdb(String text, ToggleGroup tg, EventHandler<ActionEvent> handler) {
         RadioButton radioButton = new RadioButton(text);
+        radioButton.setId(text);
         radioButton.setToggleGroup(tg);
         radioButton.setOnAction(handler);
         return radioButton;

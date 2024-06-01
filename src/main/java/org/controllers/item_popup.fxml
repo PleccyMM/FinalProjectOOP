@@ -33,7 +33,7 @@
                 <HBox alignment="CENTER" fillHeight="false" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);">
                     <Button fx:id="btnMinusRestock" minWidth="15" minHeight="15"/>
                     <VBox id="lblIncriment" minWidth="65" alignment="CENTER">
-                        <Label fx:id="lblIncrimentRestock" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
+                        <Label fx:id="lblIncrementRestock" textAlignment="CENTER" text="1" VBox.vgrow="ALWAYS"/>
                     </VBox>
                     <Button fx:id="btnAddRestock" minWidth="15" minHeight="15"/>
                 </HBox>

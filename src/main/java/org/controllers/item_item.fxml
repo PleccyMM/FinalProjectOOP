@@ -47,5 +47,5 @@
                 </HBox>
             </StackPane>
     </VBox>
-    <VBox fx:id="boxSelect" style="-fx-background-color: transparent"/>
+    <VBox fx:id="boxSelect" style="-fx-background-color: #00000099;" visible="false"/>
 </StackPane>
