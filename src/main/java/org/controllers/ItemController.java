@@ -389,7 +389,7 @@ public class ItemController extends ControllerParent {
 
         box.lookup("#boxContainment").setOnMouseClicked(ignoreHideClick);
 
-        ((Label) box.lookup("#lblIncrimentRestock")).setText(item.getRestock() + "");
+        ((Label) box.lookup("#lblIncrementRestock")).setText(item.getRestock() + "");
         Button b = (Button) box.lookup("#btnMinusRestock");
         b.setOnAction(btnMinusRestockClick);
         ((Button) box.lookup("#btnAddRestock")).setOnAction(btnAddRestockClick);
@@ -408,7 +408,7 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
 
                 Node b = (Node) source;
-                Label l = (Label) b.getParent().lookup("#lblIncrimentRestock");
+                Label l = (Label) b.getParent().lookup("#lblIncrementRestock");
 
                 int newRestock = Integer.parseInt(l.getText()) - 1;
 
@@ -427,7 +427,7 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
 
                 Node b = (Node) source;
-                Label l = (Label) b.getParent().lookup("#lblIncrimentRestock");
+                Label l = (Label) b.getParent().lookup("#lblIncrementRestock");
 
                 int newRestock = Integer.parseInt(l.getText()) + 1;
 
@@ -508,7 +508,7 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
                 Node b = (Node) source;
                 int amount = item.getTotalAmount();
-                int restock = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrimentRestock")).getText());
+                int restock = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrementRestock")).getText());
 
                 if (restock < amount) {
                     Node box = new VBox();

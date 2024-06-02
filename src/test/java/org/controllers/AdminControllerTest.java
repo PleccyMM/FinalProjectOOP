@@ -20,20 +20,35 @@ import static org.testfx.api.FxAssert.verifyThat;
  * These are the test cases for {@code AdminController}, since the original class is fairly streamlined these test cases
  * only concern themselves with full integration tests
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AdminControllerTest extends ApplicationTest {
-    private AdminController controller;
+    private static Calendar calendar = Calendar.getInstance();
+    private static Date approvalDate, denyDate;
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_screen.fxml"));
-        Parent root = loader.load();
+        Loader l = new Loader();
+        l.showAdmin(stage, Collections.emptyList(), new Operator());
+    }
 
-        controller = loader.getController();
-        controller.load(stage, Collections.emptyList(), new Operator());
+    @BeforeAll
+    public static void setUp() {
+        approvalDate = calendar.getTime();
+        calendar.add(Calendar.HOUR, 1);
+        denyDate = calendar.getTime();
 
-        Scene scene = new Scene(root, 960, 540);
-        stage.setScene(scene);
-        stage.show();
+        //denyOperator is used to just remove any operator with this ID, if for some reason they exist
+        DatabaseControl.denyOperator(9999);
+        DatabaseControl.addRequest(9999, "approvalIntegration", "testPassword", approvalDate);
+
+        DatabaseControl.denyOperator(9998);
+        DatabaseControl.addRequest(9998, "denyIntegration", "testPassword", denyDate);
+    }
+
+    @AfterAll
+    public static void removeAnyLeftovers() {
+        DatabaseControl.denyOperator(9999);
+        DatabaseControl.denyOperator(9998);
     }
 
     /**
@@ -41,21 +56,8 @@ public class AdminControllerTest extends ApplicationTest {
      * screen when accepted and also from the relevant part of the database
      */
     @Test
+    @Order(0)
     public void approvalIntegrationTest() {
-        Date approvalDate = new Date();
-
-        //This runAndWait() is necessary as the screen needs updating when the new operators are added
-        PlatformImpl.runAndWait(() -> {
-            try {
-                //denyOperator is used to just remove any operator with this ID, if for some reason they exist
-                DatabaseControl.denyOperator(9999);
-                DatabaseControl.addRequest(9999, "approvalIntegration", "testPassword", approvalDate);
-                controller.addOperatorItem(DatabaseControl.getApprovals());
-            } catch (Exception e) {
-                fail("Failed in adding operator items to the screen");
-            }
-        });
-
         verifyThat("#9999", Node::isVisible);
         Button btnAccept = lookup("#9999 #btnAccept").query();
         clickOn(btnAccept);
@@ -81,19 +83,8 @@ public class AdminControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(1)
     public void denyIntegrationTest() {
-        Date denyDate = new Date();
-
-        PlatformImpl.runAndWait(() -> {
-            try {
-                DatabaseControl.denyOperator(9998);
-                DatabaseControl.addRequest(9998, "denyIntegration", "testPassword", denyDate);
-                controller.addOperatorItem(DatabaseControl.getApprovals());
-            } catch (Exception e) {
-                fail("Failed in adding operator items to the screen");
-            }
-        });
-
         verifyThat("#9998", Node::isVisible);
         Button btnDeny = lookup("#9998 #btnDeny").query();
 

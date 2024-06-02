@@ -16,26 +16,20 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StockControllerTest extends ApplicationTest {
-    private StockController controller;
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_screen.fxml"));
-        Parent root = loader.load();
-
-        controller = loader.getController();
-        controller.load(stage, Collections.emptyList(), new Operator(), new SearchConditions());
-
-        Scene scene = new Scene(root, 960, 540);
-        stage.setScene(scene);
-        stage.show();
+        Loader l = new Loader();
+        l.showStock(stage, Collections.emptyList(), new Operator(), new SearchConditions());
     }
 
     /**
      * This unit test checks that the first design in the database and the last design in the database are present
      */
     @Test
+    @Order(1)
     public void headAndTailTest() {
         assertTrue(() -> {
             try {
@@ -61,11 +55,11 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(2)
     public void searchEmptyTest() throws InterruptedException {
         PlatformImpl.runAndWait(() -> {
             try {
-                Button btnSearch = lookup("#btnSearch").query();
-                clickOn(btnSearch);
+                clickOn("#btnSearch");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -78,15 +72,14 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(2)
     public void searchNoReturnTest() throws InterruptedException {
-        TextField searchBar = lookup("#enrSearch").query();
-        clickOn(searchBar);
+        clickOn("#enrSearch");
         write("@(13--__daw");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                Button btnSearch = lookup("#btnSearch").query();
-                clickOn(btnSearch);
+                clickOn("#btnSearch");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -102,15 +95,14 @@ public class StockControllerTest extends ApplicationTest {
      * A search test using the expected case, that being the first letter capitalised
      */
     @Test
+    @Order(3)
     public void searchJustTextExpectedCaseTest() throws InterruptedException {
-        TextField searchBar = lookup("#enrSearch").query();
-        clickOn(searchBar);
+        clickOn("#enrSearch");
         write("Germany");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                Button btnSearch = lookup("#btnSearch").query();
-                clickOn(btnSearch);
+                clickOn("#btnSearch");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -137,15 +129,14 @@ public class StockControllerTest extends ApplicationTest {
      * A search test using random cases
      */
     @Test
+    @Order(4)
     public void searchJustTextRandomCaseTest() throws InterruptedException {
-        TextField searchBar = lookup("#enrSearch").query();
-        clickOn(searchBar);
+        clickOn("#enrSearch");
         write("iSle oF MAn");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                Button btnSearch = lookup("#btnSearch").query();
-                clickOn(btnSearch);
+                clickOn("#btnSearch");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -169,14 +160,13 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(5)
     public void searchJustTypeTest() throws InterruptedException {
-        Node box = lookup("#Type").query();
-        clickOn(box);
+        clickOn("#Type");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#Pride").query();
-                clickOn(radioButton);
+                clickOn("#Pride");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -189,14 +179,13 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(5)
     public void searchJustRegionTest() throws InterruptedException {
-        Node box = lookup("#Region").query();
-        clickOn(box);
+        clickOn("#Region");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#Oceania").query();
-                clickOn(radioButton);
+                clickOn("#Oceania");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -209,14 +198,13 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(5)
     public void searchJustInitialTest() throws InterruptedException {
-        Node box = lookup("#Initial").query();
-        clickOn(box);
+        clickOn("#Initial");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#G-L").query();
-                clickOn(radioButton);
+                clickOn("#G-L");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -229,40 +217,35 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(6)
     public void searchAllTagsTest() throws InterruptedException {
-        Node box = lookup("#Type").query();
-        clickOn(box);
+        clickOn("#Type");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#National").query();
-                clickOn(radioButton);
+                clickOn("#National");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
         });
         Thread.sleep(1000);
 
-        box = lookup("#Region").query();
-        clickOn(box);
+        clickOn("#Region");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#Europe").query();
-                clickOn(radioButton);
+                clickOn("#Europe");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
         });
         Thread.sleep(1000);
 
-        box = lookup("#Initial").query();
-        clickOn(box);
+        clickOn("#Initial");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#A-F").query();
-                clickOn(radioButton);
+                clickOn("#A-F");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
@@ -275,54 +258,47 @@ public class StockControllerTest extends ApplicationTest {
     }
 
     @Test
+    @Order(7)
     public void searchEverythingTest() throws InterruptedException {
-        TextField searchBar = lookup("#enrSearch").query();
-        clickOn(searchBar);
+        clickOn("#enrSearch");
         write("land");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                Button btnSearch = lookup("#btnSearch").query();
-                clickOn(btnSearch);
+                clickOn("#btnSearch");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
         });
         Thread.sleep(1000);
 
-        Node box = lookup("#Type").query();
-        clickOn(box);
+        clickOn("#Type");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#International").query();
-                clickOn(radioButton);
+                clickOn("#International");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
         });
         Thread.sleep(1000);
 
-        box = lookup("#Region").query();
-        clickOn(box);
+        clickOn("#Region");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#Europe").query();
-                clickOn(radioButton);
+                clickOn("#Europe");
             } catch (Exception e) {
                 fail("Failed performing search");
             }
         });
         Thread.sleep(1000);
 
-        box = lookup("#Initial").query();
-        clickOn(box);
+        clickOn("#Initial");
 
         PlatformImpl.runAndWait(() -> {
             try {
-                RadioButton radioButton = lookup("#M-S").query();
-                clickOn(radioButton);
+                clickOn("#M-S");
             } catch (Exception e) {
                 fail("Failed performing search");
             }

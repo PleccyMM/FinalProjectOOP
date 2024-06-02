@@ -275,7 +275,6 @@ public class DatabaseControl {
 
         boolean[] b = new boolean[listAmount.size()];
         for (int i = 0; i < b.length; i++) {
-            System.out.println("RUN " + (listRestock.size()));
             b[i] = listRestock.get(i) >= listAmount.get(i);
         }
         closeDBSession();

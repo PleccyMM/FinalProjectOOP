@@ -26,7 +26,7 @@ public class LoginController {
     @FXML private TextField enrName;
     @FXML private PasswordField enrPassword;
     @FXML private PasswordField enrPasswordAgain;
-    @FXML private Text lblWarning;
+    @FXML private Label lblWarning;
 
     @FXML private Label lblTitle;
     @FXML private Label lblCreateAccount;
@@ -102,6 +102,11 @@ public class LoginController {
         //only checking one is needed
         if (enrPassword.getText().isEmpty() || enrName.getText().isEmpty()) {
             failure("All data must be filled");
+            return;
+        }
+
+        if (!DatabaseControl.getSpecificOperator(enrName.getText()).isEmpty()) {
+            failure("Username already taken");
             return;
         }
 

@@ -55,7 +55,7 @@
     -fx-font-weight: bold;
 }
 #lblWarning {
-    -fx-fill: #FF0000;
+    -fx-text-fill: #FF0000;
     -fx-font-family: "Inter Semi Bold";
     -fx-font-weight: bold;
 }
