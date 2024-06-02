@@ -25,6 +25,10 @@ public class DatabaseControl {
         }
     }
 
+    public boolean isOpen() {
+        return databaseSession.isOpen();
+    }
+
     public void closeDBSession() {
         if (databaseSession != null && databaseSession.isOpen()) {
             System.out.println("Closing session");
@@ -211,9 +215,12 @@ public class DatabaseControl {
             list = query.list();
             i.setRestock(list.get(0));
 
-            query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)");
+            query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)")
+                    .setParameter("sizeid", i.getSizeID());
             List<Double> price = query.list();
             i.setCostToProduce(price.get(0));
+
+            System.out.println("Got stock data");
         }
         catch (Exception e) {
             throw new RuntimeException(e);

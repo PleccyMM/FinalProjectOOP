@@ -20,21 +20,22 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerGeneralTest extends ItemSupplementTest {
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Loader l = new Loader();
-        l.showItem(stage, new ArrayList<>(), new Operator(), DatabaseControl.getDeignFromIso("GB"), true, null);
-    }
-
     @AfterAll
     public static void deleteFile() {
-        File f = new File("UnitedKingdom_0.txt");
+        File f = new File("United Kingdom_0.txt");
         f.delete();
+        database.closeDBSession();
     }
 
     @Test
     @Order(0)
+    public void dummyTest() {
+
+    }
+
+
+    @Test
+    @Order(1)
     public void changeSizeTest() {
         VBox boxHand = lookup("#boxSize_Hand #boxSelect").query();
         VBox box90 = lookup("#boxSize_90x60cm #boxSelect").query();
@@ -48,7 +49,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
     }
 
     @Test
-    @Order(0)
+    @Order(1)
     public void increaseCountTest() {
         clickOn("#btnAdd");
 
@@ -226,7 +227,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         }
 
         verifyThat("#lblIncrementRestock", LabeledMatchers.hasText("10"));
-        clickOn("#btnAddRestock");
+        clickOn("#btnUpdateStock");
 
         verifyThat("#lblRestock", LabeledMatchers.hasText("10"));
     }
@@ -238,7 +239,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
         clickOn("#btnPrint");
 
-        assertTrue(new File("GB_0.txt").exists(), "File was not made");
+        assertTrue(new File("United Kingdom_0.txt").exists(), "File was not made");
     }
 
     @Test
@@ -246,7 +247,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
     public void goBackTest() throws InterruptedException {
         clickOn("#btnBack");
 
-        Thread.sleep(3000);
+        Thread.sleep(500);
         verifyThat("#btnFlag_AC", Node::isVisible);
     }
 
@@ -261,11 +262,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
         verifyThat("#lblIncrement", LabeledMatchers.hasText("5"));
 
-        PlatformImpl.runAndWait(() -> {
-                    clickOn("#btnAddToBasket");
-        });
+        PlatformImpl.runAndWait(() -> clickOn("#btnAddToBasket"));
 
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         clickOn("#enrSearch");
         write("United Kingdom");
@@ -273,7 +272,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         clickOn("#btnSearch");
         clickOn("#btnFlag_GB");
 
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         clickOn("#boxSize_150x90cm");
 
@@ -290,7 +289,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
             clickOn("#btnAddToBasket");
         });
 
-        Thread.sleep(1000);
+        Thread.sleep(500);
 
         VBox boxScroll = lookup("#boxScroll").query();
         assertEquals(4, boxScroll.getChildren().size());

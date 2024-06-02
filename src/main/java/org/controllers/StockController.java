@@ -40,7 +40,7 @@ public class StockController extends ControllerParent {
      */
     public void load(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) {
         try {
-            database.openDBSession();
+            openDB();
 
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
@@ -73,7 +73,7 @@ public class StockController extends ControllerParent {
         catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
-            database.closeDBSession();
+            closeDB();
         }
     }
 
@@ -83,7 +83,7 @@ public class StockController extends ControllerParent {
      * @throws Exception loading the relevant .fxml can fail
      */
     private void loadStock() throws Exception {
-        allDesigns = database.searchDesigns(sc);
+        allDesigns = getDatabase().searchDesigns(sc);
         boxScroll.getChildren().clear();
 
         boxScroll.getChildren().add(new HBox());
@@ -180,7 +180,7 @@ public class StockController extends ControllerParent {
         //The relevant isoID is the latter half of the boxes fx:id, seperated by a "_" - so splitting and getting the
         //tail is necessary
         String isoID = b.getId().split("_")[1];
-        //The database loads in designs alphabetically rather than by isoID, so simply indexing can't work. This may seem
+        //The getDatabase() loads in designs alphabetically rather than by isoID, so simply indexing can't work. This may seem
         //less beneficial, but it's significantly more convenient to have a slightly shitty iterative search for an isoID
         //than it is to try and organise by alphabetical order in other parts of the program
         for (Design d : allDesigns) {
@@ -211,8 +211,8 @@ public class StockController extends ControllerParent {
                 Integer type = sc.getType();
                 if (type == null) rdbList.get(0).setSelected(true);
                 else {
-                    //MySQL database has the relevant ID for the type, which aligns with their positions in the button list
-                    Integer i = database.getTypeId(rdbList.get(type + 1).getText());
+                    //MySQL getDatabase() has the relevant ID for the type, which aligns with their positions in the button list
+                    Integer i = getDatabase().getTypeId(rdbList.get(type + 1).getText());
                     rdbList.get(i + 1).setSelected(true);
                 }
                 break;
@@ -229,7 +229,7 @@ public class StockController extends ControllerParent {
                 Integer region = sc.getRegion();
                 if (region == null) rdbList.get(0).setSelected(true);
                 else {
-                    Integer i = database.getRegionId(rdbList.get(region + 1).getText());
+                    Integer i = getDatabase().getRegionId(rdbList.get(region + 1).getText());
                     rdbList.get(i + 1).setSelected(true);
                 }
                 break;
@@ -285,12 +285,12 @@ public class StockController extends ControllerParent {
     protected void btnPrintClick(ActionEvent event) throws Exception {
         String msg = "";
 
-        database.openDBSession();
-        List<Design> designs = database.searchDesigns(new SearchConditions());
+        openDB();
+        List<Design> designs = getDatabase().searchDesigns(new SearchConditions());
         //HashMaps are used to make it significantly easier to find the relevant designs from their isoID
-        HashMap<String, Flag> flags = database.getAllFlags();
-        HashMap<String, Cushion> cushions = database.getAllCushions();
-        database.closeDBSession();
+        HashMap<String, Flag> flags = getDatabase().getAllFlags();
+        HashMap<String, Cushion> cushions = getDatabase().getAllCushions();
+        closeDB();
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
 
@@ -380,10 +380,10 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                database.openDBSession();
-                sc.setType(database.getTypeId(r.getText()));
+                openDB();
+                sc.setType(getDatabase().getTypeId(r.getText()));
                 performSearch();
-                database.closeDBSession();
+                closeDB();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -397,10 +397,10 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                database.openDBSession();
-                sc.setRegion(database.getRegionId(r.getText()));
+                openDB();
+                sc.setRegion(getDatabase().getRegionId(r.getText()));
                 performSearch();
-                database.closeDBSession();
+                closeDB();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -469,14 +469,14 @@ public class StockController extends ControllerParent {
                     rgnButtonPush.setMinWidth((((HBox) box).getWidth() + boxTagOps.getSpacing()) * (index));
 
                     String labelText = ((Label) box.lookup("#lblTag")).getText().toLowerCase();
-                    database.openDBSession();
+                    openDB();
                     generateRadioButtons(labelText);
                 }
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
             } finally {
-                database.closeDBSession();
+                closeDB();
             }
         }
     };

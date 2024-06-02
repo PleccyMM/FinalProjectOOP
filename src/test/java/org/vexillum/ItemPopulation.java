@@ -12,31 +12,41 @@ import java.util.List;
 public abstract class ItemPopulation extends ApplicationTest {
     protected final List<StockItem> testItems = new ArrayList<>();
     protected static final List<StockItem> stockItems = new ArrayList<>();
+    protected static final DatabaseControl database = new DatabaseControl();
 
     @BeforeAll
     public static void saveStockInformation() {
-        stockItems.add(DatabaseControl.createFlag("GI", FLAG_SIZE.SMALL));
-        stockItems.add(DatabaseControl.createFlag("PR-TG", FLAG_SIZE.LARGE));
-        stockItems.add(DatabaseControl.createFlag("CY-DE", FLAG_SIZE.SMALL));
-        stockItems.add(DatabaseControl.createFlag("MU", FLAG_SIZE.DESK));
-        stockItems.add(DatabaseControl.createFlag("PN", FLAG_SIZE.MEDIUM));
+        database.openDBSession();
 
-        stockItems.add(DatabaseControl.createCushion("TS", CUSHION_SIZE.LONG, CUSHION_MATERIAL.FEATHERS));
-        stockItems.add(DatabaseControl.createCushion("ER", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.EMPTY));
-        stockItems.add(DatabaseControl.createCushion("CY-MO", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.COTTON));
-        stockItems.add(DatabaseControl.createCushion("MO", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY));
+        stockItems.add(database.createFlag("GI", FLAG_SIZE.SMALL));
+        stockItems.add(database.createFlag("PR-TG", FLAG_SIZE.LARGE));
+        stockItems.add(database.createFlag("CY-DE", FLAG_SIZE.SMALL));
+        stockItems.add(database.createFlag("MU", FLAG_SIZE.DESK));
+        stockItems.add(database.createFlag("PN", FLAG_SIZE.MEDIUM));
+
+        stockItems.add(database.createCushion("TS", CUSHION_SIZE.LONG, CUSHION_MATERIAL.FEATHERS));
+        stockItems.add(database.createCushion("ER", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.EMPTY));
+        stockItems.add(database.createCushion("CY-MO", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.COTTON));
+        stockItems.add(database.createCushion("MO", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY));
+
+        database.closeDBSession();
     }
 
     @AfterAll
     public static void restoreStockInformation() {
+        database.openDBSession();
+
         for (StockItem item : stockItems) {
-            DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
+            database.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
         }
+        database.closeDBSession();
     }
 
     @BeforeEach
     public void setUpItems() throws InterruptedException {
-        DatabaseControl.updateAmountAndRestock(stockItems.get(0).getStockID(), stockItems.get(0).getSizeID(), 11, 4);
+        database.openDBSession();
+
+        database.updateAmountAndRestock(stockItems.get(0).getStockID(), stockItems.get(0).getSizeID(), 11, 4);
         Flag flagSmallGibraltar = (Flag) stockItems.get(0).clone();
         flagSmallGibraltar.setAmount(3);
         flagSmallGibraltar.setHoist(FLAG_HOIST.NONE);
@@ -60,7 +70,7 @@ public abstract class ItemPopulation extends ApplicationTest {
         Cushion cushionLongTransnistria = (Cushion) stockItems.get(5).clone();
         cushionLongTransnistria.setAmount(1);
 
-        DatabaseControl.updateAmountAndRestock(stockItems.get(6).getStockID(), stockItems.get(6).getSizeID(), 5, 7);
+        database.updateAmountAndRestock(stockItems.get(6).getStockID(), stockItems.get(6).getSizeID(), 5, 7);
         Cushion cushionLargeEritrea = (Cushion) stockItems.get(6).clone();
         cushionLargeEritrea.setAmount(-3);
 
@@ -86,5 +96,7 @@ public abstract class ItemPopulation extends ApplicationTest {
         for (StockItem item : testItems) {
             System.out.println(item.getName());
         }
+
+        database.closeDBSession();
     }
 }

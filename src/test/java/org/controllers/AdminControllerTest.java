@@ -24,6 +24,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 public class AdminControllerTest extends ApplicationTest {
     private static Calendar calendar = Calendar.getInstance();
     private static Date approvalDate, denyDate;
+    private static DatabaseControl database = new DatabaseControl();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -33,22 +34,36 @@ public class AdminControllerTest extends ApplicationTest {
 
     @BeforeAll
     public static void setUp() {
+        database.openDBSession();
         approvalDate = calendar.getTime();
         calendar.add(Calendar.HOUR, 1);
         denyDate = calendar.getTime();
 
         //denyOperator is used to just remove any operator with this ID, if for some reason they exist
-        DatabaseControl.denyOperator(9999);
-        DatabaseControl.addRequest(9999, "approvalIntegration", "testPassword", approvalDate);
+        database.denyOperator(9999);
+        database.addRequest(9999, "approvalIntegration", "testPassword", approvalDate);
 
-        DatabaseControl.denyOperator(9998);
-        DatabaseControl.addRequest(9998, "denyIntegration", "testPassword", denyDate);
+        database.denyOperator(9998);
+        database.addRequest(9998, "denyIntegration", "testPassword", denyDate);
+        database.closeDBSession();
+    }
+
+    @BeforeEach
+    public void openDatabase() {
+        database.openDBSession();
     }
 
     @AfterAll
     public static void removeAnyLeftovers() {
-        DatabaseControl.denyOperator(9999);
-        DatabaseControl.denyOperator(9998);
+        database.openDBSession();
+        database.denyOperator(9999);
+        database.denyOperator(9998);
+        database.closeDBSession();
+    }
+
+    @AfterEach
+    public void closeDatabase() {
+        database.closeDBSession();
     }
 
     /**
@@ -74,11 +89,11 @@ public class AdminControllerTest extends ApplicationTest {
         }, "The box containing the awaiting approval should not still exist");
 
         Integer[] i = {9999};
-        List<Operator> list = DatabaseControl.getOperatorsByID(i);
+        List<Operator> list = database.getOperatorsByID(i);
         assertEquals(1, list.size(), "The operator's ID couldn't be found in the database");
         assertTrue(list.get(0).isApproved(), "The operator wasn't approved in the database");
 
-        HashMap<Date, Integer> map = DatabaseControl.getApprovals();
+        HashMap<Date, Integer> map = database.getApprovals();
         assertNull(map.get(approvalDate), "The operator shouldn't still exist in the awaiting approvals table");
     }
 
@@ -100,10 +115,10 @@ public class AdminControllerTest extends ApplicationTest {
         }, "The box containing the awaiting approval should not still exist");
 
         Integer[] i = {9998};
-        List<Operator> list = DatabaseControl.getOperatorsByID(i);
+        List<Operator> list = database.getOperatorsByID(i);
         assertEquals(Collections.emptyList(), list, "The operator's ID was still found in the database");
 
-        HashMap<Date, Integer> map = DatabaseControl.getApprovals();
+        HashMap<Date, Integer> map = database.getApprovals();
         assertNull(map.get(denyDate), "The operator shouldn't still exist in the awaiting approvals table");
     }
 }

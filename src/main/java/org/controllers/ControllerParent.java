@@ -22,7 +22,7 @@ public abstract class ControllerParent {
     protected Operator operator;
     private List<StockItem> items;
     protected SearchConditions sc;
-    protected final DatabaseControl database = new DatabaseControl();
+    private final DatabaseControl database = new DatabaseControl();
 
     /**
      * This is called whenever the window changes
@@ -177,5 +177,16 @@ public abstract class ControllerParent {
     }
     protected int itemsSize() {
         return items.size();
+    }
+
+    protected DatabaseControl getDatabase() {
+        return database;
+    }
+    protected void openDB() {
+        database.openDBSession();
+    }
+    protected void closeDB() {
+        System.out.println("Call to close with made");
+        database.closeDBSession();
     }
 }

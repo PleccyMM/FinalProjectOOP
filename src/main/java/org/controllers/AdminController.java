@@ -23,9 +23,9 @@ public class AdminController extends ControllerParent {
 
         loadHeader(stage, operator, items, headerBox, new SearchConditions());
 
-        database.openDBSession();
-        addOperatorItem(database.getApprovals());
-        database.closeDBSession();
+        openDB();
+        addOperatorItem(getDatabase().getApprovals());
+        closeDB();
     }
 
     public void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
@@ -37,7 +37,7 @@ public class AdminController extends ControllerParent {
             ids[i++] = m.getValue();
         }
 
-        List<Operator> operators = database.getOperatorsByID(ids);
+        List<Operator> operators = getDatabase().getOperatorsByID(ids);
 
         for(var m : operatorMap.entrySet()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
@@ -81,14 +81,14 @@ public class AdminController extends ControllerParent {
 
             int id = Integer.parseInt(box.getId());
 
-            database.openDBSession();
-            database.acceptOperator(id);
+            openDB();
+            getDatabase().acceptOperator(id);
             try {
-                addOperatorItem(database.getApprovals());
+                addOperatorItem(getDatabase().getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             } finally {
-                database.closeDBSession();
+                closeDB();
             }
         }
     };
@@ -101,14 +101,14 @@ public class AdminController extends ControllerParent {
             Node box = n.getParent();
 
             int id = Integer.parseInt(box.getId());
-            database.openDBSession();
-            database.denyOperator(id);
+            openDB();
+            getDatabase().denyOperator(id);
             try {
-                addOperatorItem(database.getApprovals());
+                addOperatorItem(getDatabase().getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             } finally {
-                database.closeDBSession();
+                closeDB();
             }
         }
     };

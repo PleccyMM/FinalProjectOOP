@@ -69,9 +69,9 @@ public class BasketController extends ControllerParent {
         boxScroll.getChildren().add(box);
         addItem(exportItems);
 
-        database.openDBSession();
+        openDB();
         calculateTotalCost();
-        database.closeDBSession();
+        closeDB();
     }
 
     private void addItem(HashMap<Integer, StockItem> itemsMap) throws IOException {
@@ -135,7 +135,7 @@ public class BasketController extends ControllerParent {
         for (var item : exportItems.entrySet()) {
             StockItem i = item.getValue();
             exportSales += i.calculatePrice() * i.getAmount();
-            exportCosts += database.getPrice(i.getSizeID()) * i.getAmount();
+            exportCosts += getDatabase().getPrice(i.getSizeID()) * i.getAmount();
         }
         for (var item : importItems.entrySet()) {
             StockItem i = item.getValue();
@@ -151,13 +151,10 @@ public class BasketController extends ControllerParent {
 
     @FXML
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
-        database.openDBSession();
-        for(var item : importItems.entrySet()) {
-            StockItem i = item.getValue();
-            database.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
-        }
-        for (int i = 0; i < itemsSize(); i++) {
-            Node b = boxScroll.lookup("#" + i);
+        openDB();
+        for(StockItem i : getItems()) {
+            getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+            Node b = boxScroll.lookup("#" + i.hashCode());
             boxScroll.getChildren().remove(b);
         }
 
@@ -165,7 +162,7 @@ public class BasketController extends ControllerParent {
         importItems.clear();
         exportItems.clear();
         calculateTotalCost();
-        database.closeDBSession();
+        closeDB();
     }
 
     private int locateIndex(int hash) {
@@ -201,8 +198,8 @@ public class BasketController extends ControllerParent {
                 }
 
                 StockItem i = getItems(index);
-                database.openDBSession();
-                database.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
+                openDB();
+                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
@@ -214,7 +211,7 @@ public class BasketController extends ControllerParent {
                     removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
-                    database.closeDBSession();
+                    closeDB();
                     return;
                 }
 
@@ -228,7 +225,7 @@ public class BasketController extends ControllerParent {
                 throw new RuntimeException(e);
             }
             finally {
-                database.closeDBSession();
+                closeDB();
             }
         }
     };
@@ -252,8 +249,8 @@ public class BasketController extends ControllerParent {
                 }
 
                 StockItem i = getItems(index);
-                database.openDBSession();
-                database.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
+                openDB();
+                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
@@ -272,7 +269,7 @@ public class BasketController extends ControllerParent {
                 throw new RuntimeException(e);
             }
             finally {
-                database.closeDBSession();
+                closeDB();
             }
         }
     };
@@ -293,8 +290,8 @@ public class BasketController extends ControllerParent {
                 }
 
                 boolean isFlag = getItems(index) instanceof Flag;
-                database.openDBSession();
-                Design d = database.getDeignFromIso(getItems(index).getIsoID());
+                openDB();
+                Design d = getDatabase().getDeignFromIso(getItems(index).getIsoID());
 
                 l.showItem(stage, getItems(), operator, d, isFlag, index);
             }
@@ -302,7 +299,7 @@ public class BasketController extends ControllerParent {
                 throw new RuntimeException(e);
             }
             finally {
-                database.closeDBSession();
+                closeDB();
             }
         }
     };

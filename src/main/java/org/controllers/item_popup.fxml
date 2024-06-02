@@ -39,9 +39,10 @@
                 </HBox>
 
                 <HBox alignment="CENTER" spacing="10">
-                    <Button fx:id="btnBlue"
+                    <Button fx:id="btnUpdateStock"
                             minWidth="150"
                             minHeight="35"
+                            styleClass="btnBlue"
                             style="-fx-font-size: 14; -fx-background-radius: 15;"
                             text="Update"/>
                     <Button fx:id="btnPrint"

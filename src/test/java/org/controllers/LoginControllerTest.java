@@ -18,6 +18,8 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LoginControllerTest extends ApplicationTest {
+    private static DatabaseControl database = new DatabaseControl();
+    
     @Override
     public void start(Stage stage) throws Exception {
         Loader l = new Loader();
@@ -27,20 +29,29 @@ public class LoginControllerTest extends ApplicationTest {
     @BeforeAll
     public static void addOperator() {
         Calendar calendar = Calendar.getInstance();
-        DatabaseControl.denyOperator(9999);
-        DatabaseControl.addRequest(9999, "testApproved", "testPassword1", calendar.getTime());
-        DatabaseControl.acceptOperator(9999);
+
+        database.openDBSession();
+
+        database.denyOperator(9999);
+        database.addRequest(9999, "testApproved", "testPassword1", calendar.getTime());
+        database.acceptOperator(9999);
         calendar.add(Calendar.HOUR, 1);
-        DatabaseControl.denyOperator(9998);
-        DatabaseControl.addRequest(9998, "testNotApproved", "testPassword2", calendar.getTime());
+        database.denyOperator(9998);
+        database.addRequest(9998, "testNotApproved", "testPassword2", calendar.getTime());
+
+        database.closeDBSession();
     }
 
     @AfterAll
     public static void removeOperator() {
-        DatabaseControl.denyOperator(10001);
-        DatabaseControl.denyOperator(10000);
-        DatabaseControl.denyOperator(9999);
-        DatabaseControl.denyOperator(9998);
+        database.openDBSession();
+
+        database.denyOperator(10001);
+        database.denyOperator(10000);
+        database.denyOperator(9999);
+        database.denyOperator(9998);
+
+        database.closeDBSession();
     }
 
     @Test
@@ -113,7 +124,7 @@ public class LoginControllerTest extends ApplicationTest {
 
         clickOn("#btnLogin");
 
-        Thread.sleep(3000);
+        Thread.sleep(500);
 
         verifyThat("#btnFlag_AC", Node::isVisible);
     }
@@ -192,8 +203,10 @@ public class LoginControllerTest extends ApplicationTest {
         clickOn("#btnLogin");
 
         verifyThat("#boxContainment", Node::isVisible);
-        Operator operator = DatabaseControl.getSpecificOperator("newUser").get(0);
+        database.openDBSession();
+        Operator operator = database.getSpecificOperator("newUser").get(0);
         assertFalse(operator.isApproved());
-        DatabaseControl.denyOperator(operator.getOperatorID());
+        database.denyOperator(operator.getOperatorID());
+        database.closeDBSession();
     }
 }
