@@ -16,7 +16,6 @@
       alignment="center"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.controllers.StockController"
       stylesheets="@MainStyle.css">
 
     <VBox id="imageHolder" style="-fx-border-width: 2; -fx-border-color: #000000;"

@@ -22,6 +22,7 @@ public abstract class ControllerParent {
     protected Operator operator;
     private List<StockItem> items;
     protected SearchConditions sc;
+    protected final DatabaseControl database = new DatabaseControl();
 
     /**
      * This is called whenever the window changes

@@ -54,7 +54,7 @@ public class Cushion extends StockItem {
 
     @Override
     public double calculatePrice() {
-        if (amount < 0) return DatabaseControl.getPrice(this.getSizeID());
+        if (amount < 0) return costToProduce;
 
         double cost = size.getValue();
         if (!justCase) cost += material.getValue();

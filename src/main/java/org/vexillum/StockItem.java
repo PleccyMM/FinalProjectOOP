@@ -12,7 +12,6 @@ public abstract class StockItem implements Comparable<StockItem> {
     protected int totalAmount;
     protected int restock;
     protected int sizeID;
-    //This value is only used when printing to file, and is left unassigned most of the time
     protected double costToProduce;
 
     /**

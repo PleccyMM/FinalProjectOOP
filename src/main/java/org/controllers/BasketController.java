@@ -69,7 +69,9 @@ public class BasketController extends ControllerParent {
         boxScroll.getChildren().add(box);
         addItem(exportItems);
 
+        database.openDBSession();
         calculateTotalCost();
+        database.closeDBSession();
     }
 
     private void addItem(HashMap<Integer, StockItem> itemsMap) throws IOException {
@@ -133,7 +135,7 @@ public class BasketController extends ControllerParent {
         for (var item : exportItems.entrySet()) {
             StockItem i = item.getValue();
             exportSales += i.calculatePrice() * i.getAmount();
-            exportCosts += DatabaseControl.getPrice(i.getSizeID()) * i.getAmount();
+            exportCosts += database.getPrice(i.getSizeID()) * i.getAmount();
         }
         for (var item : importItems.entrySet()) {
             StockItem i = item.getValue();
@@ -149,9 +151,10 @@ public class BasketController extends ControllerParent {
 
     @FXML
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
+        database.openDBSession();
         for(var item : importItems.entrySet()) {
             StockItem i = item.getValue();
-            DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+            database.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
         }
         for (int i = 0; i < itemsSize(); i++) {
             Node b = boxScroll.lookup("#" + i);
@@ -162,6 +165,7 @@ public class BasketController extends ControllerParent {
         importItems.clear();
         exportItems.clear();
         calculateTotalCost();
+        database.closeDBSession();
     }
 
     private int locateIndex(int hash) {
@@ -197,7 +201,8 @@ public class BasketController extends ControllerParent {
                 }
 
                 StockItem i = getItems(index);
-                DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
+                database.openDBSession();
+                database.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
@@ -209,6 +214,7 @@ public class BasketController extends ControllerParent {
                     removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
+                    database.closeDBSession();
                     return;
                 }
 
@@ -220,6 +226,9 @@ public class BasketController extends ControllerParent {
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+            finally {
+                database.closeDBSession();
             }
         }
     };
@@ -243,7 +252,8 @@ public class BasketController extends ControllerParent {
                 }
 
                 StockItem i = getItems(index);
-                DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
+                database.openDBSession();
+                database.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
@@ -260,6 +270,9 @@ public class BasketController extends ControllerParent {
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+            finally {
+                database.closeDBSession();
             }
         }
     };
@@ -280,12 +293,16 @@ public class BasketController extends ControllerParent {
                 }
 
                 boolean isFlag = getItems(index) instanceof Flag;
-                Design d = DatabaseControl.getDeignFromIso(getItems(index).getIsoID());
+                database.openDBSession();
+                Design d = database.getDeignFromIso(getItems(index).getIsoID());
 
                 l.showItem(stage, getItems(), operator, d, isFlag, index);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+            finally {
+                database.closeDBSession();
             }
         }
     };

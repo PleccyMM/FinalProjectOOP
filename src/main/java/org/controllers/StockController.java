@@ -40,6 +40,8 @@ public class StockController extends ControllerParent {
      */
     public void load(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) {
         try {
+            database.openDBSession();
+
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
@@ -70,6 +72,8 @@ public class StockController extends ControllerParent {
         }
         catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            database.closeDBSession();
         }
     }
 
@@ -79,13 +83,13 @@ public class StockController extends ControllerParent {
      * @throws Exception loading the relevant .fxml can fail
      */
     private void loadStock() throws Exception {
-        allDesigns = DatabaseControl.searchDesigns(sc);
+        allDesigns = database.searchDesigns(sc);
         boxScroll.getChildren().clear();
 
         boxScroll.getChildren().add(new HBox());
 
-        int designsToLoad;
-        int maxFlagLoad = allDesigns.size(); //This variable can be modified to restrict the max number of viewed designs
+        final int designsToLoad;
+        final int maxFlagLoad = allDesigns.size(); //This variable can be modified to restrict the max number of viewed designs
 
         designsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
 
@@ -208,7 +212,7 @@ public class StockController extends ControllerParent {
                 if (type == null) rdbList.get(0).setSelected(true);
                 else {
                     //MySQL database has the relevant ID for the type, which aligns with their positions in the button list
-                    Integer i = DatabaseControl.getTypeId(rdbList.get(type + 1).getText());
+                    Integer i = database.getTypeId(rdbList.get(type + 1).getText());
                     rdbList.get(i + 1).setSelected(true);
                 }
                 break;
@@ -225,7 +229,7 @@ public class StockController extends ControllerParent {
                 Integer region = sc.getRegion();
                 if (region == null) rdbList.get(0).setSelected(true);
                 else {
-                    Integer i = DatabaseControl.getRegionId(rdbList.get(region + 1).getText());
+                    Integer i = database.getRegionId(rdbList.get(region + 1).getText());
                     rdbList.get(i + 1).setSelected(true);
                 }
                 break;
@@ -281,10 +285,12 @@ public class StockController extends ControllerParent {
     protected void btnPrintClick(ActionEvent event) throws Exception {
         String msg = "";
 
-        List<Design> designs = DatabaseControl.searchDesigns(new SearchConditions());
+        database.openDBSession();
+        List<Design> designs = database.searchDesigns(new SearchConditions());
         //HashMaps are used to make it significantly easier to find the relevant designs from their isoID
-        HashMap<String, Flag> flags = DatabaseControl.getAllFlags();
-        HashMap<String, Cushion> cushions = DatabaseControl.getAllCushions();
+        HashMap<String, Flag> flags = database.getAllFlags();
+        HashMap<String, Cushion> cushions = database.getAllCushions();
+        database.closeDBSession();
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
 
@@ -374,8 +380,10 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                sc.setType(DatabaseControl.getTypeId(r.getText()));
+                database.openDBSession();
+                sc.setType(database.getTypeId(r.getText()));
                 performSearch();
+                database.closeDBSession();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -389,8 +397,10 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                sc.setRegion(DatabaseControl.getRegionId(r.getText()));
+                database.openDBSession();
+                sc.setRegion(database.getRegionId(r.getText()));
                 performSearch();
+                database.closeDBSession();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -459,11 +469,14 @@ public class StockController extends ControllerParent {
                     rgnButtonPush.setMinWidth((((HBox) box).getWidth() + boxTagOps.getSpacing()) * (index));
 
                     String labelText = ((Label) box.lookup("#lblTag")).getText().toLowerCase();
+                    database.openDBSession();
                     generateRadioButtons(labelText);
                 }
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                database.closeDBSession();
             }
         }
     };

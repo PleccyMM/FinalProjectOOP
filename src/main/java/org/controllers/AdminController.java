@@ -22,7 +22,10 @@ public class AdminController extends ControllerParent {
         if (headerBox == null) { throw new Exception(); }
 
         loadHeader(stage, operator, items, headerBox, new SearchConditions());
-        addOperatorItem(DatabaseControl.getApprovals());
+
+        database.openDBSession();
+        addOperatorItem(database.getApprovals());
+        database.closeDBSession();
     }
 
     public void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
@@ -34,7 +37,7 @@ public class AdminController extends ControllerParent {
             ids[i++] = m.getValue();
         }
 
-        List<Operator> operators = DatabaseControl.getOperatorsByID(ids);
+        List<Operator> operators = database.getOperatorsByID(ids);
 
         for(var m : operatorMap.entrySet()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
@@ -77,11 +80,15 @@ public class AdminController extends ControllerParent {
             Node box = n.getParent();
 
             int id = Integer.parseInt(box.getId());
-            DatabaseControl.acceptOperator(id);
+
+            database.openDBSession();
+            database.acceptOperator(id);
             try {
-                addOperatorItem(DatabaseControl.getApprovals());
+                addOperatorItem(database.getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                database.closeDBSession();
             }
         }
     };
@@ -94,11 +101,14 @@ public class AdminController extends ControllerParent {
             Node box = n.getParent();
 
             int id = Integer.parseInt(box.getId());
-            DatabaseControl.denyOperator(id);
+            database.openDBSession();
+            database.denyOperator(id);
             try {
-                addOperatorItem(DatabaseControl.getApprovals());
+                addOperatorItem(database.getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                database.closeDBSession();
             }
         }
     };

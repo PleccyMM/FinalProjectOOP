@@ -32,6 +32,8 @@ public class LoginController {
     @FXML private Label lblCreateAccount;
     @FXML private Button btnLogin;
 
+    private final DatabaseControl database = new DatabaseControl();
+
     @FXML
     private void handleBtnLogin(ActionEvent event) throws Exception {
         attemptLogin();
@@ -60,6 +62,7 @@ public class LoginController {
      * @throws Exception loading fxml could fail
      */
     private void attemptLogin() throws Exception {
+        database.openDBSession();
         if (!btnLogin.getText().equals("Login")) {
             newAccount();
             return;
@@ -68,7 +71,8 @@ public class LoginController {
         //Resets any warnings as they aren't needed anymore
         resetLogin();
         //We don't send the password and username, to get an exact match, to emulate a better security protocol
-        List<Operator> operatorCatch = DatabaseControl.getSpecificOperator(enrName.getText());
+        List<Operator> operatorCatch = database.getSpecificOperator(enrName.getText());
+        database.closeDBSession();
 
         if (operatorCatch.isEmpty()) {
             failure("Incorrect username or password");
@@ -105,7 +109,7 @@ public class LoginController {
             return;
         }
 
-        if (!DatabaseControl.getSpecificOperator(enrName.getText()).isEmpty()) {
+        if (!database.getSpecificOperator(enrName.getText()).isEmpty()) {
             failure("Username already taken");
             return;
         }
@@ -113,10 +117,11 @@ public class LoginController {
         //highestVal is used to figure out and assign the new operator's ID to the next natural one, this can probably
         //be improved using the auto increment feature in MySQL, need to be investigated
         int highestVal = 0;
-        for (Integer i : DatabaseControl.getExistentIDs()) {
+        for (Integer i : database.getExistentIDs()) {
             if (i > highestVal) highestVal = i;
         }
-        DatabaseControl.addRequest(highestVal + 1, enrName.getText(), enrPassword.getText(), new Date());
+        database.addRequest(highestVal + 1, enrName.getText(), enrPassword.getText(), new Date());
+        database.closeDBSession();
         clear();
 
         //This entire part is just attaching logic to the popup, this popup is just for confirmation
