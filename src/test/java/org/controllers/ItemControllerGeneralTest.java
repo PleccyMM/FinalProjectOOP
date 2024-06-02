@@ -29,7 +29,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
     @AfterAll
     public static void deleteFile() {
-        File f = new File("GB_0.txt");
+        File f = new File("UnitedKingdom_0.txt");
         f.delete();
     }
 

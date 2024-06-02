@@ -156,6 +156,7 @@ public abstract class ControllerParent {
     }
     protected void setItem(int i, StockItem item) {
         items.set(i, item);
+        Collections.sort(items);
     }
     protected void addItem(StockItem item) {
         for (StockItem i : items) {

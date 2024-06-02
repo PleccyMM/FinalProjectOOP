@@ -61,6 +61,12 @@ public class Cushion extends StockItem {
         return cost;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Cushion)) return false;
+        return super.equals(o);
+    }
+
     @Id
     public int getCushionID() {
         return cushionID;

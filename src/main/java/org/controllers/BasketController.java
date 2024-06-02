@@ -164,6 +164,21 @@ public class BasketController extends ControllerParent {
         calculateTotalCost();
     }
 
+    private int locateIndex(int hash) {
+        for (int i = 0; i < itemsSize(); i++) {
+            if (getItems(i).hashCode() == hash) {
+                return i;
+            }
+        }
+
+        System.out.println("Failure to find " + hash + ":\n");
+        for (StockItem item : getItems()) {
+            System.out.println(item.hashCode());
+        }
+
+        return -1;
+    }
+
     EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -175,9 +190,13 @@ public class BasketController extends ControllerParent {
 
                 int val = Integer.parseInt(l.getText()) - 1;
                 int hashVal = Integer.parseInt(box.getId());
-                int index = Arrays.binarySearch(getItems().toArray(), hashVal);
+                int index = locateIndex(hashVal);
+                if (index < 0) {
+                    System.out.println("Error at minus click");
+                    return;
+                }
 
-                StockItem i = items.get(index);
+                StockItem i = getItems(index);
                 DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
@@ -187,7 +206,7 @@ public class BasketController extends ControllerParent {
                 }
 
                 if (val == 0) {
-                    items.remove(i);
+                    removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
                     return;
@@ -216,9 +235,14 @@ public class BasketController extends ControllerParent {
                 int val = Integer.parseInt(l.getText()) + 1;
                 l.setText(val + "");
 
-                int index = Integer.parseInt(box.getId());
+                int hashVal = Integer.parseInt(box.getId());
+                int index = locateIndex(hashVal);
+                if (index < 0) {
+                    System.out.println("Error at add click");
+                    return;
+                }
 
-                StockItem i = items.get(index);
+                StockItem i = getItems(index);
                 DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
@@ -246,15 +270,19 @@ public class BasketController extends ControllerParent {
             try {
                 Object source = event.getSource();
 
-                HBox b = (HBox) ((Node) source).getParent();
-                int i = Integer.parseInt(b.getId());
+                HBox box = (HBox) ((Node) source).getParent();
 
-                Arrays.binarySearch(getItems(), new Flag(1, "GB", 1));
+                int hashVal = Integer.parseInt(box.getId());
+                int index = locateIndex(hashVal);
+                if (index < 0) {
+                    System.out.println("Error at edit click");
+                    return;
+                }
 
-                boolean isFlag = items.get(i) instanceof Flag;
-                Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
+                boolean isFlag = getItems(index) instanceof Flag;
+                Design d = DatabaseControl.getDeignFromIso(getItems(index).getIsoID());
 
-                l.showItem(stage, getItems(), operator, d, isFlag, i);
+                l.showItem(stage, getItems(), operator, d, isFlag, index);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

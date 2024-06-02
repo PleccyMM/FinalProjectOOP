@@ -36,19 +36,20 @@ public abstract class StockItem implements Comparable<StockItem> {
         return "\nTotal Amount: " + totalAmount + "\nRestock Level: " + restock + "\n";
     }
 
+
+
     @Override
-    public final int compareTo(StockItem o) {
-        int i = o.getName().compareTo(name);
-        int j = Integer.compare(o.getSizeID(), sizeID);
-        return i != 0 ? i : j != 0 ? j : Integer.compare(Integer.signum(o.getAmount()), Integer.signum(amount));
+    public int compareTo(StockItem o) {
+        System.out.println("Running Comparison check");
+        int i = Integer.compare(Integer.signum(amount), Integer.signum(o.getAmount()));
+        int j = name.compareTo(o.getName());
+        return i != 0 ? i : j != 0 ? j : Integer.compare(sizeID, o.getSizeID());
     }
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
+        System.out.println("Running Equality check");
         if (this == o) return true;
-        if (o instanceof Integer i) {
-            return i == hashCode();
-        }
         if (!(o instanceof StockItem stockItem)) return false;
         if (hashCode() == stockItem.hashCode()) return true;
 
@@ -61,7 +62,7 @@ public abstract class StockItem implements Comparable<StockItem> {
     }
 
     @Override
-    public final int hashCode() {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
 

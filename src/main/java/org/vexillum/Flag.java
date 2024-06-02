@@ -62,6 +62,12 @@ public class Flag extends StockItem {
         return cost;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Flag)) return false;
+        return super.equals(o);
+    }
+
     @Id
     public int getFlagID() {
         return flagID;
