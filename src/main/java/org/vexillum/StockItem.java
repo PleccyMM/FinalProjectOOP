@@ -3,8 +3,9 @@ package org.vexillum;
 import javax.persistence.*;
 
 @MappedSuperclass
-public abstract class StockItem {
+public abstract class StockItem implements Comparable<StockItem> {
     protected String isoID;
+    protected String name;
     protected int stockID;
     //A negative amount means that it's being imported and not exported
     protected int amount = 1;
@@ -35,12 +36,56 @@ public abstract class StockItem {
         return "\nTotal Amount: " + totalAmount + "\nRestock Level: " + restock + "\n";
     }
 
+    @Override
+    public final int compareTo(StockItem o) {
+        int i = o.getName().compareTo(name);
+        int j = Integer.compare(o.getSizeID(), sizeID);
+        return i != 0 ? i : j != 0 ? j : Integer.compare(Integer.signum(o.getAmount()), Integer.signum(amount));
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o instanceof Integer i) {
+            return i == hashCode();
+        }
+        if (!(o instanceof StockItem stockItem)) return false;
+        if (hashCode() == stockItem.hashCode()) return true;
+
+        if (name != stockItem.getName()) return false;
+        if (stockID != stockItem.getStockID()) return false;
+        if (sizeID != stockItem.getSizeID()) return false;
+        if (Integer.signum(amount) != Integer.signum(stockItem.getAmount())) return false;
+
+        return true;
+    }
+
+    @Override
+    public final int hashCode() {
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + name.hashCode();
+        result = prime * result + stockID;
+        result = prime * result + sizeID;
+        result = prime * result + Integer.signum(amount);
+
+        return result;
+    }
+
     @Id
     public String getIsoID() {
         return isoID;
     }
     public void setIsoID(String isoID) {
         this.isoID = isoID;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getStockID() {

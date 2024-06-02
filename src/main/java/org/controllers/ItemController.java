@@ -63,7 +63,7 @@ public class ItemController extends ControllerParent {
     protected void stageChangeHandle() {
         if (loadedPos == null) return;
 
-        item = items.get(loadedPos);
+        item = getItems(loadedPos);
         DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
     }
 
@@ -104,7 +104,7 @@ public class ItemController extends ControllerParent {
     private void typeSetUp() throws Exception {
         if (isFlag) {
             selectedSize = "Hand";
-            item = loadedPos != null ? items.get(loadedPos).clone() : DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
+            item = loadedPos != null ? getItems(loadedPos).clone() : DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
         }
         else {
             selectedSize = "45x45cm";
@@ -113,7 +113,7 @@ public class ItemController extends ControllerParent {
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam (\u00A38.00)", "Polyester (\u00A39.00)", "Feathers (\u00A311.00)", "Cotton (\u00A312.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = loadedPos != null ? items.get(loadedPos).clone() : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
+            item = loadedPos != null ? getItems(loadedPos).clone() : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
         }
         createSizeSelection();
     }
@@ -276,7 +276,7 @@ public class ItemController extends ControllerParent {
             }
         }
 
-        DatabaseControl.setStockData(item);
+        DatabaseControl.setStockData(item, true);
 
 
         int amount = Integer.parseInt(lblIncrement.getText());
@@ -481,7 +481,7 @@ public class ItemController extends ControllerParent {
                         c.setSize(CUSHION_SIZE.fromString(s));
                         c.setSizeID(CUSHION_SIZE.getSizeId(c.getSize()));
                     }
-                    DatabaseControl.setStockData(i);
+                    DatabaseControl.setStockData(i, true);
                     msg += "Information about size " + s + ": " + i.toString() + "\n";
                 }
             }
@@ -553,15 +553,15 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnAddToBasketClick(ActionEvent event) throws Exception {
         Loader l = new Loader();
-        if (loadedPos != null) items.set(loadedPos, item);
-        else items.add(item);
+        if (loadedPos != null) setItem(loadedPos, item);
+        else addItem(item);
 
         if (item.getAmount() > 0) {
             int newAmount = item.getTotalAmount() - item.getAmount();
             item.setTotalAmount(newAmount);
             DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
         }
-        l.showBasket(stage, items, operator);
+        l.showBasket(stage, getItems(), operator);
     }
 
     private void populateInfo() {

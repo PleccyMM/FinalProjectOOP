@@ -48,7 +48,7 @@ public class BasketController extends ControllerParent {
     private void createItems() throws Exception {
         int index = 0;
 
-        for (StockItem i : items) {
+        for (StockItem i : getItems()) {
             if (i.getAmount() < 0) importItems.put(index, i);
             else exportItems.put(index, i);
             index++;
@@ -83,8 +83,8 @@ public class BasketController extends ControllerParent {
 
             Image img = new Image("org/Assets/FlagsSmall/" + i.getIsoID() + ".png");
             ((ImageView) box.lookup("#imgDesign")).setImage(img);
-            String name = "";
-            name += DatabaseControl.getIsoName(i.getIsoID());
+
+            String name = i.getName();
 
             if (i instanceof Flag f) {
                 name += " Flag ";
@@ -109,7 +109,7 @@ public class BasketController extends ControllerParent {
                 box.getChildren().remove(box.lookup("#btnInformation"));
             }
 
-            box.setId(index + "");
+            box.setId(i.hashCode() + "");
             boxScroll.getChildren().add(box);
         }
     }
@@ -153,12 +153,12 @@ public class BasketController extends ControllerParent {
             StockItem i = item.getValue();
             DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
         }
-        for (int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < itemsSize(); i++) {
             Node b = boxScroll.lookup("#" + i);
             boxScroll.getChildren().remove(b);
         }
 
-        items.clear();
+        itemsClear();
         importItems.clear();
         exportItems.clear();
         calculateTotalCost();
@@ -174,7 +174,8 @@ public class BasketController extends ControllerParent {
                 Label l = (Label) box.lookup("#lblIncrement");
 
                 int val = Integer.parseInt(l.getText()) - 1;
-                int index = Integer.parseInt(box.getId());
+                int hashVal = Integer.parseInt(box.getId());
+                int index = Arrays.binarySearch(getItems().toArray(), hashVal);
 
                 StockItem i = items.get(index);
                 DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
@@ -248,10 +249,12 @@ public class BasketController extends ControllerParent {
                 HBox b = (HBox) ((Node) source).getParent();
                 int i = Integer.parseInt(b.getId());
 
+                Arrays.binarySearch(getItems(), new Flag(1, "GB", 1));
+
                 boolean isFlag = items.get(i) instanceof Flag;
                 Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
 
-                l.showItem(stage, items, operator, d, isFlag, i);
+                l.showItem(stage, getItems(), operator, d, isFlag, i);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);

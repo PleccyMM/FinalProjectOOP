@@ -20,7 +20,7 @@ public abstract class ControllerParent {
     protected Stage stage;
     protected final Loader l = new Loader();
     protected Operator operator;
-    protected List<StockItem> items;
+    private List<StockItem> items;
     protected SearchConditions sc;
 
     /**
@@ -147,4 +147,33 @@ public abstract class ControllerParent {
             }
         }
     };
+
+    protected List<StockItem> getItems() {
+        return items;
+    }
+    protected StockItem getItems(int i) {
+        return items.get(i);
+    }
+    protected void setItem(int i, StockItem item) {
+        items.set(i, item);
+    }
+    protected void addItem(StockItem item) {
+        for (StockItem i : items) {
+            if (i.equals(item)) {
+                i.setAmount(i.getAmount() + item.getAmount());
+                return;
+            }
+        }
+        items.add(item);
+        Collections.sort(items);
+    }
+    protected void itemsClear() {
+        items.clear();
+    }
+    protected void removeItem(StockItem item) {
+        items.remove(item);
+    }
+    protected int itemsSize() {
+        return items.size();
+    }
 }

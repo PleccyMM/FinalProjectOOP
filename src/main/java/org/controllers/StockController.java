@@ -181,7 +181,7 @@ public class StockController extends ControllerParent {
         //than it is to try and organise by alphabetical order in other parts of the program
         for (Design d : allDesigns) {
             if (d.getIsoID().equals(isoID)) {
-                l.showItem(stage, items, operator, d, isFlag, null);
+                l.showItem(stage, getItems(), operator, d, isFlag, null);
                 break;
             }
         }

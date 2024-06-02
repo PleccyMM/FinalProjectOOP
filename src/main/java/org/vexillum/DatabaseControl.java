@@ -160,29 +160,27 @@ public class DatabaseControl {
         return list;
     }
 
-    public static String getIsoName(String isoID) {
-        openDBSession();
-        var query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
-        List<String> list = query.list();
-        closeDBSession();
-        if (list.size() > 0) return list.get(0);
-        return "";
-    }
-
     public static Flag createFlag(String isoID, FLAG_SIZE size) {
         openDBSession();
         System.out.println("Making Flag");
 
         var query = databaseSession.createQuery("from Flag where isoID = '" + isoID + "'");
-        List<Flag> list = query.list();
-        closeDBSession();
+        List<Flag> listFlag = query.list();
+        if (listFlag.size() == 0) return null;
 
-        if (list.size() == 0) return null;
+        Flag f = listFlag.get(0);
 
-        Flag f = list.get(0);
+        query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        List<String> listName = query.list();
+        if (listName.size() == 0) return null;
+
+        f.setName(listName.get(0));
+
         f.setSizeID(FLAG_SIZE.getSizeId(size));
         f.setSize(size);
-        return (Flag) setStockData(f);
+        setStockData(f, false);
+        closeDBSession();
+        return f;
     }
 
     public static Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
@@ -190,21 +188,28 @@ public class DatabaseControl {
         System.out.println("Making Cushion");
 
         var query = databaseSession.createQuery("from Cushion where isoID = '" + isoID + "'");
-        List<Cushion> list = query.list();
-        closeDBSession();
+        List<Cushion> listCushion = query.list();
+        if (listCushion.size() == 0) return null;
 
-        if (list.size() == 0) return null;
+        Cushion c = listCushion.get(0);
 
-        Cushion c = list.get(0);
+        query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        List<String> listName = query.list();
+        if (listName.size() == 0) return null;
+
+        c.setName(listName.get(0));
+
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
         c.setSize(size);
         c.setMaterial(material);
-        return (Cushion) setStockData(c);
+        setStockData(c, false);
+        closeDBSession();
+        return c;
     }
 
-    public static StockItem setStockData(StockItem i) {
+    public static StockItem setStockData(StockItem i, boolean needsOpening) {
         try {
-            openDBSession();
+            if (needsOpening) openDBSession();
             System.out.println("Getting stock data");
             var query = databaseSession.createNativeQuery("select amount from stock_amount where stockid = (:stockid) and sizeid = (:sizeid)")
                     .setParameter("stockid", i.getStockID())
@@ -222,7 +227,7 @@ public class DatabaseControl {
             throw new RuntimeException(e);
         }
         finally {
-            closeDBSession();
+            if (needsOpening) closeDBSession();
         }
         return i;
     }

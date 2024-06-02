@@ -31,9 +31,10 @@ public class Flag extends StockItem {
     /**
      * Constructor only used for the {@code .clone()} method
      */
-    public Flag(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, double costToProduce,
-                int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+    public Flag(String isoID, String name, int stockID, int amount, int totalAmount, int restock, int sizeID,
+                double costToProduce, int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
         this.isoID = isoID;
+        this.name = name;
         this.stockID = stockID;
         this.amount = amount;
         this.totalAmount = totalAmount;
@@ -48,7 +49,7 @@ public class Flag extends StockItem {
 
     @Override
     public StockItem clone() {
-        return new Flag(isoID, stockID, amount, totalAmount, restock, sizeID, costToProduce, flagID, material, hoist, size);
+        return new Flag(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, flagID, material, hoist, size);
     }
 
     @Override

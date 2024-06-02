@@ -114,7 +114,7 @@ public class BasketControllerTest extends ApplicationTest {
     @Test
     @Order(0)
     public void testSuite() throws InterruptedException {
-        Thread.sleep(100000);
+        //Thread.sleep(100000);
     }
 
     @Test
