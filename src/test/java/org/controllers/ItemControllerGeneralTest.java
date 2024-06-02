@@ -4,12 +4,15 @@ import com.sun.javafx.application.PlatformImpl;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.testfx.framework.junit5.*;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.vexillum.*;
 import org.junit.jupiter.api.*;
+import java.io.File;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +25,12 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
     public void start(Stage stage) throws Exception {
         Loader l = new Loader();
         l.showItem(stage, new ArrayList<>(), new Operator(), DatabaseControl.getDeignFromIso("GB"), true, null);
+    }
+
+    @AfterAll
+    public static void deleteFile() {
+        File f = new File("GB_0.txt");
+        f.delete();
     }
 
     @Test
@@ -177,6 +186,63 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
     @Test
     @Order(10)
+    public void informationPopupTest() {
+        clickOn("#btnMore");
+
+        verifyThat("#boxContainment", Node::isVisible);
+    }
+
+    @Test
+    @Order(11)
+    public void restockButtonsTest() {
+        clickOn("#btnMore");
+
+        clickOn("#btnAddRestock");
+        verifyThat("#lblIncrementRestock", LabeledMatchers.hasText("8"));
+
+        clickOn("#btnMinusRestock");
+        verifyThat("#lblIncrementRestock", LabeledMatchers.hasText("7"));
+    }
+
+    @Test
+    @Order(12)
+    public void setRestockToZeroTest() {
+        clickOn("#btnMore");
+
+        for (int i = 0; i < 10; i++) {
+            clickOn("#btnMinusRestock");
+        }
+        verifyThat("#lblIncrementRestock", LabeledMatchers.hasText("1"));
+        verifyThat("#btnMinusRestock", Node::isDisabled);
+    }
+
+    @Test
+    @Order(13)
+    public void updateRestockTest() {
+        clickOn("#btnMore");
+
+        for (int i = 0; i < 3; i++) {
+            clickOn("#btnAddRestock");
+        }
+
+        verifyThat("#lblIncrementRestock", LabeledMatchers.hasText("10"));
+        clickOn("#btnAddRestock");
+
+        verifyThat("#lblRestock", LabeledMatchers.hasText("10"));
+    }
+
+    @Test
+    @Order(15)
+    public void printTest() {
+        clickOn("#btnMore");
+
+        clickOn("#btnPrint");
+
+        assertTrue(new File("GB_0.txt").exists(), "File was not made");
+    }
+
+    @Test
+    @Order(16)
     public void goBackTest() throws InterruptedException {
         clickOn("#btnBack");
 
@@ -185,7 +251,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
     }
 
     @Test
-    @Order(11)
+    @Order(17)
     public void fullIntegrationTest() throws InterruptedException {
         for (int i = 0; i < 4; i++) {
             clickOn("#btnAdd");

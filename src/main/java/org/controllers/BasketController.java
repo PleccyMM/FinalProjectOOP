@@ -58,6 +58,7 @@ public class BasketController extends ControllerParent {
         Parent itemView = loader.load();
         HBox box = (HBox) itemView;
         ((Label) box.lookup("#lblImportExport")).setText("Imports");
+        boxScroll.getChildren().clear();
         boxScroll.getChildren().add(box);
         addItem(importItems);
 
