@@ -48,17 +48,17 @@ public class BasketController extends ControllerParent {
     private void createItems() throws Exception {
         int index = 0;
 
-        for (StockItem i : items) {
+        for (StockItem i : getItems()) {
             if (i.getAmount() < 0) importItems.put(index, i);
             else exportItems.put(index, i);
             index++;
         }
 
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
         Parent itemView = loader.load();
         HBox box = (HBox) itemView;
         ((Label) box.lookup("#lblImportExport")).setText("Imports");
+        boxScroll.getChildren().clear();
         boxScroll.getChildren().add(box);
         addItem(importItems);
 
@@ -69,7 +69,9 @@ public class BasketController extends ControllerParent {
         boxScroll.getChildren().add(box);
         addItem(exportItems);
 
+        openDB();
         calculateTotalCost();
+        closeDB();
     }
 
     private void addItem(HashMap<Integer, StockItem> itemsMap) throws IOException {
@@ -83,8 +85,8 @@ public class BasketController extends ControllerParent {
 
             Image img = new Image("org/Assets/FlagsSmall/" + i.getIsoID() + ".png");
             ((ImageView) box.lookup("#imgDesign")).setImage(img);
-            String name = "";
-            name += DatabaseControl.getIsoName(i.getIsoID());
+
+            String name = i.getName();
 
             if (i instanceof Flag f) {
                 name += " Flag ";
@@ -99,7 +101,7 @@ public class BasketController extends ControllerParent {
 
             setCosts(box, i);
 
-            ((Label) box.lookup("#lblIncriment")).setText(i.getPrintAmount() + "");
+            ((Label) box.lookup("#lblIncrement")).setText(i.getPrintAmount() + "");
             ((Button) box.lookup("#btnMinus")).setOnAction(btnMinusClick);
             ((Button) box.lookup("#btnAdd")).setOnAction(btnAddClick);
 
@@ -109,7 +111,7 @@ public class BasketController extends ControllerParent {
                 box.getChildren().remove(box.lookup("#btnInformation"));
             }
 
-            box.setId(index + "");
+            box.setId(i.hashCode() + "");
             boxScroll.getChildren().add(box);
         }
     }
@@ -133,7 +135,7 @@ public class BasketController extends ControllerParent {
         for (var item : exportItems.entrySet()) {
             StockItem i = item.getValue();
             exportSales += i.calculatePrice() * i.getAmount();
-            exportCosts += DatabaseControl.getPrice(i.getSizeID()) * i.getAmount();
+            exportCosts += getDatabase().getPrice(i.getSizeID()) * i.getAmount();
         }
         for (var item : importItems.entrySet()) {
             StockItem i = item.getValue();
@@ -149,24 +151,33 @@ public class BasketController extends ControllerParent {
 
     @FXML
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
-        for(var item : importItems.entrySet()) {
-            StockItem i = item.getValue();
-            DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
-        }
-        for (int i = 0; i < items.size(); i++) {
-            Node b = boxScroll.lookup("#" + i);
+        openDB();
+        for(StockItem i : getItems()) {
+            getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+            Node b = boxScroll.lookup("#" + i.hashCode());
             boxScroll.getChildren().remove(b);
         }
 
-        items.clear();
+        itemsClear();
         importItems.clear();
         exportItems.clear();
         calculateTotalCost();
+        closeDB();
     }
 
-    @FXML
-    protected void btnPrintClick(ActionEvent event) throws Exception {
+    private int locateIndex(int hash) {
+        for (int i = 0; i < itemsSize(); i++) {
+            if (getItems(i).hashCode() == hash) {
+                return i;
+            }
+        }
 
+        System.out.println("Failure to find " + hash + ":\n");
+        for (StockItem item : getItems()) {
+            System.out.println(item.hashCode());
+        }
+
+        return -1;
     }
 
     EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
@@ -176,13 +187,19 @@ public class BasketController extends ControllerParent {
                 Object source = event.getSource();
                 Node n = (Node) source;
                 Node box = n.getParent().getParent();
-                Label l = (Label) box.lookup("#lblIncriment");
+                Label l = (Label) box.lookup("#lblIncrement");
 
                 int val = Integer.parseInt(l.getText()) - 1;
-                int index = Integer.parseInt(box.getId());
+                int hashVal = Integer.parseInt(box.getId());
+                int index = locateIndex(hashVal);
+                if (index < 0) {
+                    System.out.println("Error at minus click");
+                    return;
+                }
 
-                StockItem i = items.get(index);
-                DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
+                StockItem i = getItems(index);
+                openDB();
+                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
@@ -191,9 +208,10 @@ public class BasketController extends ControllerParent {
                 }
 
                 if (val == 0) {
-                    items.remove(i);
+                    removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
+                    closeDB();
                     return;
                 }
 
@@ -206,6 +224,9 @@ public class BasketController extends ControllerParent {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            finally {
+                closeDB();
+            }
         }
     };
     EventHandler<ActionEvent> btnAddClick = new EventHandler<ActionEvent>() {
@@ -215,15 +236,21 @@ public class BasketController extends ControllerParent {
                 Object source = event.getSource();
                 Node n = (Node) source;
                 Node box = n.getParent().getParent();
-                Label l = (Label) box.lookup("#lblIncriment");
+                Label l = (Label) box.lookup("#lblIncrement");
 
                 int val = Integer.parseInt(l.getText()) + 1;
                 l.setText(val + "");
 
-                int index = Integer.parseInt(box.getId());
+                int hashVal = Integer.parseInt(box.getId());
+                int index = locateIndex(hashVal);
+                if (index < 0) {
+                    System.out.println("Error at add click");
+                    return;
+                }
 
-                StockItem i = items.get(index);
-                DatabaseControl.updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
+                StockItem i = getItems(index);
+                openDB();
+                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(val * -1);
                 else {
@@ -241,6 +268,9 @@ public class BasketController extends ControllerParent {
             catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            finally {
+                closeDB();
+            }
         }
     };
 
@@ -250,17 +280,26 @@ public class BasketController extends ControllerParent {
             try {
                 Object source = event.getSource();
 
-                HBox b = (HBox) ((Node) source).getParent();
-                int i = Integer.parseInt(b.getId());
+                HBox box = (HBox) ((Node) source).getParent();
 
-                boolean isFlag = items.get(i) instanceof Flag;
-                Design d = DatabaseControl.getDeignFromIso(items.get(i).getIsoID());
+                int hashVal = Integer.parseInt(box.getId());
+                int index = locateIndex(hashVal);
+                if (index < 0) {
+                    System.out.println("Error at edit click");
+                    return;
+                }
 
-                System.out.println("EDITING ITEM");
-                l.showItem(stage, operator, items, d, isFlag, i);
+                boolean isFlag = getItems(index) instanceof Flag;
+                openDB();
+                Design d = getDatabase().getDeignFromIso(getItems(index).getIsoID());
+
+                l.showItem(stage, getItems(), operator, d, isFlag, index);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            }
+            finally {
+                closeDB();
             }
         }
     };

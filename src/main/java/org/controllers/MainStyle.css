@@ -55,7 +55,7 @@
     -fx-font-weight: bold;
 }
 #lblWarning {
-    -fx-fill: #FF0000;
+    -fx-text-fill: #FF0000;
     -fx-font-family: "Inter Semi Bold";
     -fx-font-weight: bold;
 }
@@ -185,10 +185,10 @@
     -fx-background-color: #C2D0FF;
 }
 
-#lblIncrimentBox,
-#lblIncrimentAmount,
-#lblIncrimentRestock,
-#lblIncriment {
+#lblIncrementBox,
+#lblIncrementAmount,
+#lblIncrementRestock,
+#lblIncrement {
     -fx-text-fill: #000000;
     -fx-font-size: 16px;
     -fx-background-color: #FFFFFF;
@@ -222,6 +222,7 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+#small-title-black,
 #lblTotalLabel,
 #lblTotalPrice {
     -fx-font-size: 18px;

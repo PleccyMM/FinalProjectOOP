@@ -1,60 +1,79 @@
 package org.controllers;
 
+import org.vexillum.*;
+
 import javafx.event.*;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import org.vexillum.*;
 import java.util.*;
 
+/**
+ * Parent used for all screens in the system, with exception to the login screen
+ * <p>
+ * Responsible for ensuring that the header is drawn to screen and control regarding the header, as well other essential
+ * data storage
+ */
 public abstract class ControllerParent {
     private TextField enrSearch;
     protected Stage stage;
     protected final Loader l = new Loader();
     protected Operator operator;
-    protected List<StockItem> items;
+    private List<StockItem> items;
     protected SearchConditions sc;
+    private final DatabaseControl database = new DatabaseControl();
 
+    /**
+     * This is called whenever the window changes
+     */
     protected abstract void stageChangeHandle();
 
+    /**
+     * Method used to attach events to many of the nodes in the searchbar
+     *
+     * @param stage should be the same stage as the window being loaded
+     * @param operator the current logged in operator
+     * @param items all items that are currently set for importing and exporting
+     * @param headerBox the primary HBox that the header.fxml file specifies
+     * @param sc the search conditions, needed to fill the search bar's textbox
+     */
     protected void loadHeader(Stage stage, Operator operator, List<StockItem> items, HBox headerBox, SearchConditions sc) {
-        try {
-            this.operator = operator;
-            this.items = items;
-            this.sc = sc;
+        this.operator = operator;
+        this.items = items;
+        this.sc = sc;
 
-            this.stage = stage;
-            Button btnBack = ((Button) headerBox.lookup("#btnBack"));
-            btnBack.setOnAction(btnBackHandle);
+        this.stage = stage;
+        Button btnBack = ((Button) headerBox.lookup("#btnBack"));
+        btnBack.setOnAction(btnBackHandle);
 
-            Button btnSearch = ((Button) headerBox.lookup("#btnSearch"));
-            btnSearch.setOnAction(searchHandleBtn);
+        Button btnSearch = ((Button) headerBox.lookup("#btnSearch"));
+        btnSearch.setOnAction(searchHandleBtn);
 
-            Button btnBasket = ((Button) headerBox.lookup("#btnBasket"));
-            btnBasket.setOnAction(basketHandleBtn);
+        Button btnBasket = ((Button) headerBox.lookup("#btnBasket"));
+        btnBasket.setOnAction(basketHandleBtn);
 
-            enrSearch = (TextField) headerBox.lookup("#enrSearch");
-            enrSearch.setText(sc.getSearch());
-            enrSearch.setOnKeyPressed(searchHandleEnr);
+        enrSearch = (TextField) headerBox.lookup("#enrSearch");
+        enrSearch.setText(sc.getSearch());
+        enrSearch.setOnKeyPressed(searchHandleEnr);
 
-            ComboBox cmbProfile = ((ComboBox) headerBox.lookup("#cmbProfile"));
-            cmbProfile.setOnAction(cmbProfileChange);
-            if (operator.isAdministrator()) {
-                cmbProfile.getItems().add("Admin Panel");
-            }
-            cmbProfile.getItems().add("Logout");
+        //If the user is an operator an additional item needs to be added to the dropdown button
+        ComboBox cmbProfile = ((ComboBox) headerBox.lookup("#cmbProfile"));
+        cmbProfile.setOnAction(cmbProfileChange);
+        if (operator.isAdministrator()) {
+            cmbProfile.getItems().add("Admin Panel");
         }
-        catch (Exception e) {
-            throw new RuntimeException();
-        }
+        cmbProfile.getItems().add("Logout");
     }
 
+    /**
+     * Method called whenever a new search is commenced
+     *
+     * @throws Exception loading fxml could fail
+     */
     protected void performSearch() throws Exception {
         stageChangeHandle();
-        l.showStock(stage, operator, items, sc);
+        l.showStock(stage, items, operator, sc);
     }
 
     EventHandler<ActionEvent> btnBackHandle = new EventHandler<ActionEvent>() {
@@ -62,7 +81,7 @@ public abstract class ControllerParent {
         public void handle(ActionEvent event) {
             try {
                 stageChangeHandle();
-                l.showStock(stage, operator, items, new SearchConditions());
+                l.showStock(stage, items, operator, new SearchConditions());
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -129,4 +148,45 @@ public abstract class ControllerParent {
             }
         }
     };
+
+    protected List<StockItem> getItems() {
+        return items;
+    }
+    protected StockItem getItems(int i) {
+        return items.get(i);
+    }
+    protected void setItem(int i, StockItem item) {
+        items.set(i, item);
+        Collections.sort(items);
+    }
+    protected void addItem(StockItem item) {
+        for (StockItem i : items) {
+            if (i.equals(item)) {
+                i.setAmount(i.getAmount() + item.getAmount());
+                return;
+            }
+        }
+        items.add(item);
+        Collections.sort(items);
+    }
+    protected void itemsClear() {
+        items.clear();
+    }
+    protected void removeItem(StockItem item) {
+        items.remove(item);
+    }
+    protected int itemsSize() {
+        return items.size();
+    }
+
+    protected DatabaseControl getDatabase() {
+        return database;
+    }
+    protected void openDB() {
+        database.openDBSession();
+    }
+    protected void closeDB() {
+        System.out.println("Call to close with made");
+        database.closeDBSession();
+    }
 }

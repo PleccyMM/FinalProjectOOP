@@ -13,8 +13,14 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+
+    testImplementation(group: "org.testfx", name: "testfx-core", version: "4.0.16-alpha")
+    testImplementation(group: "org.testfx", name: "testfx-junit5", version: "4.0.16-alpha")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+
     implementation("mysql:mysql-connector-java:8.0.32")
     implementation("org.hibernate:hibernate-core:5.6.15.Final")
+
     implementation("org.json:json:20141113")
 }
 

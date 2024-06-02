@@ -1,21 +1,14 @@
 package org.controllers;
 
 import org.vexillum.*;
+
 import javafx.event.*;
 import javafx.fxml.*;
-import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.text.*;
 import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import javax.swing.*;
-import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.*;
-import java.util.Map.Entry;
 
 public class AdminController extends ControllerParent {
     @FXML private BorderPane panMain;
@@ -29,23 +22,24 @@ public class AdminController extends ControllerParent {
         if (headerBox == null) { throw new Exception(); }
 
         loadHeader(stage, operator, items, headerBox, new SearchConditions());
-        addOperatorItem();
+
+        openDB();
+        addOperatorItem(getDatabase().getApprovals());
+        closeDB();
     }
 
-    private void addOperatorItem() throws Exception {
+    public void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
         boxScroll.getChildren().clear();
 
-        HashMap<Date, Integer> map = DatabaseControl.getApprovals();
-
-        Integer[] ids = new Integer[map.size()];
+        Integer[] ids = new Integer[operatorMap.size()];
         int i = 0;
-        for(var m : map.entrySet()) {
+        for(var m : operatorMap.entrySet()) {
             ids[i++] = m.getValue();
         }
 
-        List<Operator> operators = DatabaseControl.getOperatorsByID(ids);
+        List<Operator> operators = getDatabase().getOperatorsByID(ids);
 
-        for(var m : map.entrySet()) {
+        for(var m : operatorMap.entrySet()) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
@@ -86,11 +80,15 @@ public class AdminController extends ControllerParent {
             Node box = n.getParent();
 
             int id = Integer.parseInt(box.getId());
-            DatabaseControl.acceptOperator(id);
+
+            openDB();
+            getDatabase().acceptOperator(id);
             try {
-                addOperatorItem();
+                addOperatorItem(getDatabase().getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                closeDB();
             }
         }
     };
@@ -103,11 +101,14 @@ public class AdminController extends ControllerParent {
             Node box = n.getParent();
 
             int id = Integer.parseInt(box.getId());
-            DatabaseControl.denyOperator(id);
+            openDB();
+            getDatabase().denyOperator(id);
             try {
-                addOperatorItem();
+                addOperatorItem(getDatabase().getApprovals());
             } catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                closeDB();
             }
         }
     };

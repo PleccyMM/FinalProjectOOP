@@ -43,7 +43,7 @@ public class ItemController extends ControllerParent {
     @FXML private Label lblPrice;
     @FXML private Button btnAdd;
     @FXML private Button btnMinus;
-    @FXML private Label lblIncriment;
+    @FXML private Label lblIncrement;
     @FXML private ComboBox cmbModifications;
     @FXML private ToggleSwitch tglMaterial;
     @FXML private ToggleSwitch tglImportExport;
@@ -63,8 +63,10 @@ public class ItemController extends ControllerParent {
     protected void stageChangeHandle() {
         if (loadedPos == null) return;
 
-        item = items.get(loadedPos);
-        DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
+        item = getItems(loadedPos);
+        openDB();
+        getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
+        closeDB();
     }
 
     public void load(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) {
@@ -73,18 +75,21 @@ public class ItemController extends ControllerParent {
         this.isFlag = isFlag;
 
         try {
+            openDB();
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
             loadHeader(stage, operator, items, headerBox, new SearchConditions());
             typeSetUp();
+            System.out.println("Setting up listeners " + (getDatabase().isOpen()));
             listenerToggleMat();
             listenerToggleImport();
+            System.out.println("Finished listeners " + (getDatabase().isOpen()));
             if (loadedPos != null) {
                 if (item.getAmount() > 0) {
                     int newAmount = item.getTotalAmount() + item.getAmount();
                     item.setTotalAmount(newAmount);
-                    DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+                    getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
                 }
 
                 setUpOptions();
@@ -93,18 +98,25 @@ public class ItemController extends ControllerParent {
             else {
                 btnBasketPrefix = "Add to";
             }
+            System.out.println("Populating Info " + (getDatabase().isOpen()));
             populateInfo();
+            System.out.println("Finished populating Info " + (getDatabase().isOpen()));
+            System.out.println("Updating Item " + (getDatabase().isOpen()));
             updateItem();
+            System.out.println("Finished updating Item " + (getDatabase().isOpen()));
         }
         catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            closeDB();
         }
     }
 
     private void typeSetUp() throws Exception {
+        System.out.println("Doing typeSetUp() "  + (getDatabase().isOpen()));
         if (isFlag) {
             selectedSize = "Hand";
-            item = loadedPos != null ? items.get(loadedPos).clone() : DatabaseControl.createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
+            item = loadedPos != null ? getItems(loadedPos).clone() : getDatabase().createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
         }
         else {
             selectedSize = "45x45cm";
@@ -113,12 +125,14 @@ public class ItemController extends ControllerParent {
             cmbModifications.getItems().clear();
             cmbModifications.getItems().addAll("Foam (\u00A38.00)", "Polyester (\u00A39.00)", "Feathers (\u00A311.00)", "Cotton (\u00A312.00)");
             cmbModifications.setPromptText("Cushion Filling");
-            item = loadedPos != null ? items.get(loadedPos).clone() : DatabaseControl.createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
+            item = loadedPos != null ? getItems(loadedPos).clone() : getDatabase().createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
         }
+        System.out.println("Finished typeSetUp() " + (getDatabase().isOpen()));
         createSizeSelection();
     }
 
     private void createSizeSelection() throws Exception {
+        System.out.println("Doing createSizeSelection() " + (getDatabase().isOpen()));
         VBox itemBox = (VBox) panMain.lookup("#boxItemStore");
         if (itemBox == null) { throw new Exception(); }
 
@@ -137,7 +151,7 @@ public class ItemController extends ControllerParent {
         }
 
         boolean firstRun = true;
-        boolean[] needsRestocking = DatabaseControl.restockList(item.getStockID());
+        boolean[] needsRestocking = getDatabase().restockList(item.getStockID());
         int index = 0;
         for (String sizeVal : sizeVals) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
@@ -150,7 +164,7 @@ public class ItemController extends ControllerParent {
             if (firstRun) {
                 firstRun = false;
                 boxSelected = (VBox) box.lookup("#boxSelect");
-                boxSelected.setStyle("-fx-background-color: #00000099;");
+                boxSelected.setVisible(true);
             }
 
             try {
@@ -173,12 +187,13 @@ public class ItemController extends ControllerParent {
             itemBox.getChildren().add(box);
             index++;
         }
+        System.out.println("Finished createSizeSelection() " + (getDatabase().isOpen()));
     }
 
     private void setUpOptions() {
-        boxSelected.setStyle("-fx-background-color: transparent");
+        boxSelected.setVisible(false);
 
-        lblIncriment.setText(item.getPrintAmount() + "");
+        lblIncrement.setText(item.getPrintAmount() + "");
         var s = cmbModifications.getSelectionModel();
 
         if (item instanceof Flag f) {
@@ -215,7 +230,6 @@ public class ItemController extends ControllerParent {
         }
 
         tglImportExport.setToLeft(item.getAmount() < 0);
-        boxSelected.setStyle("-fx-background-color: #9D9D9D88");
     }
 
     private void updateItem() {
@@ -277,16 +291,17 @@ public class ItemController extends ControllerParent {
             }
         }
 
-        DatabaseControl.setStockData(item);
+        System.out.println("This one");
+        getDatabase().setStockData(item);
+        System.out.println("This one is done");
 
-
-        int amount = Integer.parseInt(lblIncriment.getText());
+        int amount = Integer.parseInt(lblIncrement.getText());
         int newAmount = tglImportExport.getToLeft().get() ? amount : Math.min(amount, item.getTotalAmount());
 
         if (tglImportExport.getToLeft().get()) item.setAmount(newAmount * -1);
         else item.setAmount(newAmount);
 
-        if (amount != newAmount) lblIncriment.setText(newAmount + "");
+        if (amount != newAmount) lblIncrement.setText(newAmount + "");
 
         btnAdd.setDisable(false);
         btnMinus.setDisable(false);
@@ -301,6 +316,7 @@ public class ItemController extends ControllerParent {
         double price = item.calculatePrice();
         String cost = eurFormatter.format(price);
 
+        tglMaterial.setDisable(false);
         if (!cmbModifications.getSelectionModel().isEmpty() ||
             (!isFlag && !tglMaterial.getToLeft().get()) ||
             (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND)) ||
@@ -308,7 +324,6 @@ public class ItemController extends ControllerParent {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
 
-            tglMaterial.setDisable(false);
             if (item.getAmount() < 0) {
                 cmbModifications.setDisable(true);
                 tglMaterial.setDisable(true);
@@ -325,13 +340,17 @@ public class ItemController extends ControllerParent {
 
     private void listenerToggleMat() {
         tglMaterial.getToLeft().addListener((observable, oldValue, newValue) -> {
+            openDB();
             updateItem();
+            closeDB();
         });
     }
     private void listenerToggleImport() {
         tglImportExport.setToLeft(false);
         tglImportExport.getToLeft().addListener((observable, oldValue, newValue) -> {
+            openDB();
             updateItem();
+            closeDB();
         });
     }
 
@@ -342,41 +361,52 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
                 StackPane box = (StackPane) source;
 
-                boxSelected.setStyle("-fx-background-color: transparent");
+                boxSelected.setVisible(false);
                 boxSelected = (VBox) box.lookup("#boxSelect");
-                boxSelected.setStyle("-fx-background-color: #00000099");
+                boxSelected.setVisible(true);
 
                 selectedSize = box.getId().split("_")[1];
+                openDB();
                 updateItem();
                 populateInfo();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                closeDB();
             }
         }
     };
 
     @FXML
-    protected void cmbModificationsChange(ActionEvent event) throws Exception {
+    protected void cmbModificationsChange(ActionEvent event) {
+        openDB();
         updateItem();
+        closeDB();
     }
 
     @FXML
-    protected void btnMinusClick(ActionEvent event) throws Exception {
-        int val = Integer.parseInt(lblIncriment.getText());
+    protected void btnMinusClick(ActionEvent event) {
+        int val = Integer.parseInt(lblIncrement.getText());
         val -= 1;
 
-        lblIncriment.setText(String.valueOf(val));
+        lblIncrement.setText(String.valueOf(val));
+
+        openDB();
         updateItem();
+        closeDB();
     }
 
     @FXML
-    protected void btnAddClick(ActionEvent event) throws Exception {
-        int val = Integer.parseInt(lblIncriment.getText());
+    protected void btnAddClick(ActionEvent event) {
+        int val = Integer.parseInt(lblIncrement.getText());
         val += 1;
 
-        lblIncriment.setText(String.valueOf(val));
+        lblIncrement.setText(String.valueOf(val));
+
+        openDB();
         updateItem();
+        closeDB();
     }
 
     @FXML
@@ -390,13 +420,13 @@ public class ItemController extends ControllerParent {
 
         box.lookup("#boxContainment").setOnMouseClicked(ignoreHideClick);
 
-        ((Label) box.lookup("#lblIncrimentRestock")).setText(item.getRestock() + "");
+        ((Label) box.lookup("#lblIncrementRestock")).setText(item.getRestock() + "");
         Button b = (Button) box.lookup("#btnMinusRestock");
         b.setOnAction(btnMinusRestockClick);
         ((Button) box.lookup("#btnAddRestock")).setOnAction(btnAddRestockClick);
         if (item.getRestock() == 1) b.setDisable(true);
 
-        ((Button) box.lookup("#btnBlue")).setOnAction(btnUpdateStockClick);
+        ((Button) box.lookup("#btnUpdateStock")).setOnAction(btnUpdateStockClick);
         ((Button) box.lookup("#btnPrint")).setOnAction(btnPrintClick);
 
         panStacker.getChildren().add(box);
@@ -409,7 +439,7 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
 
                 Node b = (Node) source;
-                Label l = (Label) b.getParent().lookup("#lblIncrimentRestock");
+                Label l = (Label) b.getParent().lookup("#lblIncrementRestock");
 
                 int newRestock = Integer.parseInt(l.getText()) - 1;
 
@@ -428,7 +458,7 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
 
                 Node b = (Node) source;
-                Label l = (Label) b.getParent().lookup("#lblIncrimentRestock");
+                Label l = (Label) b.getParent().lookup("#lblIncrementRestock");
 
                 int newRestock = Integer.parseInt(l.getText()) + 1;
 
@@ -463,6 +493,12 @@ public class ItemController extends ControllerParent {
                 type = "Cushion";
             }
 
+            NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
+
+            double totalValue = 0;
+            double totalSell = 0;
+
+            openDB();
             for (String s : sizeVals) {
                 if (Objects.equals(s, selectedSize)) {
                     msg = "Selected size for print: " + s + "\nInformation about this size: " + item.toString() + "\n\n" + msg;
@@ -477,12 +513,14 @@ public class ItemController extends ControllerParent {
                         c.setSize(CUSHION_SIZE.fromString(s));
                         c.setSizeID(CUSHION_SIZE.getSizeId(c.getSize()));
                     }
-                    DatabaseControl.setStockData(i);
+                    getDatabase().setStockData(i);
                     msg += "Information about size " + s + ": " + i.toString() + "\n";
                 }
             }
+            closeDB();
 
-            msg = "Information regarding " + loadedDesign.getName() + " " + type + " with ISO ID: " + item.getIsoID() + " and stock ID: " + item.getStockID() + "\n\n" + msg;
+            msg = "Information regarding " + loadedDesign.getName() + " " + type + " with ISO ID: " + item.getIsoID() +
+                    " and stock ID: " + item.getStockID() + "\n\n" + msg;
 
             try {
                 File f = new File(loadedDesign.getName() + "_" + item.getSizeID() + ".txt");
@@ -503,7 +541,7 @@ public class ItemController extends ControllerParent {
                 Object source = event.getSource();
                 Node b = (Node) source;
                 int amount = item.getTotalAmount();
-                int restock = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrimentRestock")).getText());
+                int restock = Integer.parseInt(((Label) b.getParent().getParent().lookup("#lblIncrementRestock")).getText());
 
                 if (restock < amount) {
                     Node box = new VBox();
@@ -515,7 +553,9 @@ public class ItemController extends ControllerParent {
 
                 }
 
-                DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), amount, restock);
+                openDB();
+                getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), amount, restock);
+                closeDB();
 
                 item.setTotalAmount(amount);
                 item.setRestock(restock);
@@ -548,16 +588,18 @@ public class ItemController extends ControllerParent {
     @FXML
     protected void btnAddToBasketClick(ActionEvent event) throws Exception {
         Loader l = new Loader();
-        if (loadedPos != null) items.set(loadedPos, item);
-        else items.add(item);
+        if (loadedPos != null) setItem(loadedPos, item);
+        else addItem(item);
 
         if (item.getAmount() > 0) {
             int newAmount = item.getTotalAmount() - item.getAmount();
             item.setTotalAmount(newAmount);
-            DatabaseControl.updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
-        }
 
-        l.showBasket(stage, items, operator);
+            openDB();
+            getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
+            closeDB();
+        }
+        l.showBasket(stage, getItems(), operator);
     }
 
     private void populateInfo() {
@@ -597,19 +639,21 @@ public class ItemController extends ControllerParent {
 
         lblDesignName.setText(loadedDesign.getName());
 
+        System.out.println("Populate getDatabase() " + (getDatabase().isOpen()));
         Integer regionID = loadedDesign.getRegion();
-        String regionName = regionID == null ? "" : DatabaseControl.getRegionName(regionID) + "\n";
+        String regionName = regionID == null ? "" : getDatabase().getRegionName(regionID) + "\n";
 
         Integer typeID = loadedDesign.getType();
-        String typeName = typeID == null ? "" : DatabaseControl.getTypeName(typeID);
+        String typeName = typeID == null ? "" : getDatabase().getTypeName(typeID);
 
         int totalAmount = item.getTotalAmount();
         int restock = item.getRestock();
         lblAmountAndRestockUpdate(totalAmount, restock);
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        String cost = eurFormatter.format(DatabaseControl.getPrice(item.getSizeID()));
+        String cost = eurFormatter.format(getDatabase().getPrice(item.getSizeID()));
         lblCostToProduce.setText(cost);
+        System.out.println("Populate getDatabase() Done");
 
         lblTags.setText(regionName + typeName);
 

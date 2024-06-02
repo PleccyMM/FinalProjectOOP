@@ -68,7 +68,7 @@
                    underline="true"
                    onMouseClicked="#lblCreateAccountClick"
             />
-            <Text fx:id="lblWarning"
+            <Label fx:id="lblWarning"
             />
 
             <Button fx:id="btnLogin"

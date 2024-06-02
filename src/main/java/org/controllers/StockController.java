@@ -1,6 +1,5 @@
 package org.controllers;
 
-import org.vexillum.*;
 import javafx.event.*;
 import javafx.fxml.*;
 import javafx.geometry.*;
@@ -10,17 +9,20 @@ import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.*;
 import java.text.NumberFormat;
 import java.util.*;
+import org.vexillum.*;
 
+/**
+ * This screen is used for displaying the main scrolling stock for the system
+ * <p>
+ * Main design is found in {@code stock_screen.fxml}, with {@code stock_item.fxml} being used for each individual design and
+ * {@code stock_tag.fxml} for the tag selection boxes
+ */
 public class StockController extends ControllerParent {
     @FXML private VBox boxScroll;
-    @FXML private ScrollPane scrBackground;
     @FXML private BorderPane panMain;
     @FXML private HBox boxTagOps;
     @FXML private Region rgnButtonPush;
@@ -33,13 +35,19 @@ public class StockController extends ControllerParent {
     @Override
     protected void stageChangeHandle() {}
 
+    /**
+     * Used to get the header for loading and attaching relevant information to the tag selection
+     */
     public void load(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) {
         try {
+            openDB();
+
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
             loadHeader(stage, operator, items, headerBox, searchConditions);
 
+            //This section below is for setting up the tag selection boxes
             String[] tagBoxes = new String[] {"Type", "Region", "Initial"};
 
             int i = 0;
@@ -47,6 +55,7 @@ public class StockController extends ControllerParent {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_tag.fxml"));
                 Parent box = loader.load();
 
+                box.setId(tagBox);
                 ((Label) box.lookup("#lblTag")).setText(tagBox);
 
                 try {
@@ -63,30 +72,39 @@ public class StockController extends ControllerParent {
         }
         catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            closeDB();
         }
     }
 
+    /**
+     * Used to create all the needed selection boxes for the designs in the system.
+     * Prior to this method being called designs must be loaded with accordance to the filters present.
+     * @throws Exception loading the relevant .fxml can fail
+     */
     private void loadStock() throws Exception {
-        allDesigns = DatabaseControl.searchDesigns(sc);
+        allDesigns = getDatabase().searchDesigns(sc);
+        boxScroll.getChildren().clear();
 
         boxScroll.getChildren().add(new HBox());
 
-        int flagsToLoad;
-        int maxFlagLoad = allDesigns.size();
+        final int designsToLoad;
+        final int maxFlagLoad = allDesigns.size(); //This variable can be modified to restrict the max number of viewed designs
 
-        flagsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
+        designsToLoad = Math.min(allDesigns.size(), maxFlagLoad);
 
-        System.out.println("Loaded Designs: " + flagsToLoad);
+        System.out.println("Loaded Designs: " + designsToLoad);
 
-        for (int i = 0; i < flagsToLoad; i+=3) {
+        int runAmount = 3;
+        //The design boxes are laid out in rows of 3, hence the +=runAmount
+        for (int i = 0; i < designsToLoad; i+=runAmount) {
             HBox box = new HBox();
             box.setSpacing(48);
             box.setAlignment(Pos.CENTER);
 
-            int runAmount = 3;
-            if (i + 2 >= flagsToLoad) {
-                System.out.println("Reducing run because " + i + " + 2 >= " + flagsToLoad);
-                runAmount = flagsToLoad - i;
+            //This deals with the logic for when the amount of designs is not divisible by 3 and must form a partial row
+            if (i + 2 >= designsToLoad) {
+                runAmount = designsToLoad - i;
             }
 
             for (int j = 0; j < runAmount; j++) {
@@ -104,6 +122,8 @@ public class StockController extends ControllerParent {
                 btnCushion.setOnAction(btnCushionHandle);
 
                 try {
+                    //FlagSmall folder contains flags with a maximum width of 100, rather than FlagsLarge that has 1000,
+                    //this massively boosts performance at the cost of surprisingly little storage space
                     Image img = new Image("org/Assets/FlagsSmall/" + currentDesign.getIsoID() + ".png");
                     ((ImageView) productView.lookup("#imgDisp")).setImage(img);
                 }
@@ -111,6 +131,8 @@ public class StockController extends ControllerParent {
 
                 ((Label) productView.lookup("#lblStockName")).setText(currentDesign.getName());
 
+                //The default price is set in stock_item.fxml, but because national flags are cheaper it has to be
+                //modified here
                 if (currentDesign.getType() == TYPE.NATIONAL.getValue()) {
                     ((Label) productView.lookup("#lblStockPrice")).setText("\u00A31.50-\u00A320.00+");
                 }
@@ -121,6 +143,7 @@ public class StockController extends ControllerParent {
         }
 
         boxScroll.getChildren().add(new HBox());
+        System.out.println("CHILDREN " + boxScroll.getChildren().size());
     }
 
     EventHandler<ActionEvent> btnFlagHandle = new EventHandler<ActionEvent>() {
@@ -146,18 +169,33 @@ public class StockController extends ControllerParent {
         }
     };
 
+    /**
+     * Used to move over to the new screen
+     * @param isFlag needed for the next screen to help with defining how the page should be setup
+     * @throws Exception loading .fxml file could fail
+     */
     private void showItemScreen(ActionEvent event, Boolean isFlag) throws Exception {
         Object source = event.getSource();
         Button b = (Button) source;
+        //The relevant isoID is the latter half of the boxes fx:id, seperated by a "_" - so splitting and getting the
+        //tail is necessary
         String isoID = b.getId().split("_")[1];
+        //The getDatabase() loads in designs alphabetically rather than by isoID, so simply indexing can't work. This may seem
+        //less beneficial, but it's significantly more convenient to have a slightly shitty iterative search for an isoID
+        //than it is to try and organise by alphabetical order in other parts of the program
         for (Design d : allDesigns) {
             if (d.getIsoID().equals(isoID)) {
-                l.showItem(stage, operator, items, d, isFlag, null);
+                l.showItem(stage, getItems(), operator, d, isFlag, null);
                 break;
             }
         }
     }
 
+    /**
+     * This method is a bit confusing with its logic, but it's used to display the dropdown menu for the tag selection,
+     * this means it only is invoked when the menu is actually expanded and not when it's collapsed
+     * @param tagSelect this is the name of the label that the box has
+     */
     private void generateRadioButtons(String tagSelect) {
         tg = new ToggleGroup();
         rdbList = new ArrayList<>();
@@ -169,10 +207,12 @@ public class StockController extends ControllerParent {
                 rdbList.add(createRdb("International", tg, rdbType));
                 rdbList.add(createRdb("Pride", tg, rdbType));
 
+                //Get the type in the searchConditions attribute, so we can decide which radiobutton to have selected
                 Integer type = sc.getType();
                 if (type == null) rdbList.get(0).setSelected(true);
                 else {
-                    Integer i = DatabaseControl.getTypeId(rdbList.get(type + 1).getText());
+                    //MySQL getDatabase() has the relevant ID for the type, which aligns with their positions in the button list
+                    Integer i = getDatabase().getTypeId(rdbList.get(type + 1).getText());
                     rdbList.get(i + 1).setSelected(true);
                 }
                 break;
@@ -185,10 +225,11 @@ public class StockController extends ControllerParent {
                 rdbList.add(createRdb("Oceania", tg, rdbRegion));
                 rdbList.add(createRdb("South America", tg, rdbRegion));
 
+                //Exactly the same as type (see above) but obviously using region instead
                 Integer region = sc.getRegion();
                 if (region == null) rdbList.get(0).setSelected(true);
                 else {
-                    Integer i = DatabaseControl.getRegionId(rdbList.get(region + 1).getText());
+                    Integer i = getDatabase().getRegionId(rdbList.get(region + 1).getText());
                     rdbList.get(i + 1).setSelected(true);
                 }
                 break;
@@ -199,10 +240,28 @@ public class StockController extends ControllerParent {
                 rdbList.add(createRdb("M-S", tg, rdbInitial));
                 rdbList.add(createRdb("T-Z", tg, rdbInitial));
 
+                //This logic is a bit confusing, but by doing it this way I have removed the need for a lot of additional
+                //if statements
+
+                //Gets the last letter of the search metric (see searchConditions for a more explanation)
                 String lastInitial = sc.getStartLetters()[1];
                 if (lastInitial == null) rdbList.get(0).setSelected(true);
                 else {
+                    //Convert the letter of the search metric to its unicode value, from now on we use only b[0] as
+                    //.getBytes returns an array, but we know that only 1 letter has been provided
                     byte[] b = lastInitial.getBytes(StandardCharsets.UTF_8);
+
+                    //So in the tags the alphabet is divided into 4, but 26/4 is not an integer, therefore the first 2
+                    //(A-F & G-L) are 6 letter intervals whilst the last 2 (M-S & T-Z) are 7 letter intervals
+                    //
+                    //The unicode location of "A" is at position 65, which is why it's relevant to subtract it, to get
+                    //a value from 0-25, with 0=A & 25=Z, whilst 77 is the position of M, which is the first character
+                    //of the 7 intervals.
+                    //By performing integer division by 77 you get 0 if it's below M in the alphabet, all the 6 intervals
+                    //and 1 if it's above (inclusive), all the 7 intervals. By adding this to 6 of course you then get
+                    //the correct offset for the interval to get the final character, when dividing by the previously
+                    //mentioned unicode offset between 0-25. Ultimately, this returns a value between 1-4, which we can
+                    //use to select the correct position in the array of radiobuttons.
                     int i = (b[0] - 65) / (6 + b[0] / 77);
                     rdbList.get(i + 1).setSelected(true);
                 }
@@ -212,24 +271,34 @@ public class StockController extends ControllerParent {
 
     private RadioButton createRdb(String text, ToggleGroup tg, EventHandler<ActionEvent> handler) {
         RadioButton radioButton = new RadioButton(text);
+        radioButton.setId(text);
         radioButton.setToggleGroup(tg);
         radioButton.setOnAction(handler);
         return radioButton;
     }
 
+    /**
+     * Used to print all the information about stock prices and total stock to a file in the system directory
+     * @throws Exception creating a new file and writing to it could fail
+     */
     @FXML
     protected void btnPrintClick(ActionEvent event) throws Exception {
         String msg = "";
 
-        List<Design> designs = DatabaseControl.searchDesigns(new SearchConditions());
-        HashMap<String, Flag> flags = DatabaseControl.getAllFlags();
-        HashMap<String, Cushion> cushions = DatabaseControl.getAllCushions();
+        openDB();
+        List<Design> designs = getDatabase().searchDesigns(new SearchConditions());
+        //HashMaps are used to make it significantly easier to find the relevant designs from their isoID
+        HashMap<String, Flag> flags = getDatabase().getAllFlags();
+        HashMap<String, Cushion> cushions = getDatabase().getAllCushions();
+        closeDB();
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
 
+        //Value is the import (buy) price
         double totalValueFlag = 0;
         double totalValueCushion = 0;
 
+        //Sell is the export price
         double totalSellFlag = 0;
         double totalSellCushion = 0;
 
@@ -240,6 +309,8 @@ public class StockController extends ControllerParent {
             for (FLAG_SIZE size : FLAG_SIZE.values()) {
                 Flag f = flags.get(d.getIsoID() + "_" + FLAG_SIZE.getSizeId(size));
 
+                //Since flags can have different materials, but these are only used for amendments to the export, we
+                //assign the default to the cheapest material to get the base price
                 if (size == FLAG_SIZE.HAND || size == FLAG_SIZE.DESK) f.setMaterial(FLAG_MATERIAL.PAPER);
                 else f.setMaterial(FLAG_MATERIAL.POLYESTER);
 
@@ -279,6 +350,7 @@ public class StockController extends ControllerParent {
             msg += "\n\n";
         }
 
+        //This fills in the top of the file, with all the previously printed information being appended after
         msg = "Total Stock Report for Vexillum Management\nThe overall cost to purchase all held stock is:\n"
                 + eurFormatter.format(totalValueFlag) + " for flags\n"
                 + eurFormatter.format(totalValueCushion) + " for cushions\n"
@@ -289,10 +361,11 @@ public class StockController extends ControllerParent {
                 + eurFormatter.format(totalSellFlag + totalSellFlag) + " overall\n\n"
                 + "Beneath is a individual breakdown by design of all stock held in the system:\n\n\n" + msg;
 
+        String file = "AllStock.txt";
         try {
-            File f = new File("AllStock.txt");
+            File f = new File(file);
             f.createNewFile();
-            FileWriter fw = new FileWriter("AllStock.txt");
+            FileWriter fw = new FileWriter(file);
             fw.write(msg);
             fw.close();
         } catch (IOException e) {
@@ -307,8 +380,10 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                sc.setType(DatabaseControl.getTypeId(r.getText()));
+                openDB();
+                sc.setType(getDatabase().getTypeId(r.getText()));
                 performSearch();
+                closeDB();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -322,8 +397,10 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
-                sc.setRegion(DatabaseControl.getRegionId(r.getText()));
+                openDB();
+                sc.setRegion(getDatabase().getRegionId(r.getText()));
                 performSearch();
+                closeDB();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
@@ -338,6 +415,7 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 RadioButton r = (RadioButton) source;
 
+                //Since the label itself defines the range we can just split across the dividing "-"
                 String[] initials = r.getText().split("-");
                 if (initials.length == 1) {
                     sc.setStartLetters(new String[2]);
@@ -364,6 +442,7 @@ public class StockController extends ControllerParent {
                 Image upArr = new Image("org/Assets/Icons/UpArrow.png");
                 ImageView imgView = ((ImageView) box.lookup("#imgArrow"));
 
+                //Any open tag selections must be closed and their arrows changed to reflect this
                 boxTagSelect.getChildren().clear();
                 if (Objects.equals(box.getId(), "up")) {
                     box.setId("down");
@@ -371,9 +450,11 @@ public class StockController extends ControllerParent {
                 }
                 else {
                     int index = 0;
+                    //-2 to account for the label and the image of the arrow
                     for (int i = 0; i < boxTagOps.getChildren().size() - 2; i++) {
                         Node n = boxTagOps.getChildren().get(i);
 
+                        //Ensures only the selected box has the correct arrow rotation
                         if (n == box) {
                             index = i;
                             box.setId("up");
@@ -388,11 +469,14 @@ public class StockController extends ControllerParent {
                     rgnButtonPush.setMinWidth((((HBox) box).getWidth() + boxTagOps.getSpacing()) * (index));
 
                     String labelText = ((Label) box.lookup("#lblTag")).getText().toLowerCase();
+                    openDB();
                     generateRadioButtons(labelText);
                 }
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
+            } finally {
+                closeDB();
             }
         }
     };

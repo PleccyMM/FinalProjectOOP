@@ -31,9 +31,10 @@ public class Cushion extends StockItem {
     /**
      * Constructor only used for the {@code .clone()} method
      */
-    public Cushion(String isoID, int stockID, int amount, int totalAmount, int restock, int sizeID, double costToProduce,
-                   int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material) {
+    public Cushion(String isoID, String name, int stockID, int amount, int totalAmount, int restock, int sizeID,
+                   double costToProduce, int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material) {
         this.isoID = isoID;
+        this.name = name;
         this.stockID = stockID;
         this.amount = amount;
         this.totalAmount = totalAmount;
@@ -48,16 +49,22 @@ public class Cushion extends StockItem {
 
     @Override
     public StockItem clone() {
-        return new Cushion(isoID, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, justCase, size, material);
+        return new Cushion(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, justCase, size, material);
     }
 
     @Override
     public double calculatePrice() {
-        if (amount < 0) return DatabaseControl.getPrice(this.getSizeID());
+        if (amount < 0) return costToProduce;
 
         double cost = size.getValue();
         if (!justCase) cost += material.getValue();
         return cost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Cushion)) return false;
+        return super.equals(o);
     }
 
     @Id

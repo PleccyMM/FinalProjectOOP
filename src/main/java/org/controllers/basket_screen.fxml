@@ -65,7 +65,8 @@
                         <Label fx:id="lblTotal" styleClass="checkout-label"/>
                     </HBox>
                     <HBox spacing="10" alignment="CENTER">
-                        <Button id="btnBlue"
+                        <Button id="btnCheckout"
+                                styleClass="btnBlue"
                                 style="-fx-font-size: 12; -fx-background-radius: 15;"
                                 text="Checkout"
                                 onAction="#btnCheckoutClick"
@@ -86,13 +87,14 @@
             <top>
                 <HBox id="white-divider" spacing="20">
                     <padding>
-                        <Insets right="8" top="8" left="8" bottom="8"/>
+                        <Insets right="74" top="8" left="28" bottom="8"/>
                     </padding>
-                    <Label id="sub-title-black" text="Image"/>
-                    <Label id="sub-title-black" text="Product Name"/>
-                    <Label id="sub-title-black" text="Single Price"/>
-                    <Label id="sub-title-black" text="Quantity"/>
-                    <Label id="sub-title-black" text="Subtotal"/>
+                    <Label id="small-title-black" text="Image"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label id="small-title-black" text="Product Name" textAlignment="RIGHT"/>
+                    <Label id="small-title-black" text="Single Price"/>
+                    <Label id="small-title-black" text="Quantity"/>
+                    <Label id="small-title-black" text="Subtotal" textAlignment="RIGHT"/>
                 </HBox>
             </top>
             <center>

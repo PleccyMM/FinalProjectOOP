@@ -1,17 +1,14 @@
 package org.controllers;
 
-import javafx.event.*;
 import javafx.fxml.*;
-import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
 import javafx.stage.*;
-import org.vexillum.*;
 import java.util.*;
+import org.vexillum.*;
 
+/**
+ * This class manages all switching between new screens, any screen switches must be done through this class
+ */
 public class Loader {
     public Loader() {}
 
@@ -24,7 +21,7 @@ public class Loader {
         stage.show();
     }
 
-    public void showStock(Stage stage, Operator operator, List<StockItem> items, SearchConditions searchConditions) throws Exception {
+    public void showStock(Stage stage, List<StockItem> items, Operator operator, SearchConditions searchConditions) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_screen.fxml"));
         Parent root = loader.load();
 
@@ -36,7 +33,7 @@ public class Loader {
         stage.show();
     }
 
-    public void showItem(Stage stage, Operator operator, List<StockItem> items, Design loadedDesign, Boolean isFlag, Integer loadedPos) throws Exception {
+    public void showItem(Stage stage, List<StockItem> items, Operator operator, Design loadedDesign, Boolean isFlag, Integer loadedPos) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
         Parent root = loader.load();
 

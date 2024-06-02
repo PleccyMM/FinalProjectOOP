@@ -10,45 +10,58 @@ import java.util.*;
 import org.json.*;
 
 public class DatabaseControl {
-    static Session databaseSession = null;
-    static SessionFactory sessionFactory = null;
-    public static void openDBSession()
-    {
-        System.out.println("Opening");
+    private Session databaseSession = null;
+    private SessionFactory sessionFactory;
+
+    public DatabaseControl() {
         sessionFactory = new Configuration().configure().buildSessionFactory();
-        databaseSession = sessionFactory.openSession();
-        System.out.println("Opened");
-    }
-    public static void closeDBSession()
-    {
-        System.out.println("Closing");
-        sessionFactory.close();
-        databaseSession.close();
-        sessionFactory = null;
-        databaseSession = null;
-        System.out.println("Closed");
     }
 
-    public static List<Operator> getSpecificOperator(String nameSearch) {
-        openDBSession();
+    public void openDBSession() {
+        if (databaseSession == null || !databaseSession.isOpen()) {
+            System.out.println("Opening");
+            databaseSession = sessionFactory.openSession();
+            System.out.println("Opened");
+        }
+    }
+
+    public boolean isOpen() {
+        return databaseSession.isOpen();
+    }
+
+    public void closeDBSession() {
+        if (databaseSession != null && databaseSession.isOpen()) {
+            System.out.println("Closing session");
+            databaseSession.close();
+            databaseSession = null;
+            System.out.println("Closed session");
+        }
+    }
+
+    public void closeSessionFactory() {
+        if (sessionFactory != null && !sessionFactory.isClosed()) {
+            System.out.println("Closing session factory");
+            sessionFactory.close();
+            sessionFactory = null;
+            System.out.println("Closed session factory");
+        }
+    }
+
+    public List<Operator> getSpecificOperator(String nameSearch) {
         var query = databaseSession.createQuery("from Operator where name = '" + nameSearch + "'");
         List<Operator> list = query.list();
-        closeDBSession();
         return list;
     }
-    public static List<Operator> getOperatorsByID(Integer[] ids) {
-        openDBSession();
+    public List<Operator> getOperatorsByID(Integer[] ids) {
         var query = databaseSession.createQuery("from Operator where id in (:ids) order by id asc")
                 .setParameter("ids", Arrays.asList(ids));
         List<Operator> list = query.list();
-        closeDBSession();
         return list;
     }
 
-    public static void acceptOperator(int id) {
+    public void acceptOperator(int id) {
         Transaction transaction = null;
         try {
-            openDBSession();
             transaction = databaseSession.beginTransaction();
             var q1 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
                     .setParameter("id", id);
@@ -62,15 +75,11 @@ public class DatabaseControl {
             e.printStackTrace();
             transaction.rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void denyOperator(int id) {
+    public void denyOperator(int id) {
         Transaction transaction = null;
         try {
-            openDBSession();
             transaction = databaseSession.beginTransaction();
             var q1 = databaseSession.createNativeQuery("delete from operator_approvals where operatorid = (:id)")
                     .setParameter("id", id);
@@ -84,21 +93,15 @@ public class DatabaseControl {
             e.printStackTrace();
             transaction.rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static List<Integer> getExistentIDs() {
-        openDBSession();
+    public List<Integer> getExistentIDs() {
         var query = databaseSession.createQuery("select operatorID from Operator");
         List<Integer> list = query.list();
-        closeDBSession();
         return list;
     }
 
-    public static void addRequest(int id, String name, String password, Date applicationTime) {
-        openDBSession();
+    public void addRequest(int id, String name, String password, Date applicationTime) {
         databaseSession.beginTransaction();
         databaseSession.createNativeQuery("insert into operators values ((:id), (:name), (:password), 0, 0)")
                 .setParameter("id", id)
@@ -110,16 +113,13 @@ public class DatabaseControl {
                 .setParameter("time", applicationTime)
                 .executeUpdate();
         databaseSession.getTransaction().commit();
-        closeDBSession();
     }
 
-    public static HashMap<Date, Integer> getApprovals() {
-        openDBSession();
+    public HashMap<Date, Integer> getApprovals() {
         var query = databaseSession.createNativeQuery("select operatorid from operator_approvals");
         List<Integer> listID = query.list();
         query = databaseSession.createNativeQuery("select time_submitted from operator_approvals");
         List<Date> listTime = query.list();
-        closeDBSession();
 
         HashMap<Date, Integer> map = new HashMap<>();
         for (int i = 0; i < listID.size(); i++) {
@@ -128,19 +128,17 @@ public class DatabaseControl {
         return map;
     }
 
-    public static Design getDeignFromIso(String isoID) {
-        openDBSession();
+    public Design getDeignFromIso(String isoID) {
         var query = databaseSession.createQuery("from Design where isoID = (:isoid)")
                 .setParameter("isoid", isoID);
         List<Design> list = query.list();
-        closeDBSession();
 
         if (list.size() != 0) return list.get(0);
         return null;
     }
 
-    public static List<Design> searchDesigns(SearchConditions nameSearch) {
-        openDBSession();
+    public List<Design> searchDesigns(SearchConditions nameSearch) {
+        System.out.println("SEARCHING DESIGNS");
         String name = nameSearch.getSearch();
         String initial1 = nameSearch.getStartLetters()[0];
         String initial2 = nameSearch.getStartLetters()[1];
@@ -156,55 +154,54 @@ public class DatabaseControl {
                 .setParameter("region", region)
                 .setParameter("type", type);
         List<Design> list = query.list();
-        closeDBSession();
         return list;
     }
 
-    public static String getIsoName(String isoID) {
-        openDBSession();
-        var query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
-        List<String> list = query.list();
-        closeDBSession();
-        if (list.size() > 0) return list.get(0);
-        return "";
-    }
-
-    public static Flag createFlag(String isoID, FLAG_SIZE size) {
-        openDBSession();
+    public Flag createFlag(String isoID, FLAG_SIZE size) {
         System.out.println("Making Flag");
 
         var query = databaseSession.createQuery("from Flag where isoID = '" + isoID + "'");
-        List<Flag> list = query.list();
-        closeDBSession();
+        List<Flag> listFlag = query.list();
+        if (listFlag.size() == 0) return null;
 
-        if (list.size() == 0) return null;
+        Flag f = listFlag.get(0);
 
-        Flag f = list.get(0);
+        query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        List<String> listName = query.list();
+        if (listName.size() == 0) return null;
+
+        f.setName(listName.get(0));
+
         f.setSizeID(FLAG_SIZE.getSizeId(size));
         f.setSize(size);
-        return (Flag) setStockData(f);
+        setStockData(f);
+        return f;
     }
 
-    public static Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
-        openDBSession();
+    public Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
         System.out.println("Making Cushion");
 
         var query = databaseSession.createQuery("from Cushion where isoID = '" + isoID + "'");
-        List<Cushion> list = query.list();
-        closeDBSession();
+        List<Cushion> listCushion = query.list();
+        if (listCushion.size() == 0) return null;
 
-        if (list.size() == 0) return null;
+        Cushion c = listCushion.get(0);
 
-        Cushion c = list.get(0);
+        query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        List<String> listName = query.list();
+        if (listName.size() == 0) return null;
+
+        c.setName(listName.get(0));
+
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
         c.setSize(size);
         c.setMaterial(material);
-        return (Cushion) setStockData(c);
+        setStockData(c);
+        return c;
     }
 
-    public static StockItem setStockData(StockItem i) {
+    public StockItem setStockData(StockItem i) {
         try {
-            openDBSession();
             System.out.println("Getting stock data");
             var query = databaseSession.createNativeQuery("select amount from stock_amount where stockid = (:stockid) and sizeid = (:sizeid)")
                     .setParameter("stockid", i.getStockID())
@@ -217,56 +214,51 @@ public class DatabaseControl {
                     .setParameter("sizeid", i.getSizeID());
             list = query.list();
             i.setRestock(list.get(0));
+
+            query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)")
+                    .setParameter("sizeid", i.getSizeID());
+            List<Double> price = query.list();
+            i.setCostToProduce(price.get(0));
+
+            System.out.println("Got stock data");
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-        finally {
-            closeDBSession();
-        }
         return i;
     }
 
-    public static String getRegionName(int regionID) {
-        openDBSession();
+    public String getRegionName(int regionID) {
         var query = databaseSession.createNativeQuery("select name from regions where regionid = '" + regionID + "'");
         List<String> list = query.list();
-        closeDBSession();
         if (list.size() > 0) return list.get(0);
         return "";
     }
 
-    public static String getTypeName(int typeID) {
-        openDBSession();
+    public String getTypeName(int typeID) {
         var query = databaseSession.createNativeQuery("select name from designtypes where typeid = '" + typeID + "'");
         List<String> list = query.list();
-        closeDBSession();
         if (list.size() > 0) return list.get(0);
         return "";
     }
 
-    public static Integer getTypeId(String name) {
-        openDBSession();
+    public Integer getTypeId(String name) {
         var query = databaseSession.createNativeQuery("select typeid from designtypes where LOWER(name) = (:name)")
                 .setParameter("name", name.toLowerCase());
         List<Integer> list = query.list();
-        closeDBSession();
         if (list.size() > 0) return list.get(0);
         return null;
     }
 
-    public static Integer getRegionId(String name) {
-        openDBSession();
+    public Integer getRegionId(String name) {
         var query = databaseSession.createNativeQuery("select regionid from regions where LOWER(name) = (:name)")
                 .setParameter("name", name.toLowerCase());
         List<Integer> list = query.list();
-        closeDBSession();
         if (list.size() > 0) return list.get(0);
         return null;
     }
 
-    public static boolean[] restockList(int stockID) {
-        openDBSession();
+    public boolean[] restockList(int stockID) {
         var queryAmount = "select amount from stock_amount where stockid = " + stockID;
         var queryRestock = "select restock from stock_amount where stockid = " + stockID;
 
@@ -275,15 +267,12 @@ public class DatabaseControl {
 
         boolean[] b = new boolean[listAmount.size()];
         for (int i = 0; i < b.length; i++) {
-            System.out.println("RUN " + (listRestock.size()));
             b[i] = listRestock.get(i) >= listAmount.get(i);
         }
-        closeDBSession();
         return b;
     }
 
-    public static void updateAmountAndRestock(int stockID, int sizeID, int newAmount, int newRestock) {
-        openDBSession();
+    public void updateAmountAndRestock(int stockID, int sizeID, int newAmount, int newRestock) {
         databaseSession.beginTransaction();
         try {
             databaseSession.createNativeQuery("update stock_amount set amount = (:amount), restock = (:restock) where stockid = (:stockid) and sizeid = (:sizeid)")
@@ -298,23 +287,17 @@ public class DatabaseControl {
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static Double getPrice(int sizeID) {
-        openDBSession();
+    public Double getPrice(int sizeID) {
         var query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)")
                 .setParameter("sizeid", sizeID);
         List<Double> list = query.list();
-        closeDBSession();
         if (list.size() > 0) return list.get(0);
         return null;
     }
 
-    public static HashMap<String, Flag> getAllFlags() {
-        openDBSession();
+    public HashMap<String, Flag> getAllFlags() {
         String sql = "select f.flagid, f.isoid, f.stockid, sa.sizeid, sa.amount, sa.restock, sz.price " +
                 "from flags f " +
                 "join stock_amount sa on f.stockid = sa.stockid " +
@@ -322,7 +305,6 @@ public class DatabaseControl {
 
         var query = databaseSession.createNativeQuery(sql);
         List<Object[]> list = query.getResultList();
-        closeDBSession();
 
         HashMap<String, Flag> map = new HashMap<>();
         for (Object[] o : list) {
@@ -341,8 +323,7 @@ public class DatabaseControl {
         return map;
     }
 
-    public static HashMap<String, Cushion> getAllCushions() {
-        openDBSession();
+    public HashMap<String, Cushion> getAllCushions() {
         String sql = "select c.cushionid, c.isoid, c.stockid, sa.sizeid, sa.amount, sa.restock, sz.price " +
                 "from cushions c " +
                 "join stock_amount sa on c.stockid = sa.stockid " +
@@ -350,7 +331,6 @@ public class DatabaseControl {
 
         var query = databaseSession.createNativeQuery(sql);
         List<Object[]> list = query.getResultList();
-        closeDBSession();
 
         HashMap<String, Cushion> map = new HashMap<>();
         for (Object[] o : list) {
@@ -373,8 +353,7 @@ public class DatabaseControl {
     //SQL used for database setup:
 
 
-    public static void AddDesigns () {
-        openDBSession();
+    public void AddDesigns () {
         databaseSession.beginTransaction();
         try {
             String loc = new String("src/main/java/org/Assets/flags.json");
@@ -395,13 +374,9 @@ public class DatabaseControl {
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void AddTags () {
-        openDBSession();
+    public void AddTags () {
         databaseSession.beginTransaction();
         try {
             String loc = new String("src/main/java/org/Assets/flagsTags.json");
@@ -428,13 +403,9 @@ public class DatabaseControl {
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void AddFlags() {
-        openDBSession();
+    public void AddFlags() {
         databaseSession.beginTransaction();
         try {
             String loc = new String("src/main/java/org/Assets/flags.json");
@@ -455,13 +426,9 @@ public class DatabaseControl {
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void AddCushions() {
-        openDBSession();
+    public void AddCushions() {
         databaseSession.beginTransaction();
         try {
             String loc = new String("src/main/java/org/Assets/flags.json");
@@ -482,13 +449,9 @@ public class DatabaseControl {
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void AddStockItem() {
-        openDBSession();
+    public void AddStockItem() {
         try {
             databaseSession.beginTransaction();
 
@@ -507,13 +470,9 @@ public class DatabaseControl {
             System.out.println("FAILED TO ADD STOCKID");
             e.printStackTrace();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void SetAmounts() {
-        openDBSession();
+    public void SetAmounts() {
         try {
             databaseSession.beginTransaction();
 
@@ -546,13 +505,9 @@ public class DatabaseControl {
             System.out.println("FAILED TO ADD STOCKID");
             e.printStackTrace();
         }
-        finally {
-            closeDBSession();
-        }
     }
 
-    public static void TestSQL() {
-        openDBSession();
+    public void TestSQL() {
         try {
             String sql = "SELECT * FROM sizes";
             NativeQuery<Object[]> query = databaseSession.createNativeQuery(sql);
@@ -568,9 +523,6 @@ public class DatabaseControl {
         catch (Exception e) {
             System.out.println("FAILED TO TEST SQL");
             e.printStackTrace();
-        }
-        finally {
-            closeDBSession();
         }
     }
 }
