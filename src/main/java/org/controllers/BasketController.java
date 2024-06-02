@@ -15,7 +15,6 @@ import javax.swing.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.Map.Entry;
 
 public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;

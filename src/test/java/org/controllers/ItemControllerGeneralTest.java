@@ -27,12 +27,6 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         database.closeDBSession();
     }
 
-    @Test
-    @Order(0)
-    public void dummyTest() {
-
-    }
-
 
     @Test
     @Order(1)
@@ -96,6 +90,29 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("0"));
         verifyThat("#btnAdd", Node::isDisabled);
         verifyThat("#btnMinus", Node::isDisabled);
+    }
+
+    @Test
+    @Order(4)
+    public void switchSizeToOverstockTest() {
+        for (int i = 0; i < 7; i++) {
+            clickOn("#btnAdd");
+        }
+        verifyThat("#lblIncrement", LabeledMatchers.hasText("8"));
+
+        clickOn("#boxSize_150x90cm");
+
+        verifyThat("#lblIncrement", LabeledMatchers.hasText("5"));
+    }
+
+    @Test
+    @Order(4)
+    public void zeroToOneTest() {
+        clickOn("#boxSize_240x150cm");
+        verifyThat("#lblIncrement", LabeledMatchers.hasText("0"));
+
+        clickOn("#boxSize_150x90cm");
+        verifyThat("#lblIncrement", LabeledMatchers.hasText("1"));
     }
 
     @Test
@@ -230,6 +247,16 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         clickOn("#btnUpdateStock");
 
         verifyThat("#lblRestock", LabeledMatchers.hasText("10"));
+    }
+
+    @Test
+    @Order(14)
+    public void verifyRestockWarningTest() {
+        Label lblWarningHand = lookup("#boxSize_Hand #lblWarning").query();
+        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblWarning").query();
+
+        verifyThat(lblWarningHand, LabeledMatchers.hasText(""));
+        verifyThat(lblWarningMedium, LabeledMatchers.hasText("RESTOCK"));
     }
 
     @Test

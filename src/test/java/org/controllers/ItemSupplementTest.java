@@ -62,4 +62,8 @@ public abstract class ItemSupplementTest extends ApplicationTest {
     public void closeDatabase() {
         database.closeDBSession();
     }
+
+    @Test
+    @Order(0)
+    public void dummyTest() { }
 }
