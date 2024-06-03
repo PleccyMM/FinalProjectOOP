@@ -138,7 +138,6 @@ public class DatabaseControl {
     }
 
     public List<Design> searchDesigns(SearchConditions nameSearch) {
-        System.out.println("SEARCHING DESIGNS");
         String name = nameSearch.getSearch();
         String initial1 = nameSearch.getStartLetters()[0];
         String initial2 = nameSearch.getStartLetters()[1];
@@ -158,8 +157,6 @@ public class DatabaseControl {
     }
 
     public Flag createFlag(String isoID, FLAG_SIZE size) {
-        System.out.println("Making Flag");
-
         var query = databaseSession.createQuery("from Flag where isoID = '" + isoID + "'");
         List<Flag> listFlag = query.list();
         if (listFlag.size() == 0) return null;
@@ -179,8 +176,6 @@ public class DatabaseControl {
     }
 
     public Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
-        System.out.println("Making Cushion");
-
         var query = databaseSession.createQuery("from Cushion where isoID = '" + isoID + "'");
         List<Cushion> listCushion = query.list();
         if (listCushion.size() == 0) return null;
@@ -202,7 +197,6 @@ public class DatabaseControl {
 
     public StockItem setStockData(StockItem i) {
         try {
-            System.out.println("Getting stock data");
             var query = databaseSession.createNativeQuery("select amount from stock_amount where stockid = (:stockid) and sizeid = (:sizeid)")
                     .setParameter("stockid", i.getStockID())
                     .setParameter("sizeid", i.getSizeID());
@@ -219,8 +213,6 @@ public class DatabaseControl {
                     .setParameter("sizeid", i.getSizeID());
             List<Double> price = query.list();
             i.setCostToProduce(price.get(0));
-
-            System.out.println("Got stock data");
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -396,10 +388,8 @@ public class DatabaseControl {
                 updatedRows ++;
             }
             databaseSession.getTransaction().commit();
-            System.out.println("Updated " + updatedRows);
         }
         catch (Exception e) {
-            System.out.println("FAILED");
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
@@ -422,7 +412,6 @@ public class DatabaseControl {
             databaseSession.getTransaction().commit();
         }
         catch (Exception e) {
-            System.out.println("FAILED TO ADD FLAGS");
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
@@ -445,7 +434,6 @@ public class DatabaseControl {
             databaseSession.getTransaction().commit();
         }
         catch (Exception e) {
-            System.out.println("FAILED TO ADD CUSHIONS");
             e.printStackTrace();
             databaseSession.getTransaction().rollback();
         }
@@ -467,7 +455,6 @@ public class DatabaseControl {
             databaseSession.getTransaction().commit();
         } catch (Exception e) {
             databaseSession.getTransaction().rollback();
-            System.out.println("FAILED TO ADD STOCKID");
             e.printStackTrace();
         }
     }
@@ -484,8 +471,7 @@ public class DatabaseControl {
             for (int i = 0; i < list.size(); i++) {
                 int runAmount = i <= list.size() / 2 - 1 ? 5 : 9;
                 int start = runAmount == 5 ? 0 : 5;
-
-                System.out.println(i);
+;
                 for (int j = start; j < runAmount; j++) {
                     int amount = rnd.nextInt(1, 20);
                     int restock = rnd.nextInt(3, 10);
@@ -502,7 +488,6 @@ public class DatabaseControl {
         }
         catch (Exception e) {
             databaseSession.getTransaction().rollback();
-            System.out.println("FAILED TO ADD STOCKID");
             e.printStackTrace();
         }
     }
@@ -516,12 +501,9 @@ public class DatabaseControl {
             for (Object[] row : results) {
                 int id = (int) row[0];
                 String name = (String) row[1];
-
-                System.out.println("Size: ID=" + id + ", Name=" + name);
             }
         }
         catch (Exception e) {
-            System.out.println("FAILED TO TEST SQL");
             e.printStackTrace();
         }
     }

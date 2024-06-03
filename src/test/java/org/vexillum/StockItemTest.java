@@ -1,9 +1,6 @@
 package org.vexillum;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 
 import java.util.*;
 
@@ -12,6 +9,11 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StockItemTest extends ItemPopulation {
+    @BeforeAll
+    public static void itemSetup() {
+
+    }
+
     @Test
     @Order(1)
     public void stockItemTest() {

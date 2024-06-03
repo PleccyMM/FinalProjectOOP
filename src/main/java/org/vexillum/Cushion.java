@@ -56,8 +56,9 @@ public class Cushion extends StockItem {
     public double calculatePrice() {
         if (amount < 0) return costToProduce;
 
-        double cost = size.getValue();
-        if (!justCase) cost += material.getValue();
+        double cost = 0;
+        cost += size != null ? size.getValue() : 0;
+        if (!justCase) cost += material != null ? material.getValue() : 0;
         return cost;
     }
 

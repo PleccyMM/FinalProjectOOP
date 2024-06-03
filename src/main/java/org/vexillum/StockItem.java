@@ -39,7 +39,6 @@ public abstract class StockItem implements Comparable<StockItem> {
 
     @Override
     public int compareTo(StockItem o) {
-        System.out.println("Running Comparison check");
         int i = Integer.compare(Integer.signum(amount), Integer.signum(o.getAmount()));
         int j = name.compareTo(o.getName());
         return i != 0 ? i : j != 0 ? j : Integer.compare(sizeID, o.getSizeID());
@@ -47,7 +46,6 @@ public abstract class StockItem implements Comparable<StockItem> {
 
     @Override
     public boolean equals(Object o) {
-        System.out.println("Running Equality check");
         if (this == o) return true;
         if (!(o instanceof StockItem stockItem)) return false;
         if (hashCode() == stockItem.hashCode()) return true;
