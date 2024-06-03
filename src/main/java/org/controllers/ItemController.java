@@ -597,11 +597,13 @@ public class ItemController extends ControllerParent {
 
         if (item.getAmount() > 0) {
             int newAmount = item.getTotalAmount() - item.getAmount();
+            System.out.println("Hey, original total amount " + item.getTotalAmount());
             item.setTotalAmount(newAmount);
 
             openDB();
             getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
             closeDB();
+            System.out.println("Hey, new total amount " + item.getTotalAmount());
         }
         l.showBasket(stage, getItems(), operator);
     }
