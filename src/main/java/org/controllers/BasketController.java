@@ -152,7 +152,9 @@ public class BasketController extends ControllerParent {
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
         openDB();
         for(StockItem i : getItems()) {
-            getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - i.getAmount(), i.getRestock());
+            if (i.getAmount() < 0) {
+                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+            }
             Node b = boxScroll.lookup("#" + i.hashCode());
             boxScroll.getChildren().remove(b);
         }

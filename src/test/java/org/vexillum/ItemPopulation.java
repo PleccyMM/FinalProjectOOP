@@ -14,6 +14,7 @@ import org.controllers.*;
 public abstract class ItemPopulation extends ApplicationTest {
     protected final List<StockItem> testItems = new ArrayList<>();
     protected static final List<StockItem> stockItems = new ArrayList<>();
+    private static final List<StockItem> unalteredStockItems = new ArrayList<>();
     protected static final DatabaseControl database = new DatabaseControl();
 
     @BeforeAll
@@ -31,6 +32,10 @@ public abstract class ItemPopulation extends ApplicationTest {
         stockItems.add(database.createCushion("CY-MO", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.COTTON));
         stockItems.add(database.createCushion("MO", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY));
 
+        for (StockItem item : stockItems) {
+            unalteredStockItems.add(item.clone());
+        }
+
         stockItems.get(2).setTotalAmount(12);
         stockItems.get(2).setRestock(4);
 
@@ -44,7 +49,8 @@ public abstract class ItemPopulation extends ApplicationTest {
     public static void restoreStockInformation() {
         database.openDBSession();
 
-        for (StockItem item : stockItems) {
+        for (StockItem item : unalteredStockItems) {
+            System.out.println("Item with ISOID " + item.getIsoID() + " has new totalAmount " + item.getTotalAmount() + " and restock " + item.getRestock());
             database.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
         }
         database.closeDBSession();
