@@ -18,6 +18,7 @@ public class ItemController extends ControllerParent {
     @FXML private StackPane panStacker;
     @FXML private BorderPane panMain;
     @FXML private ImageView imgFlag;
+    @FXML private VBox imageHolder;
 
     @FXML private BorderPane panImg;
     @FXML private HBox boxVerticalContainer;
@@ -610,10 +611,16 @@ public class ItemController extends ControllerParent {
 
     private void populateInfo() {
         try {
-            Image img = new Image("org/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png");
+            String designPath = "org/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png";
+            Image design = new Image(designPath);
+            Image img = !(item instanceof Cushion c) ? design :
+                    c.getSize() != CUSHION_SIZE.LONG ?
+                            Masker.standardCushion(false, designPath) : Masker.longCushion(false, designPath);
             imgFlag.setFitWidth((int) (img.getWidth() * 0.25));
             imgFlag.setFitHeight((int) (img.getHeight() * 0.25));
             imgFlag.setImage(img);
+            if (!img.equals(design)) imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #EEEEEE");
+            else imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #000000");
 
             if (!(item instanceof Flag f) || (f.getSize() != FLAG_SIZE.HAND && f.getSize() != FLAG_SIZE.DESK)) {
                 boxVerticalSize.setMaxHeight(imgFlag.getFitHeight());
@@ -641,7 +648,9 @@ public class ItemController extends ControllerParent {
             boxHorizontalMatch.setMinHeight(h);
             boxHorizontalContainer.setMinHeight(h);
         }
-        catch (Exception ignored) { }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         lblDesignName.setText(loadedDesign.getName());
 
