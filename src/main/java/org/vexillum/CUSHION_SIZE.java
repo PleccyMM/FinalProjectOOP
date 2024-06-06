@@ -4,10 +4,10 @@ package org.vexillum;
  * An {@code enum} used to store information about cushion sizes and their cost
  */
 public enum CUSHION_SIZE {
-    SMALL(200),
+    SMALL(600),
     MEDIUM(1000),
     LARGE(1400),
-    LONG(400);
+    LONG(500);
 
     private final int value;
 

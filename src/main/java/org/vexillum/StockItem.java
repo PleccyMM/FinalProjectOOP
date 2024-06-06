@@ -1,6 +1,7 @@
 package org.vexillum;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @MappedSuperclass
 public abstract class StockItem implements Comparable<StockItem> {
@@ -35,8 +36,6 @@ public abstract class StockItem implements Comparable<StockItem> {
         return "\nTotal Amount: " + totalAmount + "\nRestock Level: " + restock + "\n";
     }
 
-
-
     @Override
     public int compareTo(StockItem o) {
         int i = Integer.compare(Integer.signum(amount), Integer.signum(o.getAmount()));
@@ -48,9 +47,8 @@ public abstract class StockItem implements Comparable<StockItem> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof StockItem stockItem)) return false;
-        if (hashCode() == stockItem.hashCode()) return true;
 
-        if (name != stockItem.getName()) return false;
+        if (!Objects.equals(name, stockItem.getName())) return false;
         if (stockID != stockItem.getStockID()) return false;
         if (sizeID != stockItem.getSizeID()) return false;
         if (Integer.signum(amount) != Integer.signum(stockItem.getAmount())) return false;

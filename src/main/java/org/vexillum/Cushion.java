@@ -64,8 +64,19 @@ public class Cushion extends StockItem {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Cushion)) return false;
+        if (!(o instanceof Cushion c)) return false;
+        if (material != c.getMaterial()) return false;
         return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 29;
+
+        int result = 1;
+        result = prime * result + material.hashCode();
+
+        return prime * result + super.hashCode();
     }
 
     @Id

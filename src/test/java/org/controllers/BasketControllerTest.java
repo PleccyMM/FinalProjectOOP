@@ -195,6 +195,22 @@ public class BasketControllerTest extends BasketSupplement {
     }
 
     @Test
+    @Order(7)
+    public void attemptToOverExport() {
+        scrollToExport(4, controller.getItems());
+
+        int index = controller.getItems(4).hashCode();
+        Button btnAdd = lookup("#" + index + " #btnAdd").query();
+        Label lblIncrement = lookup("#" + index + " #lblIncrement").query();
+
+        for (int i = 0; i < 15; i++) {
+            clickOn(btnAdd);
+        }
+
+        verifyThat(lblIncrement, LabeledMatchers.hasText("20"));
+    }
+
+    @Test
     @Order(20)
     public void checkoutTest() {
         clickOn("#btnCheckout");

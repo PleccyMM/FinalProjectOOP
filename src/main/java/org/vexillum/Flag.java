@@ -65,8 +65,21 @@ public class Flag extends StockItem {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Flag)) return false;
+        if (!(o instanceof Flag f)) return false;
+        if (hoist != null && f.getHoist() != null && hoist != f.getHoist()) return false;
+        if (material != null && f.getMaterial() != null && material != f.getMaterial()) return false;
         return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 31;
+
+        int result = 1;
+        result = prime * result + (material != null ? material.hashCode() : 0);
+        result = prime * result + (hoist != null ? hoist.hashCode() : 0);
+
+        return prime * result + super.hashCode();
     }
 
     @Id

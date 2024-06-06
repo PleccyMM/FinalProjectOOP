@@ -12,6 +12,8 @@ import org.testfx.framework.junit5.*;
 import org.vexillum.*;
 import org.junit.jupiter.api.*;
 import org.testfx.matcher.control.*;
+
+import java.io.File;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -23,6 +25,12 @@ public class StockControllerTest extends ApplicationTest {
     public void start(Stage stage) throws Exception {
         Loader l = new Loader();
         l.showStock(stage, Collections.emptyList(), new Operator(), new SearchConditions());
+    }
+
+    @AfterAll
+    public static void deleteFile() {
+        File f = new File("AllStock.txt");
+        f.delete();
     }
 
     /**
@@ -157,6 +165,26 @@ public class StockControllerTest extends ApplicationTest {
 
         VBox boxScroll = lookup("#boxScroll").query();
         assertEquals(3, boxScroll.getChildren().size(), "Wrong amount of children found");
+    }
+
+    @Test
+    @Order(4)
+    public void searchJustTextPartialTest() throws InterruptedException {
+        clickOn("#enrSearch");
+        write("der");
+
+        PlatformImpl.runAndWait(() -> {
+            try {
+                clickOn("#btnSearch");
+            } catch (Exception e) {
+                fail("Failed performing search");
+            }
+        });
+        // This gives the database time to get the required values
+        Thread.sleep(500);
+
+        VBox boxScroll = lookup("#boxScroll").query();
+        assertEquals(4, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
     @Test
@@ -308,5 +336,13 @@ public class StockControllerTest extends ApplicationTest {
 
         VBox boxScroll = lookup("#boxScroll").query();
         assertEquals(3, boxScroll.getChildren().size(), "Wrong amount of children found");
+    }
+
+    @Test
+    @Order(8)
+    public void printTest() {
+        clickOn("#btnPrint");
+
+        assertTrue(new File("AllStock.txt").exists(), "File was not made");
     }
 }
