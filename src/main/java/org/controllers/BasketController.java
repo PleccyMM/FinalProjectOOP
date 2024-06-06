@@ -207,6 +207,8 @@ public class BasketController extends ControllerParent {
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
                     closeDB();
+                    setCosts(box, i);
+                    calculateTotalCost();
                     return;
                 }
 
