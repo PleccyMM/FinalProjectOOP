@@ -56,16 +56,30 @@ public class Flag extends StockItem {
     public double calculatePrice() {
         if (amount < 0) return costToProduce;
 
-        double cost = size.getValue();
-        cost += material.getValue();
-        cost += hoist.getValue();
+        double cost = 0;
+        cost += size != null ? size.getValue() : 0;
+        cost += material != null ? material.getValue() : 0;
+        cost += hoist != null ? hoist.getValue() : 0;
         return cost;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Flag)) return false;
+        if (!(o instanceof Flag f)) return false;
+        if (hoist != null && f.getHoist() != null && hoist != f.getHoist()) return false;
+        if (material != null && f.getMaterial() != null && material != f.getMaterial()) return false;
         return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 31;
+
+        int result = 1;
+        result = prime * result + (material != null ? material.hashCode() : 0);
+        result = prime * result + (hoist != null ? hoist.hashCode() : 0);
+
+        return prime * result + super.hashCode();
     }
 
     @Id

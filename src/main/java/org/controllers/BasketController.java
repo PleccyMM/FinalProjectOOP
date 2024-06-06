@@ -15,7 +15,6 @@ import javax.swing.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.Map.Entry;
 
 public class BasketController extends ControllerParent {
     @FXML private BorderPane panMain;
@@ -153,7 +152,9 @@ public class BasketController extends ControllerParent {
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
         openDB();
         for(StockItem i : getItems()) {
-            getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+            if (i.getAmount() < 0) {
+                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
+            }
             Node b = boxScroll.lookup("#" + i.hashCode());
             boxScroll.getChildren().remove(b);
         }
@@ -189,7 +190,7 @@ public class BasketController extends ControllerParent {
                 Node box = n.getParent().getParent();
                 Label l = (Label) box.lookup("#lblIncrement");
 
-                int val = Integer.parseInt(l.getText()) - 1;
+                int newVal = Integer.parseInt(l.getText()) - 1;
                 int hashVal = Integer.parseInt(box.getId());
                 int index = locateIndex(hashVal);
                 if (index < 0) {
@@ -201,21 +202,23 @@ public class BasketController extends ControllerParent {
                 openDB();
                 getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
 
-                if (i.getAmount() < 0) i.setAmount(val * -1);
-                else {
-                    i.setAmount(val * i.getAmount());
-                    i.setTotalAmount(i.getTotalAmount() + 1);
-                }
-
-                if (val == 0) {
+                if (newVal == 0) {
                     removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
                     closeDB();
+                    setCosts(box, i);
+                    calculateTotalCost();
                     return;
                 }
 
-                l.setText(val + "");
+                if (i.getAmount() < 0) i.setAmount(newVal * -1);
+                else {
+                    i.setAmount(newVal);
+                    i.setTotalAmount(i.getTotalAmount() + 1);
+                }
+
+                l.setText(newVal + "");
 
                 box.lookup("#btnAdd").setDisable(false);
                 setCosts(box, i);
@@ -238,8 +241,8 @@ public class BasketController extends ControllerParent {
                 Node box = n.getParent().getParent();
                 Label l = (Label) box.lookup("#lblIncrement");
 
-                int val = Integer.parseInt(l.getText()) + 1;
-                l.setText(val + "");
+                int newVal = Integer.parseInt(l.getText()) + 1;
+                l.setText(newVal + "");
 
                 int hashVal = Integer.parseInt(box.getId());
                 int index = locateIndex(hashVal);
@@ -252,9 +255,9 @@ public class BasketController extends ControllerParent {
                 openDB();
                 getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
 
-                if (i.getAmount() < 0) i.setAmount(val * -1);
+                if (i.getAmount() < 0) i.setAmount(newVal * -1);
                 else {
-                    i.setAmount(i.getAmount() + 1);
+                    i.setAmount(newVal);
                     i.setTotalAmount(i.getTotalAmount() - 1);
                 }
 
@@ -292,14 +295,13 @@ public class BasketController extends ControllerParent {
                 boolean isFlag = getItems(index) instanceof Flag;
                 openDB();
                 Design d = getDatabase().getDeignFromIso(getItems(index).getIsoID());
+                closeDB();
+                System.out.println("Made it past this one woo");
 
                 l.showItem(stage, getItems(), operator, d, isFlag, index);
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
-            }
-            finally {
-                closeDB();
             }
         }
     };

@@ -1,5 +1,8 @@
 package org.controllers;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.*;
 import org.testfx.framework.junit5.*;
 import org.vexillum.*;
@@ -9,13 +12,20 @@ import java.util.*;
 public abstract class ItemSupplementTest extends ApplicationTest {
     private static Flag flagHand, flagDesk, flagSmall, flagMedium, flagLarge;
     protected static DatabaseControl database = new DatabaseControl();
+    protected ItemController controller;
 
     @Override
     public void start(Stage stage) throws Exception {
-        Loader l = new Loader();
         database.openDBSession();
-        System.out.println("Loading the thing");
-        l.showItem(stage, new ArrayList<>(), new Operator(), database.getDeignFromIso("GB"), true, null);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
+        Parent root = loader.load();
+
+        ItemController controller = loader.getController();
+        controller.load(stage, new Operator(), new ArrayList<>(), database.getDeignFromIso("GB"), true, null);
+
+        Scene scene = new Scene(root, 960, 540);
+        stage.setScene(scene);
+        stage.show();
         database.closeDBSession();
     }
 
@@ -62,4 +72,8 @@ public abstract class ItemSupplementTest extends ApplicationTest {
     public void closeDatabase() {
         database.closeDBSession();
     }
+
+    @Test
+    @Order(0)
+    public void dummyTest() { }
 }

@@ -76,6 +76,7 @@ public class ItemController extends ControllerParent {
 
         try {
             openDB();
+            System.out.println("Opening it up");
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
 
@@ -92,8 +93,11 @@ public class ItemController extends ControllerParent {
                     getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
                 }
 
+                System.out.println("Started setting up options in conditional");
                 setUpOptions();
+                System.out.println("Finished setting up options in conditional");
                 btnBasketPrefix = "Update";
+                openDB();
             }
             else {
                 btnBasketPrefix = "Add to";
@@ -593,11 +597,13 @@ public class ItemController extends ControllerParent {
 
         if (item.getAmount() > 0) {
             int newAmount = item.getTotalAmount() - item.getAmount();
+            System.out.println("Hey, original total amount " + item.getTotalAmount());
             item.setTotalAmount(newAmount);
 
             openDB();
             getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
             closeDB();
+            System.out.println("Hey, new total amount " + item.getTotalAmount());
         }
         l.showBasket(stage, getItems(), operator);
     }

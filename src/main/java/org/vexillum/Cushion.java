@@ -56,15 +56,27 @@ public class Cushion extends StockItem {
     public double calculatePrice() {
         if (amount < 0) return costToProduce;
 
-        double cost = size.getValue();
-        if (!justCase) cost += material.getValue();
+        double cost = 0;
+        cost += size != null ? size.getValue() : 0;
+        if (!justCase) cost += material != null ? material.getValue() : 0;
         return cost;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Cushion)) return false;
+        if (!(o instanceof Cushion c)) return false;
+        if (material != c.getMaterial()) return false;
         return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 29;
+
+        int result = 1;
+        result = prime * result + material.hashCode();
+
+        return prime * result + super.hashCode();
     }
 
     @Id

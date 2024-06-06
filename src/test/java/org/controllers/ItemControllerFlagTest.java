@@ -49,4 +49,22 @@ public class ItemControllerFlagTest extends ItemSupplementTest {
 
         verifyThat("#cmbModifications", ComboBoxMatchers.hasSelectedItem("Fabric Rings (\u00A30.50)"));
     }
+
+    @Test
+    @Order(3)
+    public void fullFlagCreationTest() throws InterruptedException {
+        clickOn("#boxSize_150x90cm");
+
+        clickOn("#cmbModifications");
+        clickOn("Wooden Toggles (\u00A35.00)");
+
+        clickOn("#tglMaterial");
+
+        clickOn("#btnAdd");
+        clickOn("#btnAdd");
+
+        clickOn("#btnAddToBasket");
+
+        Thread.sleep(500);
+    }
 }

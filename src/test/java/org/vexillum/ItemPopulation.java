@@ -1,17 +1,20 @@
 package org.vexillum;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import javafx.geometry.Bounds;
+import javafx.geometry.VerticalDirection;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import org.junit.jupiter.api.*;
 import org.testfx.framework.junit5.ApplicationTest;
+import java.util.*;
+import org.controllers.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class ItemPopulation extends ApplicationTest {
     protected final List<StockItem> testItems = new ArrayList<>();
     protected static final List<StockItem> stockItems = new ArrayList<>();
+    private static final List<StockItem> unalteredStockItems = new ArrayList<>();
     protected static final DatabaseControl database = new DatabaseControl();
 
     @BeforeAll
@@ -29,6 +32,16 @@ public abstract class ItemPopulation extends ApplicationTest {
         stockItems.add(database.createCushion("CY-MO", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.COTTON));
         stockItems.add(database.createCushion("MO", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY));
 
+        for (StockItem item : stockItems) {
+            unalteredStockItems.add(item.clone());
+        }
+
+        stockItems.get(2).setTotalAmount(12);
+        stockItems.get(2).setRestock(4);
+
+        stockItems.get(6).setTotalAmount(5);
+        stockItems.get(6).setRestock(7);
+
         database.closeDBSession();
     }
 
@@ -36,7 +49,8 @@ public abstract class ItemPopulation extends ApplicationTest {
     public static void restoreStockInformation() {
         database.openDBSession();
 
-        for (StockItem item : stockItems) {
+        for (StockItem item : unalteredStockItems) {
+            System.out.println("Item with ISOID " + item.getIsoID() + " has new totalAmount " + item.getTotalAmount() + " and restock " + item.getRestock());
             database.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
         }
         database.closeDBSession();
@@ -46,7 +60,6 @@ public abstract class ItemPopulation extends ApplicationTest {
     public void setUpItems() throws InterruptedException {
         database.openDBSession();
 
-        database.updateAmountAndRestock(stockItems.get(0).getStockID(), stockItems.get(0).getSizeID(), 11, 4);
         Flag flagSmallGibraltar = (Flag) stockItems.get(0).clone();
         flagSmallGibraltar.setAmount(3);
         flagSmallGibraltar.setHoist(FLAG_HOIST.NONE);
@@ -55,6 +68,7 @@ public abstract class ItemPopulation extends ApplicationTest {
         Flag flagLargeTrans = (Flag) stockItems.get(1).clone();
         flagLargeTrans.setAmount(-7);
 
+        database.updateAmountAndRestock(stockItems.get(2).getStockID(), stockItems.get(2).getSizeID(), 12, 4);
         Flag flagSmallDevon = (Flag) stockItems.get(2).clone();
         flagSmallDevon.setAmount(8);
         flagSmallDevon.setHoist(FLAG_HOIST.WOODEN);
@@ -98,5 +112,31 @@ public abstract class ItemPopulation extends ApplicationTest {
         }
 
         database.closeDBSession();
+    }
+
+    protected void scrollToExport(int indexOfBox, List<StockItem> stockItems) {
+        ScrollPane scrBackground = lookup("#scrBackground").query();
+        Bounds scrollBound = scrBackground.localToScene(scrBackground.getBoundsInLocal());
+
+        int indexOneOver = stockItems.get(indexOfBox + 1).hashCode();
+        HBox boxOneOver = lookup("#" + indexOneOver).query();
+        Bounds boxBound;
+
+        clickOn(scrBackground);
+        do {
+            scroll(1, VerticalDirection.DOWN);
+
+            if (scrBackground.getVvalue() == scrBackground.getVmax()) {
+                break;
+            }
+
+            boxBound = boxOneOver.localToScene(boxOneOver.getBoundsInLocal());
+        } while (!scrollBound.intersects(boxBound));;
+    }
+
+    @Test
+    @Order(0)
+    public void dummyTest() {
+
     }
 }
