@@ -26,7 +26,7 @@ public class DatabaseControl {
     }
 
     public boolean isOpen() {
-        return databaseSession.isOpen();
+        return databaseSession != null;
     }
 
     public void closeDBSession() {
@@ -38,17 +38,9 @@ public class DatabaseControl {
         }
     }
 
-    public void closeSessionFactory() {
-        if (sessionFactory != null && !sessionFactory.isClosed()) {
-            System.out.println("Closing session factory");
-            sessionFactory.close();
-            sessionFactory = null;
-            System.out.println("Closed session factory");
-        }
-    }
-
     public List<Operator> getSpecificOperator(String nameSearch) {
-        var query = databaseSession.createQuery("from Operator where name = '" + nameSearch + "'");
+        var query = databaseSession.createQuery("from Operator where name = (:name)")
+                .setParameter("name", nameSearch);
         List<Operator> list = query.list();
         return list;
     }
@@ -57,6 +49,20 @@ public class DatabaseControl {
                 .setParameter("ids", Arrays.asList(ids));
         List<Operator> list = query.list();
         return list;
+    }
+
+    public void addRequest(int id, String name, String password, Date applicationTime) {
+        databaseSession.beginTransaction();
+        databaseSession.createNativeQuery("insert into operators values ((:id), (:name), (:password), 0, 0)")
+                .setParameter("id", id)
+                .setParameter("name", name)
+                .setParameter("password", password)
+                .executeUpdate();
+        databaseSession.createNativeQuery("insert into operator_approvals values ((:id), (:time))")
+                .setParameter("id", id)
+                .setParameter("time", applicationTime)
+                .executeUpdate();
+        databaseSession.getTransaction().commit();
     }
 
     public void acceptOperator(int id) {
@@ -101,20 +107,6 @@ public class DatabaseControl {
         return list;
     }
 
-    public void addRequest(int id, String name, String password, Date applicationTime) {
-        databaseSession.beginTransaction();
-        databaseSession.createNativeQuery("insert into operators values ((:id), (:name), (:password), 0, 0)")
-                .setParameter("id", id)
-                .setParameter("name", name)
-                .setParameter("password", password)
-                .executeUpdate();
-        databaseSession.createNativeQuery("insert into operator_approvals values ((:id), (:time))")
-                .setParameter("id", id)
-                .setParameter("time", applicationTime)
-                .executeUpdate();
-        databaseSession.getTransaction().commit();
-    }
-
     public HashMap<Date, Integer> getApprovals() {
         var query = databaseSession.createNativeQuery("select operatorid from operator_approvals");
         List<Integer> listID = query.list();
@@ -157,13 +149,15 @@ public class DatabaseControl {
     }
 
     public Flag createFlag(String isoID, FLAG_SIZE size) {
-        var query = databaseSession.createQuery("from Flag where isoID = '" + isoID + "'");
+        var query = databaseSession.createQuery("from Flag where isoID = (:isoID)")
+                .setParameter("isoID", isoID);
         List<Flag> listFlag = query.list();
         if (listFlag.size() == 0) return null;
 
         Flag f = listFlag.get(0);
 
-        query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        query = databaseSession.createQuery("select name from Design where isoID = (:isoID)")
+                .setParameter("isoID", isoID);
         List<String> listName = query.list();
         if (listName.size() == 0) return null;
 
@@ -176,13 +170,15 @@ public class DatabaseControl {
     }
 
     public Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
-        var query = databaseSession.createQuery("from Cushion where isoID = '" + isoID + "'");
+        var query = databaseSession.createQuery("from Cushion where isoID = (:isoID)")
+                .setParameter("isoID", isoID);
         List<Cushion> listCushion = query.list();
         if (listCushion.size() == 0) return null;
 
         Cushion c = listCushion.get(0);
 
-        query = databaseSession.createQuery("select name from Design where isoID = '" + isoID + "'");
+        query = databaseSession.createQuery("select name from Design where isoID = (:isoID)")
+                .setParameter("isoID", isoID);
         List<String> listName = query.list();
         if (listName.size() == 0) return null;
 
@@ -222,14 +218,16 @@ public class DatabaseControl {
     }
 
     public String getRegionName(int regionID) {
-        var query = databaseSession.createNativeQuery("select name from regions where regionid = '" + regionID + "'");
+        var query = databaseSession.createNativeQuery("select name from regions where regionid = (:regionID)")
+                .setParameter("regionID", regionID);
         List<String> list = query.list();
         if (list.size() > 0) return list.get(0);
         return "";
     }
 
     public String getTypeName(int typeID) {
-        var query = databaseSession.createNativeQuery("select name from designtypes where typeid = '" + typeID + "'");
+        var query = databaseSession.createNativeQuery("select name from designtypes where typeid = (:typeID)")
+                .setParameter("typeID", typeID);
         List<String> list = query.list();
         if (list.size() > 0) return list.get(0);
         return "";

@@ -251,22 +251,22 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
     @Test
     @Order(14)
-    public void verifyRestockWarningTest() {
-        Label lblWarningHand = lookup("#boxSize_Hand #lblWarning").query();
-        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblWarning").query();
-
-        verifyThat(lblWarningHand, LabeledMatchers.hasText(""));
-        verifyThat(lblWarningMedium, LabeledMatchers.hasText("RESTOCK"));
-    }
-
-    @Test
-    @Order(15)
     public void printTest() {
         clickOn("#btnMore");
 
         clickOn("#btnPrint");
 
         assertTrue(new File("United Kingdom_0.txt").exists(), "File was not made");
+    }
+
+    @Test
+    @Order(15)
+    public void verifyRestockWarningTest() {
+        Label lblWarningHand = lookup("#boxSize_Hand #lblWarning").query();
+        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblWarning").query();
+
+        verifyThat(lblWarningHand, LabeledMatchers.hasText(""));
+        verifyThat(lblWarningMedium, LabeledMatchers.hasText("RESTOCK"));
     }
 
     @Test

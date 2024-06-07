@@ -206,6 +206,8 @@ public class ItemController extends ControllerParent {
             Node n = panMain.lookup("#boxSize_" + FLAG_SIZE.getString(f.getSize()));
             boxSelected = (VBox) n.lookup("#boxSelect");
 
+            tglImportExport.setToLeft(item.getAmount() < 0);
+
             switch (f.getHoist()) {
                 case NONE -> s.select(0);
                 case FABRIC -> s.select(1);
@@ -224,6 +226,9 @@ public class ItemController extends ControllerParent {
             Node n = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
             boxSelected = (VBox) n.lookup("#boxSelect");
 
+            tglImportExport.setToLeft(item.getAmount() < 0);
+
+            System.out.println(c.isJustCase());
             tglMaterial.setToLeft(!c.isJustCase());
 
             switch (c.getMaterial()) {
@@ -234,7 +239,8 @@ public class ItemController extends ControllerParent {
             }
         }
 
-        tglImportExport.setToLeft(item.getAmount() < 0);
+        boxSelected.setVisible(true);
+        System.out.println("Are we switching " + item.getAmount());
     }
 
     private void updateItem() {
@@ -300,18 +306,18 @@ public class ItemController extends ControllerParent {
         getDatabase().setStockData(item);
         System.out.println("This one is done");
 
-        int amount = Integer.parseInt(lblIncrement.getText());
+        int amount = Objects.equals(lblIncrement.getText(), "0") ? 1 : Integer.parseInt(lblIncrement.getText());
         int newAmount = tglImportExport.getToLeft().get() ? amount : Math.min(amount, item.getTotalAmount());
 
         if (tglImportExport.getToLeft().get()) item.setAmount(newAmount * -1);
         else item.setAmount(newAmount);
 
-        if (amount != newAmount) lblIncrement.setText(newAmount + "");
+        lblIncrement.setText(newAmount + "");
 
         btnAdd.setDisable(false);
         btnMinus.setDisable(false);
-        if (newAmount == 1) btnMinus.setDisable(true);
-        if (newAmount >= item.getTotalAmount() && item.getAmount() > 0) btnAdd.setDisable(true);
+        if (newAmount <= 1) btnMinus.setDisable(true);
+        if (newAmount >= item.getTotalAmount() && item.getAmount() >= 0) btnAdd.setDisable(true);
 
         if (tglImportExport.getToLeft().get()) btnAddToBasket.setText(btnBasketPrefix + " Import");
         else btnAddToBasket.setText(btnBasketPrefix + " Export");
@@ -328,16 +334,18 @@ public class ItemController extends ControllerParent {
             item.getAmount() < 0) {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
-
-            if (item.getAmount() < 0) {
-                cmbModifications.setDisable(true);
-                tglMaterial.setDisable(true);
-            }
         }
         else {
             lblPrice.setText(cost + "+");
             btnAddToBasket.setDisable(true);
         }
+
+        if (item.getAmount() < 0) {
+            cmbModifications.setDisable(true);
+            tglMaterial.setDisable(true);
+        }
+
+        if (item.getTotalAmount() <= 0 && item.getAmount() >= 0) btnAddToBasket.setDisable(true);
 
         String totalCost = eurFormatter.format(price * newAmount);
         lblTotalPrice.setText(totalCost);

@@ -1,23 +1,7 @@
 package org.vexillum;
 
-import javafx.event.*;
-import javafx.fxml.*;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.canvas.*;
-import javafx.scene.effect.*;
 import javafx.scene.paint.*;
-import javafx.scene.shape.*;
-import javafx.scene.text.*;
-import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-import javax.swing.*;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.*;
 
 public class Masker {
     public static WritableImage standardCushion(boolean isSmall, String designPath) {
@@ -44,11 +28,9 @@ public class Masker {
         Image designResize = new Image(designPath, newWidth, newHeight, false, true);
 
         double heightCompare = cushion.getHeight() - newHeight;
-        System.out.println("Height: " + heightCompare + " because " + cushion.getHeight() + " - " + newHeight);
         int offSetY = Math.signum(heightCompare) == 1 ? (int) (heightCompare / 2) : 0;
 
         double widthCompare = cushion.getWidth() - newWidth;
-        System.out.println("Width: " + widthCompare + " because " + cushion.getWidth() + " - " + newWidth);
         int offSetX = Math.signum(widthCompare) == -1 ? (int) (widthCompare / -2) : 0;
 
         WritableImage combinedImage = new WritableImage((int) cushion.getWidth(), (int) cushion.getHeight());

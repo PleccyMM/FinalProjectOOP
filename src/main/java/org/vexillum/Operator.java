@@ -23,9 +23,9 @@ public class Operator {
     /**
      * Constructor primarily used for creation of a new version of the object
      */
-    public Operator(String name, String password)
+    public Operator(int ID, String name, String password)
     {
-        operatorID = generateID();
+        operatorID = ID;
         this.name = name;
         this.password = password;
         this.approved = false;
@@ -33,12 +33,19 @@ public class Operator {
     }
 
     @Override
-    public String toString() {
-        return "ID: " + operatorID + "\nName: " + name + "\nPassword: " + password + "\nApproved: " + approved + "\nAdministrator: " + administrator;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Operator op)) return false;
+
+        if (operatorID != op.operatorID) return false;
+        if (!Objects.equals(name, op.name)) return false;
+        if (!Objects.equals(password, op.password)) return false;
+        return approved == op.approved && administrator == op.administrator;
     }
 
-    private int generateID() {
-        return 0;
+    @Override
+    public String toString() {
+        return "ID: " + operatorID + "\nName: " + name + "\nPassword: " + password + "\nApproved: " + approved + "\nAdministrator: " + administrator;
     }
 
     /**

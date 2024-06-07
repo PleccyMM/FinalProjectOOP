@@ -106,5 +106,6 @@ public class Cushion extends StockItem {
     }
     public void setMaterial(CUSHION_MATERIAL material) {
         this.material = material;
+        justCase = material == CUSHION_MATERIAL.EMPTY;
     }
 }
