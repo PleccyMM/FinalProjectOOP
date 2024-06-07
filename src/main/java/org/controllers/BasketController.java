@@ -82,8 +82,16 @@ public class BasketController extends ControllerParent {
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
 
-            Image img = new Image("org/Assets/FlagsSmall/" + i.getIsoID() + ".png");
+            String designPath = "org/Assets/FlagsSmall/" + i.getIsoID() + ".png";
+            Image design = new Image(designPath);
+            Image img = !(i instanceof Cushion c) ? design :
+                    c.getSize() != CUSHION_SIZE.LONG ?
+                            Masker.standardCushion(true, designPath) : Masker.longCushion(true, designPath);
             ((ImageView) box.lookup("#imgDesign")).setImage(img);
+
+            VBox imageHolder = (VBox) box.lookup("#imageHolder");
+            if (!img.equals(design)) imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #FFFFFF");
+            else imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #000000");
 
             String name = i.getName();
 
@@ -206,9 +214,9 @@ public class BasketController extends ControllerParent {
                     removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
-                    closeDB();
                     setCosts(box, i);
                     calculateTotalCost();
+                    closeDB();
                     return;
                 }
 

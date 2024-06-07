@@ -111,7 +111,7 @@
                             minHeight="305">
                     <center>
                         <VBox BorderPane.alignment="CENTER" alignment="CENTER">
-                            <VBox id="imageHolder"
+                            <VBox fx:id="imageHolder"
                                   style="-fx-border-width: 2; -fx-border-color: #000000;"
                                   maxWidth="1">
                                 <ImageView fx:id="imgFlag"/>

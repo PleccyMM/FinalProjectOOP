@@ -22,13 +22,14 @@ public class BasketControllerEditTest extends BasketSupplement {
     public void editImportTest() {
         int index = controller.getItems(0).hashCode();
         Button btnEdit = lookup("#" + index + " #btnEdit").query();
+
         clickOn(btnEdit);
 
         verifyThat("#lblDesignName", LabeledMatchers.hasText("Eritrea"));
         verifyThat("#lblTags", LabeledMatchers.hasText("Africa\nInternational"));
 
-//        VBox boxSelect = lookup("#boxSize_60x60cm #boxSelect").query();
-//        verifyThat(boxSelect, Node::isVisible);
+        VBox boxSelect = lookup("#boxSize_60x60cm #boxSelect").query();
+        verifyThat(boxSelect, Node::isVisible);
 
         verifyThat("#tglMaterial", Node::isDisabled);
         verifyThat("#cmbModifications", Node::isDisabled);
@@ -57,8 +58,8 @@ public class BasketControllerEditTest extends BasketSupplement {
         verifyThat("#lblDesignName", LabeledMatchers.hasText("Devon"));
         verifyThat("#lblTags", LabeledMatchers.hasText("Europe\nNational"));
 
-//        VBox boxSelect = lookup("#boxSize_60x60cm #boxSelect").query();
-//        verifyThat(boxSelect, Node::isVisible);
+        VBox boxSelect = lookup("#boxSize_90x60cm #boxSelect").query();
+        verifyThat(boxSelect, Node::isVisible);
 
         ToggleSwitch tglMaterial = lookup("#tglMaterial").query();
         verifyThat(tglMaterial, node -> !node.isDisabled());
