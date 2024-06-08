@@ -66,12 +66,6 @@ public class StockItemTest extends ItemPopulation {
 
     @Test
     @Order(0)
-    public void toStringTest() {
-
-    }
-
-    @Test
-    @Order(0)
     public void stockItemEqualityTest() {
         database.openDBSession();
 

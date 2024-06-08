@@ -280,7 +280,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
     @Test
     @Order(17)
-    public void fullIntegrationTest() throws InterruptedException {
+    public void fullSystemTest() throws InterruptedException {
         for (int i = 0; i < 4; i++) {
             clickOn("#btnAdd");
         }

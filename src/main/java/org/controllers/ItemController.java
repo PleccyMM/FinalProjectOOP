@@ -322,7 +322,6 @@ public class ItemController extends ControllerParent {
         if (tglImportExport.getToLeft().get()) btnAddToBasket.setText(btnBasketPrefix + " Import");
         else btnAddToBasket.setText(btnBasketPrefix + " Export");
 
-
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         double price = item.calculatePrice();
         String cost = eurFormatter.format(price);

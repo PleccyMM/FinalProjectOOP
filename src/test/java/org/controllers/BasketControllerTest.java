@@ -27,7 +27,7 @@ public class BasketControllerTest extends BasketSupplement {
 
     @Test
     @Order(2)
-    public void increaseDecreaseAmountImport() {
+    public void increaseDecreaseAmountImportTest() {
         int index = controller.getItems(0).hashCode();
         Button btnAdd = lookup("#" + index + " #btnAdd").query();
         Button btnMinus = lookup("#" + index + " #btnMinus").query();
@@ -52,7 +52,7 @@ public class BasketControllerTest extends BasketSupplement {
 
     @Test
     @Order(3)
-    public void increaseAmountAboveStockImport() {
+    public void increaseAmountAboveStockImportTest() {
         int index = controller.getItems(0).hashCode();
         Button btnAdd = lookup("#" + index + " #btnAdd").query();
         Label lblIncrement = lookup("#" + index + " #lblIncrement").query();
@@ -139,7 +139,7 @@ public class BasketControllerTest extends BasketSupplement {
 
     @Test
     @Order(6)
-    public void increaseDecreaseAmountExport() {
+    public void increaseDecreaseAmountExportTest() {
         scrollToExport(4, controller.getItems());
 
         int index = controller.getItems(4).hashCode();
@@ -196,7 +196,7 @@ public class BasketControllerTest extends BasketSupplement {
 
     @Test
     @Order(7)
-    public void attemptToOverExport() {
+    public void attemptToOverExportTest() {
         scrollToExport(4, controller.getItems());
 
         int index = controller.getItems(4).hashCode();
