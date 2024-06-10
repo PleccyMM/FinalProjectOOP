@@ -73,8 +73,8 @@ public class BasketControllerEditTest extends BasketSupplement {
         assertFalse(tglImportExport.getToLeft().get());
 
         verifyThat("#lblIncrement", LabeledMatchers.hasText("8"));
-        verifyThat("#lblTotalPrice", LabeledMatchers.hasText("\u00A3112.00"));
-        verifyThat("#lblPrice", LabeledMatchers.hasText("\u00A314.00"));
+        verifyThat("#lblTotalPrice", LabeledMatchers.hasText("\u00A3107.20"));
+        verifyThat("#lblPrice", LabeledMatchers.hasText("\u00A313.40"));
 
         //The amount already in basket should have been added to the previous amount
         verifyThat("#lblCurrentStock", LabeledMatchers.hasText("20"));

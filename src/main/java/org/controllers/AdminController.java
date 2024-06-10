@@ -80,7 +80,7 @@ public class AdminController extends ControllerParent {
         public void handle(ActionEvent event) {
             Object source = event.getSource();
             Node n = (Node) source;
-            Node box = n.getParent();
+            Node box = n.getParent().getParent();
 
             int id = Integer.parseInt(box.getId());
 
@@ -101,7 +101,7 @@ public class AdminController extends ControllerParent {
         public void handle(ActionEvent event) {
             Object source = event.getSource();
             Node n = (Node) source;
-            Node box = n.getParent();
+            Node box = n.getParent().getParent();
 
             int id = Integer.parseInt(box.getId());
             openDB();
