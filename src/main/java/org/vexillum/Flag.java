@@ -32,7 +32,7 @@ public class Flag extends StockItem {
      * Constructor only used for the {@code .clone()} method
      */
     public Flag(String isoID, String name, int stockID, int amount, int totalAmount, int restock, int sizeID,
-                double costToProduce, int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size) {
+                double costToProduce, int flagID, FLAG_MATERIAL material, FLAG_HOIST hoist, FLAG_SIZE size, boolean isNational) {
         this.isoID = isoID;
         this.name = name;
         this.stockID = stockID;
@@ -45,11 +45,12 @@ public class Flag extends StockItem {
         this.material = material;
         this.hoist = hoist;
         this.size = size;
+        this.isNational = isNational;
     }
 
     @Override
     public StockItem clone() {
-        return new Flag(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, flagID, material, hoist, size);
+        return new Flag(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, flagID, material, hoist, size, isNational);
     }
 
     @Override
@@ -58,6 +59,7 @@ public class Flag extends StockItem {
 
         double cost = 0;
         cost += size != null ? size.getValue() : 0;
+        if (isNational) cost *= 0.9;
         cost += material != null ? material.getValue() : 0;
         cost += hoist != null ? hoist.getValue() : 0;
         return cost;
@@ -65,6 +67,7 @@ public class Flag extends StockItem {
 
     @Override
     public boolean equals(Object o) {
+        System.out.println("We're equal checking");
         if (!(o instanceof Flag f)) return false;
         if (hoist != null && f.getHoist() != null && hoist != f.getHoist()) return false;
         if (material != null && f.getMaterial() != null && material != f.getMaterial()) return false;

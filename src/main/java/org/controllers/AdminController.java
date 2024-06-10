@@ -37,26 +37,29 @@ public class AdminController extends ControllerParent {
             ids[i++] = m.getValue();
         }
 
+        List<Date> dates = new ArrayList<>(operatorMap.keySet());
+        Collections.sort(dates);
+
         List<Operator> operators = getDatabase().getOperatorsByID(ids);
 
-        for(var m : operatorMap.entrySet()) {
+        for(Date date : dates) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
 
-            Date date = m.getKey();
-            int id = m.getValue();
+            int id = operatorMap.get(date);
             Operator op = new Operator();
             for (Operator o : operators) {
                 if (o.getOperatorID() == id) {
                     op = o;
+                    operators.remove(o);
                     break;
                 }
             }
 
             box.setId(op.getOperatorID() + "");
 
-            Label name = (Label) box.lookup("#lblName");
+            Label name = (Label) box.lookup("#lblUsername");
             name.setText(op.getName());
 
             Label time = (Label) box.lookup("#lblApplicationTime");

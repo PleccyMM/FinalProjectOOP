@@ -131,6 +131,33 @@
     -fx-text-fill: #FFFFFF;
 }
 
+#btnAccept {
+    -fx-background-color: #46BC58;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-size: 12px;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#btnAccept:hover {
+    -fx-background-color: #96DBA1;
+}
+#btnDeny {
+    -fx-background-color: #D44040;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter Semi Bold";
+    -fx-font-size: 12px;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 7, 0.0, 0, 1);
+}
+#btnDeny:hover {
+    -fx-background-color: #FF9B9B;
+}
+
 #btnAddAmount,
 #btnAddRestock,
 #btnAdd {
@@ -222,6 +249,7 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+.small-title-black,
 #small-title-black,
 #lblTotalLabel,
 #lblTotalPrice {

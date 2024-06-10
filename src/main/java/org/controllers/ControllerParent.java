@@ -156,18 +156,29 @@ public abstract class ControllerParent {
         return items.get(i);
     }
     protected void setItem(int i, StockItem item) {
-        items.set(i, item);
-        Collections.sort(items);
-    }
-    protected void addItem(StockItem item) {
-        for (StockItem i : items) {
-            if (i.equals(item)) {
-                i.setAmount(i.getAmount() + item.getAmount());
+        for (StockItem itemChk : items) {
+            System.out.println("Checking");
+            if (itemChk.baseEquals(item)) {
+                itemMerge(item);
+                items.remove(i);
+                Collections.sort(items);
                 return;
             }
         }
-        items.add(item);
+        items.set(i, item);
+    }
+    protected void addItem(StockItem item) {
+        if (!itemMerge(item)) items.add(item);
         Collections.sort(items);
+    }
+    private boolean itemMerge(StockItem item) {
+        for (StockItem i : items) {
+            if (i.baseEquals(item)) {
+                i.setAmount(i.getAmount() + item.getAmount());
+                return true;
+            }
+        }
+        return false;
     }
     protected void itemsClear() {
         items.clear();

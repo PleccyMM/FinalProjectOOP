@@ -321,10 +321,10 @@ public class StockItemTest extends ItemPopulation {
         database.closeDBSession();
 
         assertEquals(22.0, priceList.get(0).calculatePrice());
-        assertEquals(5.0, priceList.get(1).calculatePrice());
+        assertEquals(4.5, priceList.get(1).calculatePrice());
         assertEquals(3.0, priceList.get(2).calculatePrice());
         assertEquals(14.0, priceList.get(3).calculatePrice());
-        assertEquals(4.0, priceList.get(4).calculatePrice());
+        assertEquals(3.6, priceList.get(4).calculatePrice());
         assertEquals(3.0, priceList.get(5).calculatePrice());
     }
 }

@@ -14,6 +14,7 @@ public abstract class StockItem implements Comparable<StockItem> {
     protected int restock;
     protected int sizeID;
     protected double costToProduce;
+    protected boolean isNational = false;
 
     /**
      * Used to create a new version of {@code StockItem}, when it is needed not by reference
@@ -45,6 +46,13 @@ public abstract class StockItem implements Comparable<StockItem> {
 
     @Override
     public boolean equals(Object o) {
+        return equalCheck(o);
+    }
+    public boolean baseEquals(Object o) {
+        return equalCheck(o);
+    }
+
+    private boolean equalCheck(Object o) {
         if (this == o) return true;
         if (!(o instanceof StockItem stockItem)) return false;
 
@@ -128,5 +136,12 @@ public abstract class StockItem implements Comparable<StockItem> {
     }
     public void setCostToProduce(double costToProduce) {
         this.costToProduce = costToProduce;
+    }
+
+    public boolean isNational() {
+        return isNational;
+    }
+    public void setNational(boolean national) {
+        isNational = national;
     }
 }

@@ -108,15 +108,16 @@ public class DatabaseControl {
     }
 
     public HashMap<Date, Integer> getApprovals() {
-        var query = databaseSession.createNativeQuery("select operatorid from operator_approvals");
+        var query = databaseSession.createNativeQuery("select operatorid from operator_approvals order by time_submitted asc");
         List<Integer> listID = query.list();
-        query = databaseSession.createNativeQuery("select time_submitted from operator_approvals");
+        query = databaseSession.createNativeQuery("select time_submitted from operator_approvals order by time_submitted asc");
         List<Date> listTime = query.list();
 
         HashMap<Date, Integer> map = new HashMap<>();
         for (int i = 0; i < listID.size(); i++) {
             map.put(listTime.get(i), listID.get(i));
         }
+
         return map;
     }
 
@@ -210,6 +211,11 @@ public class DatabaseControl {
                     .setParameter("sizeid", i.getSizeID());
             List<Double> price = query.list();
             i.setCostToProduce(price.get(0));
+
+            query = databaseSession.createNativeQuery("select typeid from designs where isoid = (:isoid)")
+                    .setParameter("isoid", i.getIsoID());
+            List<Integer> tags = query.list();
+            i.setNational(tags.get(0).equals(TYPE.NATIONAL.getValue()));
         }
         catch (Exception e) {
             throw new RuntimeException(e);

@@ -149,19 +149,19 @@ public class BasketControllerTest extends BasketSupplement {
         Label lblSubtotal = lookup("#" + index + " #lblSubtotal").query();
 
         verifyThat(lblIncrement, LabeledMatchers.hasText("8"));
-        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A3112.00"));
+        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A3107.20"));
 
         clickOn(btnAdd);
         verifyThat(lblIncrement, LabeledMatchers.hasText("9"));
-        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A3126.00"));
+        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A3120.60"));
 
         clickOn(btnMinus);
         verifyThat(lblIncrement, LabeledMatchers.hasText("8"));
-        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A3112.00"));
+        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A3107.20"));
 
         clickOn(btnMinus);
         verifyThat(lblIncrement, LabeledMatchers.hasText("7"));
-        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A398.00"));
+        verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A393.80"));
     }
 
     @Test

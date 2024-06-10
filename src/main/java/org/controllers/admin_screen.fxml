@@ -17,13 +17,23 @@
             fx:controller="org.controllers.AdminController"
             stylesheets="@MainStyle.css"
             fx:id="panMain"
-            style="-fx-background-color: #EEEEEE">
+            style="-fx-background-color: #FFFFFF">
     <top>
         <fx:include source="header.fxml"/>
     </top>
     <center>
-        <ScrollPane fx:id="scrMain">
-            <VBox fx:id="boxScroll"/>
-        </ScrollPane>
+        <VBox>
+            <padding>
+                <Insets right="128" top="16" left="16"/>
+            </padding>
+            <Label id="title-black" text="Awaiting Approval"/>
+            <ScrollPane fx:id="scrMain" VBox.vgrow="ALWAYS">
+                <VBox fx:id="boxScroll" spacing="20">
+                    <padding>
+                        <Insets top="16" left="16" bottom="16"/>
+                    </padding>
+                </VBox>
+            </ScrollPane>
+        </VBox>
     </center>
 </BorderPane>
