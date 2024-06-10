@@ -22,11 +22,10 @@ import static org.testfx.api.FxAssert.verifyThat;
 public class ItemControllerGeneralTest extends ItemSupplementTest {
     @AfterAll
     public static void deleteFile() {
-        File f = new File("United Kingdom_0.txt");
+        File f = new File("United Kingdom_Flag.txt");
         f.delete();
         database.closeDBSession();
     }
-
 
     @Test
     @Order(1)
@@ -256,7 +255,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
         clickOn("#btnPrint");
 
-        assertTrue(new File("United Kingdom_0.txt").exists(), "File was not made");
+        assertTrue(new File("United Kingdom_Flag.txt").exists(), "File was not made");
     }
 
     @Test

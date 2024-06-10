@@ -38,6 +38,6 @@
             <Insets right="20"/>
         </padding>
         <Button fx:id="btnBasket"/>
-        <ComboBox fx:id="cmbProfile"/>
+        <ComboBox fx:id="cmbProfile" prefHeight="30" />
     </HBox>
 </HBox>

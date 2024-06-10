@@ -134,7 +134,7 @@ public class StockController extends ControllerParent {
                 //The default price is set in stock_item.fxml, but because national flags are cheaper it has to be
                 //modified here
                 if (currentDesign.getType() == TYPE.NATIONAL.getValue()) {
-                    ((Label) productView.lookup("#lblStockPrice")).setText("\u00A31.50-\u00A320.00+");
+                    ((Label) productView.lookup("#lblStockPrice")).setText("\u00A32.25-\u00A317.20+");
                 }
 
                 box.getChildren().add(productView);
