@@ -286,7 +286,7 @@ public class StockController extends ControllerParent {
         String msg = "";
 
         openDB();
-        List<Design> designs = getDatabase().searchDesigns(new SearchConditions());
+        List<Design> designs = getDatabase().searchDesigns(sc);
         //HashMaps are used to make it significantly easier to find the relevant designs from their isoID
         HashMap<String, Flag> flags = getDatabase().getAllFlags();
         HashMap<String, Cushion> cushions = getDatabase().getAllCushions();

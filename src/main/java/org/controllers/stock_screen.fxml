@@ -30,7 +30,9 @@
                         <Button id="btnPrint"
                                 minWidth="35"
                                 minHeight="35"
-                                onAction="#btnPrintClick"/>
+                                onAction="#btnPrintClick">
+                            <tooltip><Tooltip text="Print all currently searched data to file"/></tooltip>
+                        </Button>
                     </HBox>
                     <HBox>
                         <Region fx:id="rgnButtonPush" minWidth="50"/>
