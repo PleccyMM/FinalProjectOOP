@@ -3,19 +3,19 @@ package org.controllers;
 import org.vexillum.*;
 import javafx.event.*;
 import javafx.fxml.*;
-import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.text.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import javax.swing.*;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
 
+/**
+ * This class manages all switching between new screens, any screen switches must be done through this class
+ */
 public class BasketController extends ControllerParent {
     @FXML private StackPane panStacker;
     @FXML private BorderPane panMain;

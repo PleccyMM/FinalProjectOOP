@@ -278,7 +278,9 @@ public class StockController extends ControllerParent {
     }
 
     /**
-     * Used to print all the information about stock prices and total stock to a file in the system directory
+     * Used to print all the information about stock prices and total stock to a file in the system directory. This
+     * does utilise the current search conditions meaning that it will only print all when the search conditions are blank,
+     * this feature is explained to the user on a tooltip when hovering over the button
      * @throws Exception creating a new file and writing to it could fail
      */
     @FXML
@@ -286,6 +288,7 @@ public class StockController extends ControllerParent {
         String msg = "";
 
         openDB();
+        //Uses the current search conditions, so that if filtered only those are printed to the file
         List<Design> designs = getDatabase().searchDesigns(sc);
         //HashMaps are used to make it significantly easier to find the relevant designs from their isoID
         HashMap<String, Flag> flags = getDatabase().getAllFlags();
@@ -314,9 +317,11 @@ public class StockController extends ControllerParent {
                 if (size == FLAG_SIZE.HAND || size == FLAG_SIZE.DESK) f.setMaterial(FLAG_MATERIAL.PAPER);
                 else f.setMaterial(FLAG_MATERIAL.POLYESTER);
 
+                //Get the relevant costs for appending and use in printing
                 double totalValue = f.getCostToProduce() * f.getTotalAmount();
                 double totalSell = f.calculatePrice() * f.getTotalAmount();
 
+                //Append the new calculated prices onto the rest
                 totalValueFlag += totalValue;
                 totalSellFlag += totalSell;
 

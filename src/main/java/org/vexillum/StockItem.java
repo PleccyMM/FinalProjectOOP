@@ -44,14 +44,27 @@ public abstract class StockItem implements Comparable<StockItem> {
         return i != 0 ? i : j != 0 ? j : Integer.compare(sizeID, o.getSizeID());
     }
 
+    /**
+     * 2 objects can have differences and still considered equal. {@code equals} only checks if both have the same: name,
+     * stockID, sizeID, and if they are being imported or exported {@code (Integer.signum(amount)}. {@code Flag} and {@code Cushion}
+     * both override and extend this
+     * @return true if equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         return equalCheck(o);
     }
+    /**
+     * Just the super version of equals, the child checks are not included
+     */
     public boolean baseEquals(Object o) {
         return equalCheck(o);
     }
-
+    /**
+     * {@code equalCheck} is split off as to allow the merge functionality to happen, since merging requires the ability
+     * to both do an equals check using only the super and also with the children's overridden versions. By having {@code baseEquals}
+     * and {@code equals} simply use a single helper function code is not repeated and the functionality is present
+     */
     private boolean equalCheck(Object o) {
         if (this == o) return true;
         if (!(o instanceof StockItem stockItem)) return false;
@@ -64,6 +77,13 @@ public abstract class StockItem implements Comparable<StockItem> {
         return true;
     }
 
+    /**
+     * The hashcode is generated using the same properties that are checked to determine equality, and like {@code equals},
+     * all children for {@code StockItem} override and extend this. Hashcodes using the same value of equals is intentional
+     * as their primary role is to produce unique IDs for boxes in the {@code BasketController} screen, and merging automatically
+     * occurs meaning that the hashcode needs to shadow {@code equals}
+     * @return an integer unique to the object, within the confines of what {@code equals} see as unique objects
+     */
     @Override
     public int hashCode() {
         final int prime = 31;

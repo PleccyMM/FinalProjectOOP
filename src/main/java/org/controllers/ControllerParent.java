@@ -25,7 +25,8 @@ public abstract class ControllerParent {
     private final DatabaseControl database = new DatabaseControl();
 
     /**
-     * This is called whenever the window changes
+     * This is called whenever the window changes, in practice this is only used by {@code itemController} to prevent
+     * changes to the database/{@code items} when leaving during the editing of an order item
      */
     protected abstract void stageChangeHandle();
 
