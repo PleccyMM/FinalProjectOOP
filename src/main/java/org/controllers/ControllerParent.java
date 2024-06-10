@@ -157,7 +157,6 @@ public abstract class ControllerParent {
     }
     protected void setItem(int i, StockItem item) {
         for (StockItem itemChk : items) {
-            System.out.println("Checking");
             if (itemChk.baseEquals(item)) {
                 itemMerge(item);
                 items.remove(i);
@@ -166,6 +165,7 @@ public abstract class ControllerParent {
             }
         }
         items.set(i, item);
+        Collections.sort(items);
     }
     protected void addItem(StockItem item) {
         if (!itemMerge(item)) items.add(item);
@@ -173,7 +173,8 @@ public abstract class ControllerParent {
     }
     private boolean itemMerge(StockItem item) {
         for (StockItem i : items) {
-            if (i.baseEquals(item)) {
+            if ((item.getAmount() < 0 && i.baseEquals(item)) ||
+                (item.getAmount() > 0 && i.equals(item))) {
                 i.setAmount(i.getAmount() + item.getAmount());
                 return true;
             }
