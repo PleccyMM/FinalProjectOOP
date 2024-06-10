@@ -3,6 +3,8 @@ package org.controllers;
 import com.sun.javafx.application.*;
 import javafx.application.*;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.geometry.VerticalDirection;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -66,13 +68,33 @@ public class AdminControllerTest extends ApplicationTest {
         database.closeDBSession();
     }
 
+    protected void scrollToItem(String boxID) {
+        ScrollPane scrBackground = lookup("#scrMain").query();
+        Bounds scrollBound = scrBackground.localToScene(scrBackground.getBoundsInLocal());
+
+        Node buttonToFind = lookup(boxID + " #btnDeny").query();
+        Bounds boxBound;
+
+        clickOn(scrBackground);
+        do {
+            scroll(1, VerticalDirection.DOWN);
+
+            if (scrBackground.getVvalue() == scrBackground.getVmax()) {
+                break;
+            }
+
+            boxBound = buttonToFind.localToScene(buttonToFind.getBoundsInLocal());
+        } while (!scrollBound.intersects(boxBound));;
+    }
+
     /**
      * Tests the approval stage, ensuring that the operator awaiting approval is displayed, is properly removed from the
      * screen when accepted and also from the relevant part of the database
      */
     @Test
     @Order(0)
-    public void approvalIntegrationTest() {
+    public void approvalIntegrationTest() throws InterruptedException {
+        scrollToItem("#9999");
         verifyThat("#9999", Node::isVisible);
         Button btnAccept = lookup("#9999 #btnAccept").query();
         clickOn(btnAccept);
@@ -100,6 +122,7 @@ public class AdminControllerTest extends ApplicationTest {
     @Test
     @Order(1)
     public void denyIntegrationTest() {
+        scrollToItem("#9998");
         verifyThat("#9998", Node::isVisible);
         Button btnDeny = lookup("#9998 #btnDeny").query();
 
