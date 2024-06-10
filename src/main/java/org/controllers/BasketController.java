@@ -26,6 +26,9 @@ public class BasketController extends ControllerParent {
     @FXML private Label lblImportCosts;
     @FXML private Label lblTotal;
 
+    //These hashmaps are used to keep the items briefly seperated so that drawing them to the screen is easier, they in
+    //no way replace or supersede the base items list in any way, nor do they store any unique or separate data
+    //these can probably be replaced with just ArrayLists due to changes with the internal parts of StockItem
     private HashMap<Integer, StockItem> importItems = new HashMap<>();
     private HashMap<Integer, StockItem> exportItems = new HashMap<>();
 
@@ -45,21 +48,29 @@ public class BasketController extends ControllerParent {
         }
     }
 
+    /**
+     * Performs the logic to set up the screen to add items, but doesn't actually add the items themselves, that is instead
+     * delegated to {@code addItem}
+     * @throws Exception
+     */
     private void createItems() throws Exception {
         int index = 0;
-
+        //For loop separates the imports and exports into separate Hashmaps ready for drawing individually
         for (StockItem i : getItems()) {
             if (i.getAmount() < 0) importItems.put(index, i);
             else exportItems.put(index, i);
             index++;
         }
 
+        //basket_divider.fxml is basically just an empty file that is used to put he big EXPORT & IMPORT labels, keeping it there
+        //just removes the need for a function in here and keeps consistency with no javaFX elements being defined in runtime
         FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
         Parent itemView = loader.load();
         HBox box = (HBox) itemView;
         ((Label) box.lookup("#lblImportExport")).setText("Imports");
         boxScroll.getChildren().clear();
         boxScroll.getChildren().add(box);
+        //Imported items are added before any export
         addItem(importItems);
 
         loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
@@ -67,6 +78,7 @@ public class BasketController extends ControllerParent {
         box = (HBox) itemView;
         ((Label) box.lookup("#lblImportExport")).setText("Exports");
         boxScroll.getChildren().add(box);
+        //Export added last
         addItem(exportItems);
 
         openDB();
@@ -74,6 +86,12 @@ public class BasketController extends ControllerParent {
         closeDB();
     }
 
+    /**
+     * Used to actually draw the items to screen, this does it one at a time and doesn't take from {@code list} but instead
+     * a partial hashmap constructed from {@code list}
+     * @param itemsMap either the imports or exports currently held in {@code items}
+     * @throws IOException loading the fxml and images may fail
+     */
     private void addItem(HashMap<Integer, StockItem> itemsMap) throws IOException {
         for(var item : itemsMap.entrySet()) {
             StockItem i = item.getValue();
@@ -84,12 +102,16 @@ public class BasketController extends ControllerParent {
 
             String designPath = "org/Assets/FlagsSmall/" + i.getIsoID() + ".png";
             Image design = new Image(designPath);
+
+            //If the image isn't a flag then the design must be masked and overlayed on a cushion, equally if it is a long cushion there's a separate mask that must be invoked
             Image img = !(i instanceof Cushion c) ? design :
                     c.getSize() != CUSHION_SIZE.LONG ?
                             Masker.standardCushion(true, designPath) : Masker.longCushion(true, designPath);
             ((ImageView) box.lookup("#imgDesign")).setImage(img);
 
             VBox imageHolder = (VBox) box.lookup("#imageHolder");
+            //This check to see if they equal is basically another quick check to see if it's a cushion or not, if it's not
+            //a cushion the border can be drawn, otherwise a rectangular border doesn't work on the non-quadrilateral cushion shape
             if (!img.equals(design)) imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #FFFFFF");
             else imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #000000");
 
@@ -119,11 +141,17 @@ public class BasketController extends ControllerParent {
                 box.getChildren().remove(box.lookup("#btnInformation"));
             }
 
+            //hashCodes are always unique, see StockItem.equals(), StockItem.hashCode(), and ControllerParent.itemMerge() for more information
             box.setId(i.hashCode() + "");
             boxScroll.getChildren().add(box);
         }
     }
 
+    /**
+     * Sets the cost of an individual item, not all of them
+     * @param b the item's HBox container
+     * @param i the item itself in {@code items}
+     */
     private void setCosts(Node b, StockItem i) {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         double price = i.calculatePrice();
@@ -134,12 +162,16 @@ public class BasketController extends ControllerParent {
         ((Label) b.lookup("#lblSubtotal")).setText(subtotal);
     }
 
+    /**
+     * Sets the total costs of all items
+     */
     private void calculateTotalCost() {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
 
         double exportSales = 0;
         double exportCosts = 0;
         double importCosts = 0;
+        //Import and export being separate is once again useful for separating their costs
         for (var item : exportItems.entrySet()) {
             StockItem i = item.getValue();
             exportSales += i.calculatePrice() * i.getAmount();
@@ -157,6 +189,10 @@ public class BasketController extends ControllerParent {
         lblTotal.setText(eurFormatter.format(exportSales - exportCosts - importCosts));
     }
 
+    /**
+     * Checkout clears all the items in the basket currently and performs the needed database updates for imports, as exports
+     * are already removed from the database to stop over-adding
+     */
     @FXML
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
         openDB();
@@ -175,6 +211,11 @@ public class BasketController extends ControllerParent {
         closeDB();
     }
 
+    /**
+     * Locates the index of an item from a hash code, this is different from {@code findHash()} which returns a {@code StockItem}
+     * @param hash the hash code that is being searched for
+     * @return the index of the item if found, otherwise -1
+     */
     private int locateIndex(int hash) {
         for (int i = 0; i < itemsSize(); i++) {
             if (getItems(i).hashCode() == hash) {
@@ -190,6 +231,9 @@ public class BasketController extends ControllerParent {
         return -1;
     }
 
+    /**
+     * Creates a pop-up box showing additional information about items
+     */
     EventHandler<ActionEvent> btnInfoClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -215,6 +259,7 @@ public class BasketController extends ControllerParent {
                     Label lblAddV = (Label) box.lookup("#lblAdditionalVal");
                     lblAddV.setText(c.getMaterial().toString());
 
+                    //For the cushion only the one part matters, so the second half of the box can be hidden
                     Label lblMatD = (Label) box.lookup("#lblMaterialDesc");
                     Label lblMatV = (Label) box.lookup("#lblMaterialVal");
                     lblMatD.setDisable(true);
@@ -224,7 +269,7 @@ public class BasketController extends ControllerParent {
                     Label lblAddD = (Label) box.lookup("#lblAdditionalDesc");
                     lblAddD.setText("Hoist:");
                     Label lblAddV = (Label) box.lookup("#lblAdditionalVal");
-                    lblAddV.setText(f.getHoist() != null ? f.getHoist().toString() : "N/A");
+                    lblAddV.setText(f.getSize() != FLAG_SIZE.HAND && f.getSize() != FLAG_SIZE.DESK ? f.getHoist().toString() : "N/A");
 
                     Label lblMatD = (Label) box.lookup("#lblMaterialDesc");
                     lblMatD.setDisable(false);
@@ -234,6 +279,7 @@ public class BasketController extends ControllerParent {
                     lblMatV.setText(f.getMaterial().toString());
                 }
 
+                //panStacker as this needs to be an overlay
                 panStacker.getChildren().add(box);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -241,6 +287,9 @@ public class BasketController extends ControllerParent {
         }
     };
 
+    /**
+     * Removes the parent of the entire pop-up, removing it entirely
+     */
     private void hidePopup() {
         Node n = panStacker.lookup("#boxDarkening");
         panStacker.getChildren().remove(n);
@@ -259,6 +308,10 @@ public class BasketController extends ControllerParent {
         }
     };
 
+    /*
+    The following 2 handlers are a bit messy and similar in many ways, though btnMinusClick has some additional quirks which are mentioned
+     */
+
     EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -268,6 +321,8 @@ public class BasketController extends ControllerParent {
                 Node box = n.getParent().getParent();
                 Label l = (Label) box.lookup("#lblIncrement");
 
+
+                //Updates the value ready for display and setting
                 int newVal = Integer.parseInt(l.getText()) - 1;
                 int hashVal = Integer.parseInt(box.getId());
                 int index = locateIndex(hashVal);
@@ -276,36 +331,40 @@ public class BasketController extends ControllerParent {
                     return;
                 }
 
+
                 StockItem i = getItems(index);
                 openDB();
-                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
 
+                //Logic for removing items if they are set to 0, initially just wipes it from internal and UI, then gets all new costs
                 if (newVal == 0) {
+
                     removeItem(i);
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
-                    setCosts(box, i);
-                    calculateTotalCost();
+
                     closeDB();
                     return;
                 }
 
                 if (i.getAmount() < 0) i.setAmount(newVal * -1);
                 else {
+
+                    //Only updates the database if it's being exported, as the amount in storage needs to be propped back up
+                    getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + 1, i.getRestock());
                     i.setAmount(newVal);
                     i.setTotalAmount(i.getTotalAmount() + 1);
                 }
 
                 l.setText(newVal + "");
 
+                //Just make sure adding is possible again, as it must be if it was already this high
                 box.lookup("#btnAdd").setDisable(false);
                 setCosts(box, i);
                 calculateTotalCost();
             }
             catch (Exception e) {
                 throw new RuntimeException(e);
-            }
-            finally {
+            } finally {
                 closeDB();
             }
         }
@@ -325,20 +384,20 @@ public class BasketController extends ControllerParent {
                 int hashVal = Integer.parseInt(box.getId());
                 int index = locateIndex(hashVal);
                 if (index < 0) {
-                    System.out.println("Error at add click");
                     return;
                 }
 
                 StockItem i = getItems(index);
                 openDB();
-                getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
 
                 if (i.getAmount() < 0) i.setAmount(newVal * -1);
                 else {
+                    getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
                     i.setAmount(newVal);
                     i.setTotalAmount(i.getTotalAmount() - 1);
                 }
 
+                //Only caps the add button at total stock if the item is being exported, otherwise it's fine
                 if (i.getAmount() > 0 && i.getTotalAmount() == 0) {
                     n.setDisable(true);
                 }
@@ -366,16 +425,16 @@ public class BasketController extends ControllerParent {
                 int hashVal = Integer.parseInt(box.getId());
                 int index = locateIndex(hashVal);
                 if (index < 0) {
-                    System.out.println("Error at edit click");
                     return;
                 }
 
+                //Prep for loading the ItemController
                 boolean isFlag = getItems(index) instanceof Flag;
                 openDB();
                 Design d = getDatabase().getDeignFromIso(getItems(index).getIsoID());
                 closeDB();
-                System.out.println("Made it past this one woo");
 
+                //Loads the ItemController, importantly providing it with an index for the item's location
                 l.showItem(stage, getItems(), operator, d, isFlag, index);
             }
             catch (Exception e) {
