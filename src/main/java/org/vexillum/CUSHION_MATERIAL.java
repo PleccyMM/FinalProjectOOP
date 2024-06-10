@@ -30,4 +30,15 @@ public enum CUSHION_MATERIAL {
             default -> EMPTY;
         };
     }
+
+    @Override
+    public String toString() {
+        return switch (this) {
+            case FOAM -> "Foam";
+            case POLYESTER -> "Polyester";
+            case FEATHERS -> "Feathers";
+            case COTTON -> "Cotton";
+            default -> "No Filling";
+        };
+    }
 }

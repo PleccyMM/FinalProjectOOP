@@ -32,7 +32,7 @@ public class Cushion extends StockItem {
      * Constructor only used for the {@code .clone()} method
      */
     public Cushion(String isoID, String name, int stockID, int amount, int totalAmount, int restock, int sizeID,
-                   double costToProduce, int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material) {
+                   double costToProduce, int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material, boolean isNational) {
         this.isoID = isoID;
         this.name = name;
         this.stockID = stockID;
@@ -45,11 +45,12 @@ public class Cushion extends StockItem {
         this.justCase = justCase;
         this.size = size;
         this.material = material;
+        this.isNational = isNational;
     }
 
     @Override
     public StockItem clone() {
-        return new Cushion(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, justCase, size, material);
+        return new Cushion(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, justCase, size, material, isNational);
     }
 
     @Override
@@ -58,6 +59,7 @@ public class Cushion extends StockItem {
 
         double cost = 0;
         cost += size != null ? size.getValue() : 0;
+        if (isNational) cost *= 0.9;
         if (!justCase) cost += material != null ? material.getValue() : 0;
         return cost;
     }

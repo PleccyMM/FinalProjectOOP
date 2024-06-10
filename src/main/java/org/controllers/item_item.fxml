@@ -23,7 +23,7 @@
             <VBox alignment="TOP_CENTER"
                   spacing="3">
                 <VBox fx:id="boxWarning" style="-fx-background-color: transparent;" alignment="CENTER" minHeight="10">
-                    <Label fx:id="lblWarning"/>
+                    <Label fx:id="lblRestockWarning"/>
                 </VBox>
                 <VBox id="imageHolder"
                       style="-fx-border-width: 1; -fx-border-color: #000000;"

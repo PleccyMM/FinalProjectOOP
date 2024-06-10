@@ -22,11 +22,10 @@ import static org.testfx.api.FxAssert.verifyThat;
 public class ItemControllerGeneralTest extends ItemSupplementTest {
     @AfterAll
     public static void deleteFile() {
-        File f = new File("United Kingdom_0.txt");
+        File f = new File("United Kingdom_Flag.txt");
         f.delete();
         database.closeDBSession();
     }
-
 
     @Test
     @Order(1)
@@ -256,14 +255,14 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
         clickOn("#btnPrint");
 
-        assertTrue(new File("United Kingdom_0.txt").exists(), "File was not made");
+        assertTrue(new File("United Kingdom_Flag.txt").exists(), "File was not made");
     }
 
     @Test
     @Order(15)
     public void verifyRestockWarningTest() {
-        Label lblWarningHand = lookup("#boxSize_Hand #lblWarning").query();
-        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblWarning").query();
+        Label lblWarningHand = lookup("#boxSize_Hand #lblRestockWarning").query();
+        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblRestockWarning").query();
 
         verifyThat(lblWarningHand, LabeledMatchers.hasText(""));
         verifyThat(lblWarningMedium, LabeledMatchers.hasText("RESTOCK"));
@@ -280,7 +279,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
     @Test
     @Order(17)
-    public void fullIntegrationTest() throws InterruptedException {
+    public void fullSystemTest() throws InterruptedException {
         for (int i = 0; i < 4; i++) {
             clickOn("#btnAdd");
         }

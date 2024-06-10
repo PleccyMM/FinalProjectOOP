@@ -185,7 +185,7 @@ public class ItemController extends ControllerParent {
             ((Label) box.lookup("#lblSize")).setText(sizeVal);
 
             if (needsRestocking[index]) {
-                ((Label) box.lookup("#lblWarning")).setText("RESTOCK");
+                ((Label) box.lookup("#lblRestockWarning")).setText("RESTOCK");
                 box.lookup("#boxWarning").setStyle("-fx-background-color: #FF0000;");
             }
 
@@ -321,7 +321,6 @@ public class ItemController extends ControllerParent {
 
         if (tglImportExport.getToLeft().get()) btnAddToBasket.setText(btnBasketPrefix + " Import");
         else btnAddToBasket.setText(btnBasketPrefix + " Export");
-
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         double price = item.calculatePrice();
@@ -513,32 +512,36 @@ public class ItemController extends ControllerParent {
 
             openDB();
             for (String s : sizeVals) {
-                if (Objects.equals(s, selectedSize)) {
-                    msg = "Selected size for print: " + s + "\nInformation about this size: " + item.toString() + "\n\n" + msg;
+                StockItem i = item.clone();
+                if (i instanceof Flag f) {
+                    f.setSize(FLAG_SIZE.fromString(s));
+                    f.setSizeID(FLAG_SIZE.getSizeId(f.getSize()));
                 }
-                else {
-                    StockItem i = item.clone();
-                    if (i instanceof Flag f) {
-                        f.setSize(FLAG_SIZE.fromString(s));
-                        f.setSizeID(FLAG_SIZE.getSizeId(f.getSize()));
-                    }
-                    else if (i instanceof Cushion c) {
-                        c.setSize(CUSHION_SIZE.fromString(s));
-                        c.setSizeID(CUSHION_SIZE.getSizeId(c.getSize()));
-                    }
-                    getDatabase().setStockData(i);
-                    msg += "Information about size " + s + ": " + i.toString() + "\n";
+                else if (i instanceof Cushion c) {
+                    c.setSize(CUSHION_SIZE.fromString(s));
+                    c.setSizeID(CUSHION_SIZE.getSizeId(c.getSize()));
                 }
+                getDatabase().setStockData(i);
+
+                double thisValue = i.getCostToProduce() * i.getTotalAmount();
+                double thisSell = i.calculatePrice() * i.getTotalAmount();
+                totalValue += thisValue;
+                totalSell += thisSell;
+
+                msg += "Information about size " + s + ": " + i + "Cost of held stock: " + eurFormatter.format(thisValue)
+                        + "\nValue of held stock: " + eurFormatter.format(thisSell) + "\n\n";
             }
             closeDB();
 
             msg = "Information regarding " + loadedDesign.getName() + " " + type + " with ISO ID: " + item.getIsoID() +
-                    " and stock ID: " + item.getStockID() + "\n\n" + msg;
+                    " and stock ID: " + item.getStockID() + "\n" + "Total cost of held stock: " + eurFormatter.format(totalValue) +
+                    "\nTotal value of held stock: " + eurFormatter.format(totalSell) + "\n\n" + msg;
 
+            String fileType = item instanceof Flag f ? "Flag" : "Cushion";
             try {
-                File f = new File(loadedDesign.getName() + "_" + item.getSizeID() + ".txt");
+                File f = new File(loadedDesign.getName() + "_" + fileType + ".txt");
                 f.createNewFile();
-                FileWriter fw = new FileWriter(loadedDesign.getName() + "_" + item.getSizeID() + ".txt");
+                FileWriter fw = new FileWriter(loadedDesign.getName() + "_" + fileType + ".txt");
                 fw.write(msg);
                 fw.close();
             } catch (IOException e) {
@@ -561,7 +564,7 @@ public class ItemController extends ControllerParent {
                     if (item instanceof Flag f) box = panMain.lookup("#boxSize_" + FLAG_SIZE.getString(f.getSize()));
                     else if (item instanceof Cushion c) box = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
 
-                    ((Label) box.lookup("#lblWarning")).setText("");
+                    ((Label) box.lookup("#lblRestockWarning")).setText("");
                     box.lookup("#boxWarning").setStyle("-fx-background-color: transparent;");
 
                 }

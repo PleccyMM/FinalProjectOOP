@@ -238,7 +238,7 @@ public class StockControllerTest extends ApplicationTest {
             }
         });
         // This gives the database time to get the required values
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         VBox boxScroll = lookup("#boxScroll").query();
         assertEquals(23, boxScroll.getChildren().size(), "Wrong amount of children found");
@@ -256,7 +256,7 @@ public class StockControllerTest extends ApplicationTest {
                 fail("Failed performing search");
             }
         });
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         clickOn("#Region");
 
@@ -267,7 +267,7 @@ public class StockControllerTest extends ApplicationTest {
                 fail("Failed performing search");
             }
         });
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         clickOn("#Initial");
 
@@ -279,7 +279,7 @@ public class StockControllerTest extends ApplicationTest {
             }
         });
         // This gives the database time to get the required values
-        Thread.sleep(500);
+        Thread.sleep(1000);
 
         VBox boxScroll = lookup("#boxScroll").query();
         assertEquals(9, boxScroll.getChildren().size(), "Wrong amount of children found");

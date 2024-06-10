@@ -155,19 +155,37 @@ public abstract class ControllerParent {
     protected StockItem getItems(int i) {
         return items.get(i);
     }
+    protected StockItem findItemHash(int hash) {
+        for (StockItem item : items) {
+            if (item.hashCode() == hash) return item;
+        }
+        return null;
+    }
     protected void setItem(int i, StockItem item) {
+        for (StockItem itemChk : items) {
+            if (itemChk.baseEquals(item)) {
+                itemMerge(item);
+                items.remove(i);
+                Collections.sort(items);
+                return;
+            }
+        }
         items.set(i, item);
         Collections.sort(items);
     }
     protected void addItem(StockItem item) {
+        if (!itemMerge(item)) items.add(item);
+        Collections.sort(items);
+    }
+    private boolean itemMerge(StockItem item) {
         for (StockItem i : items) {
-            if (i.equals(item)) {
+            if ((item.getAmount() < 0 && i.baseEquals(item)) ||
+                (item.getAmount() > 0 && i.equals(item))) {
                 i.setAmount(i.getAmount() + item.getAmount());
-                return;
+                return true;
             }
         }
-        items.add(item);
-        Collections.sort(items);
+        return false;
     }
     protected void itemsClear() {
         items.clear();
