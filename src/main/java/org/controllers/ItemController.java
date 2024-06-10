@@ -185,7 +185,7 @@ public class ItemController extends ControllerParent {
             ((Label) box.lookup("#lblSize")).setText(sizeVal);
 
             if (needsRestocking[index]) {
-                ((Label) box.lookup("#lblWarning")).setText("RESTOCK");
+                ((Label) box.lookup("#lblRestockWarning")).setText("RESTOCK");
                 box.lookup("#boxWarning").setStyle("-fx-background-color: #FF0000;");
             }
 
@@ -560,7 +560,7 @@ public class ItemController extends ControllerParent {
                     if (item instanceof Flag f) box = panMain.lookup("#boxSize_" + FLAG_SIZE.getString(f.getSize()));
                     else if (item instanceof Cushion c) box = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
 
-                    ((Label) box.lookup("#lblWarning")).setText("");
+                    ((Label) box.lookup("#lblRestockWarning")).setText("");
                     box.lookup("#boxWarning").setStyle("-fx-background-color: transparent;");
 
                 }

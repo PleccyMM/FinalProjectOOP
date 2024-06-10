@@ -262,8 +262,8 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
     @Test
     @Order(15)
     public void verifyRestockWarningTest() {
-        Label lblWarningHand = lookup("#boxSize_Hand #lblWarning").query();
-        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblWarning").query();
+        Label lblWarningHand = lookup("#boxSize_Hand #lblRestockWarning").query();
+        Label lblWarningMedium = lookup("#boxSize_150x90cm #lblRestockWarning").query();
 
         verifyThat(lblWarningHand, LabeledMatchers.hasText(""));
         verifyThat(lblWarningMedium, LabeledMatchers.hasText("RESTOCK"));

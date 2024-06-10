@@ -23,7 +23,7 @@
             <padding>
                 <Insets right="8" top="8" left="8" bottom="8"/>
             </padding>
-            <Label id="subhead-text" text="Modify stock"/>
+            <Label id="subhead-text" text="Confirmation"/>
         </HBox>
         <VBox alignment="CENTER" spacing="15">
             <padding>

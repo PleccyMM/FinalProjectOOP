@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class BasketController extends ControllerParent {
+    @FXML private StackPane panStacker;
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
     @FXML private Label lblExportSales;
@@ -75,7 +76,6 @@ public class BasketController extends ControllerParent {
 
     private void addItem(HashMap<Integer, StockItem> itemsMap) throws IOException {
         for(var item : itemsMap.entrySet()) {
-            Integer index = item.getKey();
             StockItem i = item.getValue();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_item.fxml"));
@@ -108,6 +108,7 @@ public class BasketController extends ControllerParent {
 
             setCosts(box, i);
 
+            ((Button) box.lookup("#btnInformation")).setOnAction(btnInfoClick);
             ((Label) box.lookup("#lblIncrement")).setText(i.getPrintAmount() + "");
             ((Button) box.lookup("#btnMinus")).setOnAction(btnMinusClick);
             ((Button) box.lookup("#btnAdd")).setOnAction(btnAddClick);
@@ -188,6 +189,75 @@ public class BasketController extends ControllerParent {
 
         return -1;
     }
+
+    EventHandler<ActionEvent> btnInfoClick = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Object source = event.getSource();
+                Node n = (Node) source;
+                Node itemBox = n.getParent();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_popup.fxml"));
+                Parent itemView = loader.load();
+
+                VBox box = (VBox) itemView;
+
+                box.setOnMouseClicked(hidePopupClick);
+
+                box.lookup("#boxContainment").setOnMouseClicked(ignoreHideClick);
+                box.lookup("#btnBlue").setOnMouseClicked(hidePopupClick);
+
+                StockItem item = findItemHash(Integer.parseInt(itemBox.getId()));
+                if (item instanceof Cushion c) {
+                    Label lblAddD = (Label) box.lookup("#lblAdditionalDesc");
+                    lblAddD.setText("Filling:");
+                    Label lblAddV = (Label) box.lookup("#lblAdditionalVal");
+                    lblAddV.setText(c.getMaterial().toString());
+
+                    Label lblMatD = (Label) box.lookup("#lblMaterialDesc");
+                    Label lblMatV = (Label) box.lookup("#lblMaterialVal");
+                    lblMatD.setDisable(true);
+                    lblMatV.setDisable(true);
+                }
+                else if (item instanceof Flag f) {
+                    Label lblAddD = (Label) box.lookup("#lblAdditionalDesc");
+                    lblAddD.setText("Hoist:");
+                    Label lblAddV = (Label) box.lookup("#lblAdditionalVal");
+                    lblAddV.setText(f.getHoist() != null ? f.getHoist().toString() : "N/A");
+
+                    Label lblMatD = (Label) box.lookup("#lblMaterialDesc");
+                    lblMatD.setDisable(false);
+                    lblMatD.setText("Material:");
+                    Label lblMatV = (Label) box.lookup("#lblMaterialVal");
+                    lblMatV.setDisable(false);
+                    lblMatV.setText(f.getMaterial().toString());
+                }
+
+                panStacker.getChildren().add(box);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
+
+    private void hidePopup() {
+        Node n = panStacker.lookup("#boxDarkening");
+        panStacker.getChildren().remove(n);
+    }
+
+    EventHandler<MouseEvent> ignoreHideClick = MouseEvent::consume;
+    EventHandler<MouseEvent> hidePopupClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            try {
+                hidePopup();
+            }
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     EventHandler<ActionEvent> btnMinusClick = new EventHandler<ActionEvent>() {
         @Override

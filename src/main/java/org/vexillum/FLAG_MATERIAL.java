@@ -26,4 +26,13 @@ public enum FLAG_MATERIAL {
             default -> NYLON;
         };
     }
+
+    @Override
+    public String toString() {
+        return switch(this) {
+            case PAPER -> "Paper";
+            case POLYESTER -> "Polyster";
+            default -> "Nylon";
+        };
+    }
 }

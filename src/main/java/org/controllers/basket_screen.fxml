@@ -11,105 +11,106 @@
 <?import javafx.scene.image.ImageView?>
 <?import org.vexillum.ToggleSwitch?>
 <?import javafx.collections.FXCollections?>
-
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.controllers.BasketController"
-            stylesheets="@MainStyle.css"
-            fx:id="panMain"
-            style="-fx-background-color: #EEEEEE">
-    <top>
-        <VBox>
-            <fx:include source="header.fxml"/>
-            <VBox minHeight="40"/>
-        </VBox>
-    </top>
-    <left>
-        <Label prefWidth="16"/>
-    </left>
-    <right>
-        <HBox minWidth="240" fillHeight="false">
-            <padding>
-                <Insets right="20" left="20"/>
-            </padding>
-            <VBox id="white-divider" HBox.hgrow="ALWAYS">
-                <HBox id="blue-fill" minHeight="32" alignment="CENTER_LEFT">
-                    <padding>
-                        <Insets right="8" top="8" left="8" bottom="8"/>
-                    </padding>
-                    <Label id="subhead-text" text="Checkout"/>
-                </HBox>
-                <VBox spacing="10">
-                    <padding>
-                        <Insets right="12" top="8" left="12" bottom="8"/>
-                    </padding>
-                    <HBox spacing="5">
-                        <Label id="checkout-label" text="Export Sales:"/>
-                        <Label fx:id="lblExportSales" styleClass="checkout-label"/>
-                    </HBox>
-                    <HBox spacing="5">
-                        <Label id="checkout-label" text="Export Costs:"/>
-                        <Label fx:id="lblExportCosts" styleClass="checkout-label"/>
-                    </HBox>
-                    <HBox spacing="5">
-                        <Label id="checkout-label" text="Export Subtotal:"/>
-                        <Label fx:id="lblExportSubtotal" styleClass="checkout-label"/>
-                    </HBox>
-                    <HBox spacing="5">
-                        <Label id="checkout-label" text="Import Costs:"/>
-                        <Label fx:id="lblImportCosts" styleClass="checkout-label"/>
-                    </HBox>
-                    <Pane id="light-blue-fill" minHeight="3"/>
-                    <HBox spacing="5">
-                        <Label id="checkout-label" text="Total Profit:"/>
-                        <Label fx:id="lblTotal" styleClass="checkout-label"/>
-                    </HBox>
-                    <HBox spacing="10" alignment="CENTER">
-                        <Button id="btnCheckout"
-                                styleClass="btnBlue"
-                                style="-fx-font-size: 12; -fx-background-radius: 15;"
-                                text="Checkout"
-                                onAction="#btnCheckoutClick"
-                        />
-<!--                        <Region HBox.hgrow="ALWAYS"/>-->
-<!--                        <Button id="btnPrint"-->
-<!--                                minWidth="35"-->
-<!--                                minHeight="35"-->
-<!--                                onAction="#btnPrintClick"/>-->
-                    </HBox>
-
-                </VBox>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.controllers.BasketController"
+           fx:id="panStacker"
+           stylesheets="@MainStyle.css">
+    <BorderPane fx:id="panMain"
+                style="-fx-background-color: #EEEEEE">
+        <top>
+            <VBox>
+                <fx:include source="header.fxml"/>
+                <VBox minHeight="40"/>
             </VBox>
-        </HBox>
-    </right>
-    <center>
-        <BorderPane>
-            <top>
-                <HBox id="white-divider" spacing="20">
-                    <padding>
-                        <Insets right="74" top="8" left="28" bottom="8"/>
-                    </padding>
-                    <Label id="small-title-black" text="Image"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label id="small-title-black" text="Product Name" textAlignment="RIGHT"/>
-                    <Label id="small-title-black" text="Single Price"/>
-                    <Label id="small-title-black" text="Quantity"/>
-                    <Label id="small-title-black" text="Subtotal" textAlignment="RIGHT"/>
-                </HBox>
-            </top>
-            <center>
-                <ScrollPane fx:id="scrBackground"
-                            hbarPolicy="NEVER"
-                            fitToWidth="true">
-                    <padding>
-                        <Insets right="8" top="8" left="8" bottom="8"/>
-                    </padding>
-                    <VBox fx:id="boxScroll"
-                          alignment="CENTER_LEFT"
-                          spacing="24"
-                    />
-                </ScrollPane>
-            </center>
-        </BorderPane>
-    </center>
-</BorderPane>
+        </top>
+        <left>
+            <Label prefWidth="16"/>
+        </left>
+        <right>
+            <HBox minWidth="240" fillHeight="false">
+                <padding>
+                    <Insets right="20" left="20"/>
+                </padding>
+                <VBox id="white-divider" HBox.hgrow="ALWAYS">
+                    <HBox id="blue-fill" minHeight="32" alignment="CENTER_LEFT">
+                        <padding>
+                            <Insets right="8" top="8" left="8" bottom="8"/>
+                        </padding>
+                        <Label id="subhead-text" text="Checkout"/>
+                    </HBox>
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets right="12" top="8" left="12" bottom="8"/>
+                        </padding>
+                        <HBox spacing="5">
+                            <Label id="checkout-label" text="Export Sales:"/>
+                            <Label fx:id="lblExportSales" styleClass="checkout-label"/>
+                        </HBox>
+                        <HBox spacing="5">
+                            <Label id="checkout-label" text="Export Costs:"/>
+                            <Label fx:id="lblExportCosts" styleClass="checkout-label"/>
+                        </HBox>
+                        <HBox spacing="5">
+                            <Label id="checkout-label" text="Export Subtotal:"/>
+                            <Label fx:id="lblExportSubtotal" styleClass="checkout-label"/>
+                        </HBox>
+                        <HBox spacing="5">
+                            <Label id="checkout-label" text="Import Costs:"/>
+                            <Label fx:id="lblImportCosts" styleClass="checkout-label"/>
+                        </HBox>
+                        <Pane id="light-blue-fill" minHeight="3"/>
+                        <HBox spacing="5">
+                            <Label id="checkout-label" text="Total Profit:"/>
+                            <Label fx:id="lblTotal" styleClass="checkout-label"/>
+                        </HBox>
+                        <HBox spacing="10" alignment="CENTER">
+                            <Button id="btnCheckout"
+                                    styleClass="btnBlue"
+                                    style="-fx-font-size: 12; -fx-background-radius: 15;"
+                                    text="Checkout"
+                                    onAction="#btnCheckoutClick"
+                            />
+                            <!--                        <Region HBox.hgrow="ALWAYS"/>-->
+                            <!--                        <Button id="btnPrint"-->
+                            <!--                                minWidth="35"-->
+                            <!--                                minHeight="35"-->
+                            <!--                                onAction="#btnPrintClick"/>-->
+                        </HBox>
+
+                    </VBox>
+                </VBox>
+            </HBox>
+        </right>
+        <center>
+            <BorderPane>
+                <top>
+                    <HBox id="white-divider" spacing="20">
+                        <padding>
+                            <Insets right="74" top="8" left="28" bottom="8"/>
+                        </padding>
+                        <Label id="small-title-black" text="Image"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label id="small-title-black" text="Product Name" textAlignment="RIGHT"/>
+                        <Label id="small-title-black" text="Single Price"/>
+                        <Label id="small-title-black" text="Quantity"/>
+                        <Label id="small-title-black" text="Subtotal" textAlignment="RIGHT"/>
+                    </HBox>
+                </top>
+                <center>
+                    <ScrollPane fx:id="scrBackground"
+                                hbarPolicy="NEVER"
+                                fitToWidth="true">
+                        <padding>
+                            <Insets right="8" top="8" left="8" bottom="8"/>
+                        </padding>
+                        <VBox fx:id="boxScroll"
+                              alignment="CENTER_LEFT"
+                              spacing="24"
+                        />
+                    </ScrollPane>
+                </center>
+            </BorderPane>
+        </center>
+    </BorderPane>
+</StackPane>

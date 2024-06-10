@@ -155,6 +155,12 @@ public abstract class ControllerParent {
     protected StockItem getItems(int i) {
         return items.get(i);
     }
+    protected StockItem findItemHash(int hash) {
+        for (StockItem item : items) {
+            if (item.hashCode() == hash) return item;
+        }
+        return null;
+    }
     protected void setItem(int i, StockItem item) {
         for (StockItem itemChk : items) {
             if (itemChk.baseEquals(item)) {

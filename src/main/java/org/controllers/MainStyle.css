@@ -77,7 +77,7 @@
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
-#lblWarning {
+#lblRestockWarning {
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
