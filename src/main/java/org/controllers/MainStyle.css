@@ -290,6 +290,10 @@
     -fx-background-color: transparent;
     -fx-graphic: url("../Assets/Icons/Info.png");
 }
+#btnInformation:hover {
+    -fx-background-color: transparent;
+    -fx-graphic: url("../Assets/Icons/Info_Hover.png");
+}
 #image-corner {
     -fx-image:url('../Assets/Icons/Corner.png');
 }
