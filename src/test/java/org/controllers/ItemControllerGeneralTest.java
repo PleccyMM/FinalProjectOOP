@@ -236,6 +236,8 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
     @Test
     @Order(13)
     public void updateRestockTest() {
+        Label lblWarningHand = lookup("#boxSize_Hand #lblRestockWarning").query();
+        verifyThat(lblWarningHand, LabeledMatchers.hasText(""));
         clickOn("#btnMore");
 
         for (int i = 0; i < 3; i++) {
@@ -246,6 +248,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         clickOn("#btnUpdateStock");
 
         verifyThat("#lblRestock", LabeledMatchers.hasText("10"));
+        verifyThat(lblWarningHand, LabeledMatchers.hasText("RESTOCK"));
     }
 
     @Test

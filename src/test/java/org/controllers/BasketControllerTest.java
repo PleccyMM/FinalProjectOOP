@@ -211,6 +211,19 @@ public class BasketControllerTest extends BasketSupplement {
     }
 
     @Test
+    @Order(8)
+    public void infoTest() {
+        scrollToExport(4, controller.getItems());
+
+        int index = controller.getItems(4).hashCode();
+        Button btnInformation = lookup("#" + index + " #btnInformation").query();
+        clickOn(btnInformation);
+
+        verifyThat("#lblAdditionalVal", LabeledMatchers.hasText("Wooden Toggles (\u00A35.00)"));
+        verifyThat("#lblMaterialVal", LabeledMatchers.hasText("Nylon"));
+    }
+
+    @Test
     @Order(20)
     public void checkoutTest() {
         clickOn("#btnCheckout");

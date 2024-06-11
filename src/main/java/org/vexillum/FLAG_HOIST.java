@@ -44,7 +44,7 @@ public enum FLAG_HOIST {
             case FABRIC -> "Fabric Rings (\u00A30.50)";
             case METAL -> "Metal Rings (\u00A32.50)";
             case WOODEN -> "Wooden Toggles (\u00A35.00)";
-            default -> "None  (\u00A30.00)";
+            default -> "None (\u00A30.00)";
         };
     }
 }

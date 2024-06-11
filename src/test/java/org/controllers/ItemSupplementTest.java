@@ -17,6 +17,7 @@ public abstract class ItemSupplementTest extends ApplicationTest {
     @Override
     public void start(Stage stage) throws Exception {
         database.openDBSession();
+        setAmount();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
         Parent root = loader.load();
 
@@ -27,6 +28,7 @@ public abstract class ItemSupplementTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
         database.closeDBSession();
+        System.out.println("Did start");
     }
 
     @BeforeAll
@@ -42,9 +44,7 @@ public abstract class ItemSupplementTest extends ApplicationTest {
         database.closeDBSession();
     }
 
-    @BeforeEach
     public void setAmount() {
-        database.openDBSession();
 
         database.updateAmountAndRestock(173, 0, 10, 7);
         database.updateAmountAndRestock(173, 1, 8, 3);
@@ -52,7 +52,7 @@ public abstract class ItemSupplementTest extends ApplicationTest {
         database.updateAmountAndRestock(173, 3, 5, 20);
         database.updateAmountAndRestock(173, 4, 0, 11);
 
-        database.closeDBSession();
+        System.out.println("Did before each");
     }
 
     @AfterAll

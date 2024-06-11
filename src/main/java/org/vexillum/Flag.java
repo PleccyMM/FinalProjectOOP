@@ -82,6 +82,7 @@ public class Flag extends StockItem {
         result = prime * result + (material != null ? material.hashCode() : 0);
         result = prime * result + (hoist != null ? hoist.hashCode() : 0);
 
+        System.out.println("Material : " + material + " Hoist : " + hoist + " Name: " + name + " sizeID " + sizeID + " stockID " + stockID + " signum " + Integer.signum(amount));
         return prime * result + super.hashCode();
     }
 
