@@ -87,14 +87,14 @@ public abstract class ItemPopulation extends ApplicationTest {
         database.updateAmountAndRestock(stockItems.get(6).getStockID(), stockItems.get(6).getSizeID(), 5, 7);
         Cushion cushionLargeEritrea = (Cushion) stockItems.get(6).clone();
         cushionLargeEritrea.setAmount(-3);
-        cushionLargeEritrea.setJustCase(true);
+        cushionLargeEritrea.setMaterial(CUSHION_MATERIAL.EMPTY);
 
         Cushion cushionLargeMonmouthshire = (Cushion) stockItems.get(7).clone();
         cushionLargeMonmouthshire.setAmount(5);
 
         Cushion cushionSmallMacao = (Cushion) stockItems.get(8).clone();
         cushionSmallMacao.setAmount(-7);
-        cushionSmallMacao.setJustCase(true);
+        cushionLargeEritrea.setMaterial(CUSHION_MATERIAL.EMPTY);
 
         testItems.clear();
         testItems.add(flagSmallGibraltar);

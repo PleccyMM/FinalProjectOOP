@@ -50,6 +50,12 @@ public class DatabaseControl {
         List<Operator> list = query.list();
         return list;
     }
+    public List<Operator> getOperatorsByIDAwaitingApproval(Integer[] ids) {
+        var query = databaseSession.createQuery("from Operator where id in (:ids) and approved = false order by id asc")
+                .setParameter("ids", Arrays.asList(ids));
+        List<Operator> list = query.list();
+        return list;
+    }
 
     public void addRequest(int id, String name, String password, Date applicationTime) {
         databaseSession.beginTransaction();
@@ -188,7 +194,6 @@ public class DatabaseControl {
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
         c.setSize(size);
         c.setMaterial(material);
-        c.setJustCase(material == CUSHION_MATERIAL.EMPTY);
         setStockData(c);
         return c;
     }

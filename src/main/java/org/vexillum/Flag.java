@@ -55,7 +55,7 @@ public class Flag extends StockItem {
 
     @Override
     public double calculatePrice() {
-        if (amount < 0) return costToProduce;
+        if (isImport()) return costToProduce;
 
         double cost = 0;
         cost += size != null ? size.getValue() : 0;
@@ -112,5 +112,8 @@ public class Flag extends StockItem {
     }
     public void setSize(FLAG_SIZE size) {
         this.size = size;
+    }
+    public boolean isSmall() {
+        return size == FLAG_SIZE.HAND || size == FLAG_SIZE.DESK;
     }
 }

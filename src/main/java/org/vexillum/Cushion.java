@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 public class Cushion extends StockItem {
     private int cushionID;
-    private boolean justCase;
     private CUSHION_SIZE size;
     private CUSHION_MATERIAL material;
 
@@ -32,7 +31,7 @@ public class Cushion extends StockItem {
      * Constructor only used for the {@code .clone()} method
      */
     public Cushion(String isoID, String name, int stockID, int amount, int totalAmount, int restock, int sizeID,
-                   double costToProduce, int cushionID, boolean justCase, CUSHION_SIZE size, CUSHION_MATERIAL material, boolean isNational) {
+                   double costToProduce, int cushionID, CUSHION_SIZE size, CUSHION_MATERIAL material, boolean isNational) {
         this.isoID = isoID;
         this.name = name;
         this.stockID = stockID;
@@ -42,7 +41,6 @@ public class Cushion extends StockItem {
         this.sizeID = sizeID;
         this.costToProduce = costToProduce;
         this.cushionID = cushionID;
-        this.justCase = justCase;
         this.size = size;
         this.material = material;
         this.isNational = isNational;
@@ -50,17 +48,17 @@ public class Cushion extends StockItem {
 
     @Override
     public StockItem clone() {
-        return new Cushion(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, justCase, size, material, isNational);
+        return new Cushion(isoID, name, stockID, amount, totalAmount, restock, sizeID, costToProduce, cushionID, size, material, isNational);
     }
 
     @Override
     public double calculatePrice() {
-        if (amount < 0) return costToProduce;
+        if (isImport()) return costToProduce;
 
         double cost = 0;
         cost += size != null ? size.getValue() : 0;
         if (isNational) cost *= 0.9;
-        if (!justCase) cost += material != null ? material.getValue() : 0;
+        if (material != CUSHION_MATERIAL.EMPTY) cost += material != null ? material.getValue() : 0;
         return cost;
     }
 
@@ -90,10 +88,7 @@ public class Cushion extends StockItem {
     }
 
     public boolean isJustCase() {
-        return justCase;
-    }
-    public void setJustCase(boolean justCase) {
-        this.justCase = justCase;
+        return material == CUSHION_MATERIAL.EMPTY;
     }
 
     public CUSHION_SIZE getSize() {
@@ -108,6 +103,5 @@ public class Cushion extends StockItem {
     }
     public void setMaterial(CUSHION_MATERIAL material) {
         this.material = material;
-        justCase = material == CUSHION_MATERIAL.EMPTY;
     }
 }

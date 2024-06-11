@@ -1,5 +1,8 @@
 package org.vexillum;
 
+/**
+ * This enum has extremely limited use, however it does make 2 parts of the code slightly cleaner
+ */
 public enum TYPE {
     NATIONAL(0),
     INTERNATIONAL(1),

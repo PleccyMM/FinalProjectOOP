@@ -10,6 +10,9 @@ import javafx.scene.layout.*;
 import javafx.stage.*;
 import java.util.*;
 
+/**
+ * Controller used for the approval and denial of applicants, contains relatively little logic
+ */
 public class AdminController extends ControllerParent {
     @FXML private BorderPane panMain;
     @FXML private VBox boxScroll;
@@ -28,19 +31,28 @@ public class AdminController extends ControllerParent {
         closeDB();
     }
 
+    /**
+     * Method used to populate the screen with awaiting approvals in order of their application time, the longest ago being first
+     * @param operatorMap a hashmap with {@code Date} as a key and {@code Integer} as values, should be taken from {@code DatabaseControl.getApprovals()}
+     * @throws Exception loading the fxml file may fail
+     */
     public void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
         boxScroll.getChildren().clear();
 
+        //Attempts to condense this into a list conversion to array has proven a bit weird, so the for loop is here and hacky
+        //might be worth looking into again
         Integer[] ids = new Integer[operatorMap.size()];
         int i = 0;
         for(var m : operatorMap.entrySet()) {
             ids[i++] = m.getValue();
         }
 
+        //Sorting dates is important, as they must be listed from the earliest applicant to the last
         List<Date> dates = new ArrayList<>(operatorMap.keySet());
         Collections.sort(dates);
 
-        List<Operator> operators = getDatabase().getOperatorsByID(ids);
+        //Only operators actively awaiting approval are fetched, speeding up the later linear search
+        List<Operator> operators = getDatabase().getOperatorsByIDAwaitingApproval(ids);
 
         for(Date date : dates) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
@@ -49,6 +61,7 @@ public class AdminController extends ControllerParent {
 
             int id = operatorMap.get(date);
             Operator op = new Operator();
+            //This is a linear search, which is fine for such a short list, plus the operators are removed as it goes on
             for (Operator o : operators) {
                 if (o.getOperatorID() == id) {
                     op = o;
@@ -57,6 +70,7 @@ public class AdminController extends ControllerParent {
                 }
             }
 
+            //operatorID() is the primary key, so it's guaranteed unique and safe to use as an ID
             box.setId(op.getOperatorID() + "");
 
             Label name = (Label) box.lookup("#lblUsername");
@@ -75,6 +89,9 @@ public class AdminController extends ControllerParent {
         }
     }
 
+    /**
+     * Handles accepted logic, though most of it is within the {@code DatabaseControl} class
+     */
     EventHandler<ActionEvent> btnAcceptClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -96,6 +113,9 @@ public class AdminController extends ControllerParent {
         }
     };
 
+    /**
+     * Handles denial logic, though most of it is within the {@code DatabaseControl} class
+     */
     EventHandler<ActionEvent> btnDenyClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {

@@ -25,7 +25,8 @@ public abstract class ControllerParent {
     private final DatabaseControl database = new DatabaseControl();
 
     /**
-     * This is called whenever the window changes
+     * This is called whenever the window changes, in practice this is only used by {@code itemController} to prevent
+     * changes to the database/{@code items} when leaving during the editing of an order item
      */
     protected abstract void stageChangeHandle();
 
@@ -149,44 +150,82 @@ public abstract class ControllerParent {
         }
     };
 
+    /**
+     * returns all items
+     * @return {@code items} in full
+     */
     protected List<StockItem> getItems() {
         return items;
     }
+    /**
+     * returns only the item at the specified index by reference
+     * @param i the given index
+     * @return {@code items} at position i, null if {@code i > items.size()}
+     */
     protected StockItem getItems(int i) {
-        return items.get(i);
+        return i > items.size() ? null : items.get(i);
     }
+    /**
+     * returns the item that matches the provided hash
+     * @param hash the given hash to be found
+     * @return null if the hash is not found in {@code items}, the item itself by reference otherwise
+     */
     protected StockItem findItemHash(int hash) {
         for (StockItem item : items) {
             if (item.hashCode() == hash) return item;
         }
         return null;
     }
+
+    /**
+     * Used to set an existing item to a new value, performs a merge if a similar item is already inside the basket and removes
+     * if needed, list is sorted after
+     * @param i index of the located item currently inside the {@code items} list
+     * @param item the item itself, with the changes performed
+     */
     protected void setItem(int i, StockItem item) {
-        for (StockItem itemChk : items) {
-            if (itemChk.baseEquals(item)) {
-                itemMerge(item);
-                items.remove(i);
-                Collections.sort(items);
-                return;
-            }
-        }
-        items.set(i, item);
+        if (!itemMerge(item, i)) items.set(i, item);
+        else items.remove(i);
         Collections.sort(items);
     }
+    /**
+     * Adds the item to the {@code items} list, merging if necessary, list is sorted after
+     * @param item the item to be added
+     */
     protected void addItem(StockItem item) {
-        if (!itemMerge(item)) items.add(item);
+        if (!itemMerge(item, -1)) items.add(item);
         Collections.sort(items);
     }
-    private boolean itemMerge(StockItem item) {
-        for (StockItem i : items) {
-            if ((item.getAmount() < 0 && i.baseEquals(item)) ||
-                (item.getAmount() > 0 && i.equals(item))) {
+    /**
+     * Helper function for {@code setItem} and {@code addItem}, deals with the merging logic.
+     * <p>
+     * Items that are being exported {@code (amount > 0)} are compared using the standard overridden {@code equals()} function,
+     * whereas items being imported {@code (amount < 0)} are compared using {@code baseEquals()}, this is effectively just the
+     * super classes compare function, without the children. This is necessary as an item that was an exported item, but has
+     * been since edited to become an imported item, still contains the data relating to any options chosen (wooden toggles, material, etc.)
+     * which would prevent the {@code equals()} from declaring them equals, by using the properties relevant to only the super
+     * {@code (StockItem)} this problem is averted.
+     * @param item the item that is to be merged, if necessary
+     * @param indexCheck the index of the given item in {@code items}, this should be set to -1 if the given item is not in {@code items}
+     * @return true when an item was merged, false if the item was not merged
+     */
+    private boolean itemMerge(StockItem item, int indexCheck) {
+        for (int index = 0; index < items.size(); index++) {
+            StockItem i = items.get(index);
+
+            if (index != indexCheck &&
+                    ((item.isImport() && i.baseEquals(item)) ||
+                            (item.isExport() && i.equals(item)))) {
                 i.setAmount(i.getAmount() + item.getAmount());
                 return true;
             }
         }
         return false;
     }
+
+    /*
+    The next 3 functions are just to help with code cleanliness, rather than having to use getItems() all the time
+     */
     protected void itemsClear() {
         items.clear();
     }
@@ -200,11 +239,17 @@ public abstract class ControllerParent {
     protected DatabaseControl getDatabase() {
         return database;
     }
+
+    /**
+     * Opens the database connection
+     */
     protected void openDB() {
         database.openDBSession();
     }
+    /**
+     * Closes the database connection, but not the session itself
+     */
     protected void closeDB() {
-        System.out.println("Call to close with made");
         database.closeDBSession();
     }
 }
