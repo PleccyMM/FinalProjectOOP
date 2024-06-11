@@ -511,7 +511,7 @@ public class ItemController extends ControllerParent {
             else imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #000000");
 
             //Deals with creating the measurement lines, only the smaller flag sizes don't need them
-            if (!(item instanceof Flag f) || (f.isSmall())) {
+            if (!(item instanceof Flag f) || (!f.isSmall())) {
                 boxVerticalSize.setMaxHeight(imgFlag.getFitHeight());
                 boxHorizontalSize.setMaxWidth(imgFlag.getFitWidth());
 
