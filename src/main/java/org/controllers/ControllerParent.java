@@ -214,8 +214,8 @@ public abstract class ControllerParent {
             StockItem i = items.get(index);
 
             if (index != indexCheck &&
-                    ((item.getAmount() < 0 && i.baseEquals(item)) ||
-                            (item.getAmount() > 0 && i.equals(item)))) {
+                    ((item.isImport() && i.baseEquals(item)) ||
+                            (item.isExport() && i.equals(item)))) {
                 i.setAmount(i.getAmount() + item.getAmount());
                 return true;
             }

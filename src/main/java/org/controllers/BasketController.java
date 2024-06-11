@@ -57,7 +57,7 @@ public class BasketController extends ControllerParent {
         int index = 0;
         //For loop separates the imports and exports into separate Hashmaps ready for drawing individually
         for (StockItem i : getItems()) {
-            if (i.getAmount() < 0) importItems.put(index, i);
+            if (i.isImport()) importItems.put(index, i);
             else exportItems.put(index, i);
             index++;
         }
@@ -137,7 +137,7 @@ public class BasketController extends ControllerParent {
 
             ((Button) box.lookup("#btnEdit")).setOnAction(btnEditClick);
 
-            if (i.getAmount() < 0) {
+            if (i.isImport()) {
                 box.getChildren().remove(box.lookup("#btnInformation"));
             }
 
@@ -197,7 +197,7 @@ public class BasketController extends ControllerParent {
     protected void btnCheckoutClick(ActionEvent event) throws Exception {
         openDB();
         for(StockItem i : getItems()) {
-            if (i.getAmount() < 0) {
+            if (i.isImport()) {
                 getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() + i.getPrintAmount(), i.getRestock());
             }
             Node b = boxScroll.lookup("#" + i.hashCode());
@@ -346,7 +346,7 @@ public class BasketController extends ControllerParent {
                     return;
                 }
 
-                if (i.getAmount() < 0) i.setAmount(newVal * -1);
+                if (i.isImport()) i.setAmount(newVal * -1);
                 else {
 
                     //Only updates the database if it's being exported, as the amount in storage needs to be propped back up
@@ -390,7 +390,7 @@ public class BasketController extends ControllerParent {
                 StockItem i = getItems(index);
                 openDB();
 
-                if (i.getAmount() < 0) i.setAmount(newVal * -1);
+                if (i.isImport()) i.setAmount(newVal * -1);
                 else {
                     getDatabase().updateAmountAndRestock(i.getStockID(), i.getSizeID(), i.getTotalAmount() - 1, i.getRestock());
                     i.setAmount(newVal);
@@ -398,7 +398,7 @@ public class BasketController extends ControllerParent {
                 }
 
                 //Only caps the add button at total stock if the item is being exported, otherwise it's fine
-                if (i.getAmount() > 0 && i.getTotalAmount() == 0) {
+                if (i.isExport() && i.getTotalAmount() == 0) {
                     n.setDisable(true);
                 }
 

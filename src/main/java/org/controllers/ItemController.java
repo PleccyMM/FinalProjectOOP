@@ -14,7 +14,13 @@ import java.io.*;
 import java.text.NumberFormat;
 import java.util.*;
 
+/**
+ * By far the largest controller, used to display individual items prior to them being added to the export/import, also
+ * when they are being edited. There is a lot of moving parts here as it has the most amount of unique information
+ * being displayed to the user and basically no procedural fxml loads
+ */
 public class ItemController extends ControllerParent {
+    //All used fx:ids defined item_screen.fxml
     @FXML private StackPane panStacker;
     @FXML private BorderPane panMain;
     @FXML private ImageView imgFlag;
@@ -51,15 +57,30 @@ public class ItemController extends ControllerParent {
 
     @FXML private Button btnAddToBasket;
 
+    //The few additional attributes, mainly relating to design, the important one is item which is changed throughout this
+    //entire class to become the new item to be added to basket
     private Design loadedDesign;
     private Integer loadedPos;
     private Boolean isFlag;
     private StockItem item;
     private String selectedSize;
+    //boxSelected is just a partially transparent box used to highlight the currently selected item, it always references
+    //a usually non-visible box with the same ID found inside item_item.fxml
     private VBox boxSelected;
 
     private String btnBasketPrefix;
 
+    /**
+     * This is the only implemented use of {@code stageChangeHandle()}, its role here is to ensure that if the user is
+     * editing an existing item but leaves early the database keeps the {@code totalAmount} that was present going in. The
+     * reason this is an abstract in the parent is because all screen leaving that doesn't terminate the program from this page happens
+     * within the header, which is controlled by {@code ControllerParent} and thus must be known within that class
+     * <p>
+     * Example scenario: the user edits an item being exported, the amount of that item is thus added back into the database
+     * ready for the editing, the user changes the values a bit and leaves. The {@code items} list is not updated but the database
+     * has been restocked, effectively upping the amount in stock unnaturally. By reverting to how it was when they began editing
+     * the issue is negated
+     */
     @Override
     protected void stageChangeHandle() {
         if (loadedPos == null) return;
@@ -77,38 +98,32 @@ public class ItemController extends ControllerParent {
 
         try {
             openDB();
-            System.out.println("Opening it up");
+
             HBox headerBox = (HBox) panMain.lookup("#boxHeader");
             if (headerBox == null) { throw new Exception(); }
-
             loadHeader(stage, operator, items, headerBox, new SearchConditions());
+
+            //Due to the large amount of set up logic, the creation of the page is divided across several methods
             typeSetUp();
-            System.out.println("Setting up listeners " + (getDatabase().isOpen()));
             listenerToggleMat();
             listenerToggleImport();
-            System.out.println("Finished listeners " + (getDatabase().isOpen()));
+
             if (loadedPos != null) {
-                if (item.getAmount() > 0) {
+                if (item.isExport()) {
                     int newAmount = item.getTotalAmount() + item.getAmount();
                     item.setTotalAmount(newAmount);
                     getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
                 }
 
-                System.out.println("Started setting up options in conditional");
                 setUpOptions();
-                System.out.println("Finished setting up options in conditional");
                 btnBasketPrefix = "Update";
                 openDB();
             }
             else {
                 btnBasketPrefix = "Add to";
             }
-            System.out.println("Populating Info " + (getDatabase().isOpen()));
             populateInfo();
-            System.out.println("Finished populating Info " + (getDatabase().isOpen()));
-            System.out.println("Updating Item " + (getDatabase().isOpen()));
             updateItem();
-            System.out.println("Finished updating Item " + (getDatabase().isOpen()));
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -117,8 +132,13 @@ public class ItemController extends ControllerParent {
         }
     }
 
+    /**
+     * This is the initial piece of logic in setting up the page, the fxml file mostly defaults to being set up with options
+     * relating to flags and not cushions, so most of the logic here is changing the data out if the item is a cushion.
+     * Also defaults the size to the smallest and creates/loads the item initially, depending on if its being edited or not
+     * @throws Exception invokes {@code createSizeSelection} which can crash due to loading fxml
+     */
     private void typeSetUp() throws Exception {
-        System.out.println("Doing typeSetUp() "  + (getDatabase().isOpen()));
         if (isFlag) {
             selectedSize = "Hand";
             item = loadedPos != null ? getItems(loadedPos).clone() : getDatabase().createFlag(loadedDesign.getIsoID(), FLAG_SIZE.HAND);
@@ -132,15 +152,19 @@ public class ItemController extends ControllerParent {
             cmbModifications.setPromptText("Cushion Filling");
             item = loadedPos != null ? getItems(loadedPos).clone() : getDatabase().createCushion(loadedDesign.getIsoID(), CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
         }
-        System.out.println("Finished typeSetUp() " + (getDatabase().isOpen()));
         createSizeSelection();
     }
 
+    /**
+     * Creates the size selections on the left hand side of the screen
+     * @throws Exception loading fxml and images may fail
+     */
     private void createSizeSelection() throws Exception {
-        System.out.println("Doing createSizeSelection() " + (getDatabase().isOpen()));
         VBox itemBox = (VBox) panMain.lookup("#boxItemStore");
         if (itemBox == null) { throw new Exception(); }
 
+        //Flags have 1 more size than cushions, the nested for loops populate sizeVals with the String versions of the sizes,
+        //so they can be used in the labels
         String[] sizeVals;
         if (isFlag) {
             sizeVals = new String[5];
@@ -155,6 +179,7 @@ public class ItemController extends ControllerParent {
             }
         }
 
+        //firstRun is used just to make sure the highlighted size is correctly placed when first booting the screen
         boolean firstRun = true;
         boolean[] needsRestocking = getDatabase().restockList(item.getStockID());
         int index = 0;
@@ -184,6 +209,7 @@ public class ItemController extends ControllerParent {
 
             ((Label) box.lookup("#lblSize")).setText(sizeVal);
 
+            //Creates the relevant warning if the total amount has fallen beneath the restock limit
             if (needsRestocking[index]) {
                 ((Label) box.lookup("#lblRestockWarning")).setText("RESTOCK");
                 box.lookup("#boxWarning").setStyle("-fx-background-color: #FF0000;");
@@ -192,9 +218,12 @@ public class ItemController extends ControllerParent {
             itemBox.getChildren().add(box);
             index++;
         }
-        System.out.println("Finished createSizeSelection() " + (getDatabase().isOpen()));
     }
 
+    /**
+     * Used for the initial construction of the page when an item is being edited, and thus has some options that need
+     * to be set, instead of the usual defaults
+     */
     private void setUpOptions() {
         boxSelected.setVisible(false);
 
@@ -206,7 +235,7 @@ public class ItemController extends ControllerParent {
             Node n = panMain.lookup("#boxSize_" + FLAG_SIZE.getString(f.getSize()));
             boxSelected = (VBox) n.lookup("#boxSelect");
 
-            tglImportExport.setToLeft(item.getAmount() < 0);
+            tglImportExport.setToLeft(item.isImport());
 
             switch (f.getHoist()) {
                 case NONE -> s.select(0);
@@ -226,9 +255,8 @@ public class ItemController extends ControllerParent {
             Node n = panMain.lookup("#boxSize_" + CUSHION_SIZE.getString(c.getSize()));
             boxSelected = (VBox) n.lookup("#boxSelect");
 
-            tglImportExport.setToLeft(item.getAmount() < 0);
+            tglImportExport.setToLeft(item.isImport());
 
-            System.out.println(c.isJustCase());
             tglMaterial.setToLeft(!c.isJustCase());
 
             switch (c.getMaterial()) {
@@ -240,9 +268,14 @@ public class ItemController extends ControllerParent {
         }
 
         boxSelected.setVisible(true);
-        System.out.println("Are we switching " + item.getAmount());
     }
 
+    /**
+     * Stupidly long when compared to how the others are divided, maybe look to split up?
+     * <p>
+     * This method is responsible for updating the item itself depending on the selected attributes, along with changing some of the information
+     * on screen as well
+     */
     private void updateItem() {
         if (item instanceof Flag f) {
             FLAG_SIZE fs = FLAG_SIZE.fromString(selectedSize);
@@ -285,7 +318,6 @@ public class ItemController extends ControllerParent {
             c.setSizeID(CUSHION_SIZE.getSizeId(cs));
 
             boolean justCase = !tglMaterial.getToLeft().get();
-            c.setJustCase(justCase);
 
             if (!justCase) {
                 cmbModifications.setDisable(false);
@@ -302,9 +334,7 @@ public class ItemController extends ControllerParent {
             }
         }
 
-        System.out.println("This one");
         getDatabase().setStockData(item);
-        System.out.println("This one is done");
 
         int amount = Objects.equals(lblIncrement.getText(), "0") ? 1 : Integer.parseInt(lblIncrement.getText());
         int newAmount = tglImportExport.getToLeft().get() ? amount : Math.min(amount, item.getTotalAmount());
@@ -330,7 +360,7 @@ public class ItemController extends ControllerParent {
         if (!cmbModifications.getSelectionModel().isEmpty() ||
             (!isFlag && !tglMaterial.getToLeft().get()) ||
             (item instanceof Flag f && (f.getSize() == FLAG_SIZE.DESK || f.getSize() == FLAG_SIZE.HAND)) ||
-            item.getAmount() < 0) {
+            item.isImport()) {
             lblPrice.setText(cost);
             btnAddToBasket.setDisable(false);
         }
@@ -339,7 +369,7 @@ public class ItemController extends ControllerParent {
             btnAddToBasket.setDisable(true);
         }
 
-        if (item.getAmount() < 0) {
+        if (item.isImport()) {
             cmbModifications.setDisable(true);
             tglMaterial.setDisable(true);
         }
@@ -607,15 +637,13 @@ public class ItemController extends ControllerParent {
         if (loadedPos != null) setItem(loadedPos, item);
         else addItem(item);
 
-        if (item.getAmount() > 0) {
+        if (item.isExport()) {
             int newAmount = item.getTotalAmount() - item.getAmount();
-            System.out.println("Hey, original total amount " + item.getTotalAmount());
             item.setTotalAmount(newAmount);
 
             openDB();
             getDatabase().updateAmountAndRestock(item.getStockID(), item.getSizeID(), newAmount, item.getRestock());
             closeDB();
-            System.out.println("Hey, new total amount " + item.getTotalAmount());
         }
         l.showBasket(stage, getItems(), operator);
     }
@@ -665,7 +693,6 @@ public class ItemController extends ControllerParent {
 
         lblDesignName.setText(loadedDesign.getName());
 
-        System.out.println("Populate getDatabase() " + (getDatabase().isOpen()));
         Integer regionID = loadedDesign.getRegion();
         String regionName = regionID == null ? "" : getDatabase().getRegionName(regionID) + "\n";
 
@@ -679,7 +706,6 @@ public class ItemController extends ControllerParent {
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
         String cost = eurFormatter.format(getDatabase().getPrice(item.getSizeID()));
         lblCostToProduce.setText(cost);
-        System.out.println("Populate getDatabase() Done");
 
         lblTags.setText(regionName + typeName);
 

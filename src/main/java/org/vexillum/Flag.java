@@ -55,7 +55,7 @@ public class Flag extends StockItem {
 
     @Override
     public double calculatePrice() {
-        if (amount < 0) return costToProduce;
+        if (isImport()) return costToProduce;
 
         double cost = 0;
         cost += size != null ? size.getValue() : 0;

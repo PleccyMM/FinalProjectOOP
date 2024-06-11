@@ -194,7 +194,6 @@ public class DatabaseControl {
         c.setSizeID(CUSHION_SIZE.getSizeId(size));
         c.setSize(size);
         c.setMaterial(material);
-        c.setJustCase(material == CUSHION_MATERIAL.EMPTY);
         setStockData(c);
         return c;
     }

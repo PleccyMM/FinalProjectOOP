@@ -129,6 +129,12 @@ public abstract class StockItem implements Comparable<StockItem> {
         if (amount < 0) return amount * -1;
         return amount;
     }
+    public boolean isImport() {
+        return amount < 0;
+    }
+    public boolean isExport() {
+        return amount > 0;
+    }
 
     public int getTotalAmount() {
         return totalAmount;
