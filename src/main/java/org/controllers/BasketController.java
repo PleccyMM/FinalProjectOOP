@@ -269,7 +269,7 @@ public class BasketController extends ControllerParent {
                     Label lblAddD = (Label) box.lookup("#lblAdditionalDesc");
                     lblAddD.setText("Hoist:");
                     Label lblAddV = (Label) box.lookup("#lblAdditionalVal");
-                    lblAddV.setText(f.getSize() != FLAG_SIZE.HAND && f.getSize() != FLAG_SIZE.DESK ? f.getHoist().toString() : "N/A");
+                    lblAddV.setText(!f.isSmall() ? f.getHoist().toString() : "N/A");
 
                     Label lblMatD = (Label) box.lookup("#lblMaterialDesc");
                     lblMatD.setDisable(false);

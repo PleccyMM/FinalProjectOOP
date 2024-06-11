@@ -113,4 +113,7 @@ public class Flag extends StockItem {
     public void setSize(FLAG_SIZE size) {
         this.size = size;
     }
+    public boolean isSmall() {
+        return size == FLAG_SIZE.HAND || size == FLAG_SIZE.DESK;
+    }
 }
