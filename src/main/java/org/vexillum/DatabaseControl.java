@@ -107,6 +107,20 @@ public class DatabaseControl {
         }
     }
 
+    public void promoteOperator(int id) {
+        databaseSession.beginTransaction();
+        try {
+            databaseSession.createNativeQuery("update operators set administrator = true where operatorid = (:id)")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            databaseSession.getTransaction().commit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            databaseSession.getTransaction().rollback();
+        }
+    }
+
     public List<Integer> getExistentIDs() {
         var query = databaseSession.createQuery("select operatorID from Operator");
         List<Integer> list = query.list();

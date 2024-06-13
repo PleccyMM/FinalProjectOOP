@@ -28,7 +28,6 @@ public abstract class ItemSupplementTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
         database.closeDBSession();
-        System.out.println("Did start");
     }
 
     @BeforeAll
@@ -45,14 +44,11 @@ public abstract class ItemSupplementTest extends ApplicationTest {
     }
 
     public void setAmount() {
-
         database.updateAmountAndRestock(173, 0, 10, 7);
         database.updateAmountAndRestock(173, 1, 8, 3);
         database.updateAmountAndRestock(173, 2, 11, 11);
         database.updateAmountAndRestock(173, 3, 5, 20);
         database.updateAmountAndRestock(173, 4, 0, 11);
-
-        System.out.println("Did before each");
     }
 
     @AfterAll

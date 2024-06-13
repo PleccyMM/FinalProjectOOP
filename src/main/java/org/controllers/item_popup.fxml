@@ -47,7 +47,9 @@
                             text="Update"/>
                     <Button fx:id="btnPrint"
                             minWidth="35"
-                            minHeight="35"/>
+                            minHeight="35">
+                        <tooltip><Tooltip text="Print information about this item to file"/></tooltip>
+                    </Button>
                 </HBox>
             </VBox>
         </VBox>

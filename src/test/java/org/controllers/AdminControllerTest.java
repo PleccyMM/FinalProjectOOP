@@ -60,6 +60,7 @@ public class AdminControllerTest extends ApplicationTest {
         database.openDBSession();
         database.denyOperator(9999);
         database.denyOperator(9998);
+        database.denyOperator(9997);
         database.closeDBSession();
     }
 

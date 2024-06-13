@@ -565,8 +565,8 @@ public class ItemController extends ControllerParent {
         lblAmountAndRestockUpdate(totalAmount, restock);
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        String cost = eurFormatter.format(getDatabase().getPrice(item.getSizeID()));
-        lblCostToProduce.setText(cost);
+        Double cost = getDatabase().getPrice(item.getSizeID());
+        lblCostToProduce.setText(eurFormatter.format(cost) + " - (" + eurFormatter.format(cost * totalAmount) + ")");
 
         lblTags.setText(regionName + typeName);
 

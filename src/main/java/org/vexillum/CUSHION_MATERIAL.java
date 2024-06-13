@@ -20,24 +20,13 @@ public enum CUSHION_MATERIAL {
         return value / 100.0f;
     }
 
-    public static CUSHION_MATERIAL getType(String s1) {
-        String s = s1.toUpperCase();
-        return switch (s) {
-            case "FOAM" -> FOAM;
-            case "POLYESTER" -> POLYESTER;
-            case "FEATHERS" -> FEATHERS;
-            case "COTTON" -> COTTON;
-            default -> EMPTY;
-        };
-    }
-
     @Override
     public String toString() {
         return switch (this) {
-            case FOAM -> "Foam";
-            case POLYESTER -> "Polyester";
-            case FEATHERS -> "Feathers";
-            case COTTON -> "Cotton";
+            case FOAM -> "Foam (\u00A38.00)";
+            case POLYESTER -> "Polyester (\u00A39.00)";
+            case FEATHERS -> "Feathers (\u00A311.00)";
+            case COTTON -> "Cotton (\u00A312.00)";
             default -> "No Filling";
         };
     }
