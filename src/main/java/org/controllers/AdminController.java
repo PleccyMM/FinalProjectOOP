@@ -36,7 +36,7 @@ public class AdminController extends ControllerParent {
      * @param operatorMap a hashmap with {@code Date} as a key and {@code Integer} as values, should be taken from {@code DatabaseControl.getApprovals()}
      * @throws Exception loading the fxml file may fail
      */
-    public void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
+    private void addOperatorItem(HashMap<Date, Integer> operatorMap) throws Exception {
         boxScroll.getChildren().clear();
 
         //Attempts to condense this into a list conversion to array has proven a bit weird, so the for loop is here and hacky

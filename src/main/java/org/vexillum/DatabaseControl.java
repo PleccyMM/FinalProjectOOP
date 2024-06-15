@@ -314,10 +314,11 @@ public class DatabaseControl {
     }
 
     public HashMap<String, Flag> getAllFlags() {
-        String sql = "select f.flagid, f.isoid, f.stockid, sa.sizeid, sa.amount, sa.restock, sz.price " +
+        String sql = "select f.flagid, f.isoid, f.stockid, sa.sizeid, sa.amount, sa.restock, sz.price, d.name, d.typeid " +
                 "from flags f " +
                 "join stock_amount sa on f.stockid = sa.stockid " +
-                "join sizes sz on sa.sizeid = sz.sizeid";
+                "join sizes sz on sa.sizeid = sz.sizeid " +
+                "join designs d on f.isoid = d.isoid";
 
         var query = databaseSession.createNativeQuery(sql);
         List<Object[]> list = query.getResultList();
@@ -333,6 +334,8 @@ public class DatabaseControl {
             f.setTotalAmount((int)o[4]);
             f.setRestock((int)o[5]);
             f.setCostToProduce((double)o[6]);
+            f.setName((String)o[7]);
+            f.setNational((int)o[8] == TYPE.NATIONAL.getValue());
 
             map.put(f.getIsoID() + "_" + f.getSizeID(), f);
         }
@@ -340,10 +343,11 @@ public class DatabaseControl {
     }
 
     public HashMap<String, Cushion> getAllCushions() {
-        String sql = "select c.cushionid, c.isoid, c.stockid, sa.sizeid, sa.amount, sa.restock, sz.price " +
+        String sql = "select c.cushionid, c.isoid, c.stockid, sa.sizeid, sa.amount, sa.restock, sz.price, d.name, d.typeid " +
                 "from cushions c " +
                 "join stock_amount sa on c.stockid = sa.stockid " +
-                "join sizes sz on sa.sizeid = sz.sizeid";
+                "join sizes sz on sa.sizeid = sz.sizeid " +
+                "join designs d on c.isoid = d.isoid";
 
         var query = databaseSession.createNativeQuery(sql);
         List<Object[]> list = query.getResultList();
@@ -360,6 +364,8 @@ public class DatabaseControl {
             c.setRestock((int)o[5]);
             c.setCostToProduce((double)o[6]);
             c.setMaterial(CUSHION_MATERIAL.EMPTY);
+            c.setName((String)o[7]);
+            c.setNational((int)o[8] == TYPE.NATIONAL.getValue());
 
             map.put(c.getIsoID() + "_" + c.getSizeID(), c);
         }

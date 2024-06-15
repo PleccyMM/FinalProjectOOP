@@ -196,6 +196,17 @@ public abstract class ControllerParent {
         if (!itemMerge(item, -1)) items.add(item);
         Collections.sort(items);
     }
+
+    /**
+     * Used to add more than one item at a time to the {@code items} list, whilst still maintaining merge functionality
+     * @param newItems a list of items that are to be appended
+     */
+    protected void addItems(List<StockItem> newItems) {
+        for (StockItem i : newItems) {
+            if (!itemMerge(i, -1)) items.add(i);
+        }
+        Collections.sort(items);
+    }
     /**
      * Helper function for {@code setItem} and {@code addItem}, deals with the merging logic.
      * <p>

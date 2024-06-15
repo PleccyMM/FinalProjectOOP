@@ -67,7 +67,6 @@ public class Flag extends StockItem {
 
     @Override
     public boolean equals(Object o) {
-        System.out.println("We're equal checking");
         if (!(o instanceof Flag f)) return false;
         if (hoist != null && f.getHoist() != null && hoist != f.getHoist()) return false;
         if (material != null && f.getMaterial() != null && material != f.getMaterial()) return false;
