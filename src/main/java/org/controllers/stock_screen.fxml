@@ -27,6 +27,11 @@
                           spacing="64"
                           alignment="CENTER_LEFT">
                         <Region HBox.hgrow="ALWAYS"/>
+                        <Button id="btnBlue"
+                                text = "Automatic Restock"
+                                onAction="#btnRestockAllClick">
+                            <tooltip><Tooltip text="Restock all currently searched items that are in need"/></tooltip>
+                        </Button>
                         <Button id="btnPrint"
                                 minWidth="35"
                                 minHeight="35"

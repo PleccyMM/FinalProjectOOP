@@ -31,7 +31,7 @@ public enum FLAG_MATERIAL {
     public String toString() {
         return switch(this) {
             case PAPER -> "Paper";
-            case POLYESTER -> "Polyster";
+            case POLYESTER -> "Polyester";
             default -> "Nylon";
         };
     }

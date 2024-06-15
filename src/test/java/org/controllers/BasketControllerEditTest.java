@@ -43,7 +43,7 @@ public class BasketControllerEditTest extends BasketSupplement {
 
         verifyThat("#lblCurrentStock", LabeledMatchers.hasText("5"));
         verifyThat("#lblRestock", LabeledMatchers.hasText("7"));
-        verifyThat("#lblCostToProduce", LabeledMatchers.hasText("\u00A37.00"));
+        verifyThat("#lblCostToProduce", LabeledMatchers.hasText("\u00A37.00 - (\u00A335.00)"));
     }
 
     @Test
@@ -79,6 +79,6 @@ public class BasketControllerEditTest extends BasketSupplement {
         //The amount already in basket should have been added to the previous amount
         verifyThat("#lblCurrentStock", LabeledMatchers.hasText("20"));
         verifyThat("#lblRestock", LabeledMatchers.hasText("4"));
-        verifyThat("#lblCostToProduce", LabeledMatchers.hasText("\u00A31.00"));
+        verifyThat("#lblCostToProduce", LabeledMatchers.hasText("\u00A31.00 - (\u00A320.00)"));
     }
 }

@@ -95,10 +95,4 @@ public class DatabaseTest extends ApplicationTest {
 
         assertEquals(328, designs.size());
     }
-
-    @Test
-    @Order(7)
-    public void updateAndRestockTest() {
-
-    }
 }

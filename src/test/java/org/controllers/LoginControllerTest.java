@@ -9,6 +9,7 @@ import javafx.scene.text.*;
 import javafx.stage.*;
 import org.testfx.framework.junit5.*;
 import org.testfx.matcher.control.LabeledMatchers;
+import org.testfx.matcher.control.ComboBoxMatchers;
 import org.vexillum.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
@@ -39,6 +40,12 @@ public class LoginControllerTest extends ApplicationTest {
         database.denyOperator(9998);
         database.addRequest(9998, "testNotApproved", "testPassword2", calendar.getTime());
 
+        calendar.add(Calendar.HOUR, 1);
+        database.denyOperator(9997);
+        database.addRequest(9997, "testAdmin", "testPassword3", calendar.getTime());
+        database.acceptOperator(9997);
+        database.promoteOperator(9997);
+
         database.closeDBSession();
     }
 
@@ -50,6 +57,7 @@ public class LoginControllerTest extends ApplicationTest {
         database.denyOperator(10000);
         database.denyOperator(9999);
         database.denyOperator(9998);
+        database.denyOperator(9997);
 
         database.closeDBSession();
     }
@@ -127,10 +135,29 @@ public class LoginControllerTest extends ApplicationTest {
         Thread.sleep(500);
 
         verifyThat("#btnFlag_AC", Node::isVisible);
+
+        ComboBox<String> cmbProfile = lookup("#cmbProfile").queryComboBox();
+        verifyThat(cmbProfile, ComboBoxMatchers.containsItems("Logout"));
+        assertFalse(cmbProfile.getItems().contains("Admin Panel"));
     }
 
     @Test
     @Order(6)
+    public void adminLoginTest() throws InterruptedException {
+        clickOn("#enrName");
+        write("testAdmin");
+        clickOn("#enrPassword");
+        write("testPassword3");
+
+        clickOn("#btnLogin");
+
+        Thread.sleep(500);
+
+        verifyThat("#cmbProfile", ComboBoxMatchers.containsExactlyItemsInOrder("Admin Panel", "Logout"));
+    }
+
+    @Test
+    @Order(7)
     public void transferToRegisterTest() {
         clickOn("#lblCreateAccount");
 
@@ -141,7 +168,7 @@ public class LoginControllerTest extends ApplicationTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void registerNewUserMismatchedPasswordsTest() {
         clickOn("#lblCreateAccount");
 
@@ -158,7 +185,7 @@ public class LoginControllerTest extends ApplicationTest {
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     public void registerNewUserEmptyTest() {
         clickOn("#lblCreateAccount");
 
@@ -172,7 +199,7 @@ public class LoginControllerTest extends ApplicationTest {
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     public void registerNewUserSameNameTest() {
         clickOn("#lblCreateAccount");
 
@@ -189,7 +216,7 @@ public class LoginControllerTest extends ApplicationTest {
     }
 
     @Test
-    @Order(9)
+    @Order(11)
     public void registerNewUserCorrectTest() {
         clickOn("#lblCreateAccount");
 

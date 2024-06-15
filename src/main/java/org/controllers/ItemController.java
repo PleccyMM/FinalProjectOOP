@@ -511,7 +511,7 @@ public class ItemController extends ControllerParent {
             else imageHolder.setStyle("-fx-border-width: 2; -fx-border-color: #000000");
 
             //Deals with creating the measurement lines, only the smaller flag sizes don't need them
-            if (!(item instanceof Flag f) || (f.isSmall())) {
+            if (!(item instanceof Flag f) || (!f.isSmall())) {
                 boxVerticalSize.setMaxHeight(imgFlag.getFitHeight());
                 boxHorizontalSize.setMaxWidth(imgFlag.getFitWidth());
 
@@ -565,8 +565,8 @@ public class ItemController extends ControllerParent {
         lblAmountAndRestockUpdate(totalAmount, restock);
 
         NumberFormat eurFormatter = NumberFormat.getCurrencyInstance(Locale.UK);
-        String cost = eurFormatter.format(getDatabase().getPrice(item.getSizeID()));
-        lblCostToProduce.setText(cost);
+        Double cost = getDatabase().getPrice(item.getSizeID());
+        lblCostToProduce.setText(eurFormatter.format(cost) + " - (" + eurFormatter.format(cost * totalAmount) + ")");
 
         lblTags.setText(regionName + typeName);
 

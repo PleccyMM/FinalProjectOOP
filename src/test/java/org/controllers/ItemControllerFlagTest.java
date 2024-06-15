@@ -66,5 +66,21 @@ public class ItemControllerFlagTest extends ItemSupplementTest {
         clickOn("#btnAddToBasket");
 
         Thread.sleep(500);
+
+        verifyThat("#lblName", LabeledMatchers.hasText("United Kingdom Flag 150x90cm"));
+        verifyThat("#lblPriceSingle", LabeledMatchers.hasText("\u00A315.20"));
+        verifyThat("#lblIncrement", LabeledMatchers.hasText("3"));
+        verifyThat("#lblSubtotal", LabeledMatchers.hasText("\u00A345.60"));
+
+        verifyThat("#lblExportSales", LabeledMatchers.hasText("\u00A345.60"));
+        verifyThat("#lblExportCosts", LabeledMatchers.hasText("\u00A34.50"));
+        verifyThat("#lblExportSubtotal", LabeledMatchers.hasText("\u00A341.10"));
+        verifyThat("#lblImportCosts", LabeledMatchers.hasText("\u00A30.00"));
+        verifyThat("#lblTotal", LabeledMatchers.hasText("\u00A341.10"));
+
+        clickOn("#btnInformation");
+
+        verifyThat("#lblAdditionalVal", LabeledMatchers.hasText("Wooden Toggles (\u00A35.00)"));
+        verifyThat("#lblMaterialVal", LabeledMatchers.hasText("Nylon"));
     }
 }

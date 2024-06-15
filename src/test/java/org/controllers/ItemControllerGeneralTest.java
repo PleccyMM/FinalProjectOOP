@@ -198,7 +198,7 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
 
         assertEquals(Double.parseDouble(lblPrice.getText().substring(1)) * 5,
                             Double.parseDouble((lblTotalPrice.getText().substring(1))));
-        assertEquals(lblCostToProduce.getText(), lblPrice.getText());
+        assertEquals(lblCostToProduce.getText(), "\u00A30.40 - (\u00A34.00)");
     }
 
     @Test

@@ -60,6 +60,7 @@ public class AdminControllerTest extends ApplicationTest {
         database.openDBSession();
         database.denyOperator(9999);
         database.denyOperator(9998);
+        database.denyOperator(9997);
         database.closeDBSession();
     }
 
@@ -68,11 +69,11 @@ public class AdminControllerTest extends ApplicationTest {
         database.closeDBSession();
     }
 
-    protected void scrollToItem(String boxID) {
+    protected void scrollToItem(String toFind) {
         ScrollPane scrBackground = lookup("#scrMain").query();
         Bounds scrollBound = scrBackground.localToScene(scrBackground.getBoundsInLocal());
 
-        Node buttonToFind = lookup(boxID + " #btnDeny").query();
+        Node buttonToFind = lookup(toFind).query();
         Bounds boxBound;
 
         clickOn(scrBackground);
@@ -84,7 +85,9 @@ public class AdminControllerTest extends ApplicationTest {
             }
 
             boxBound = buttonToFind.localToScene(buttonToFind.getBoundsInLocal());
-        } while (!scrollBound.intersects(boxBound));;
+        } while (!scrollBound.intersects(boxBound));
+
+        scroll(1, VerticalDirection.DOWN);
     }
 
     /**
@@ -94,7 +97,7 @@ public class AdminControllerTest extends ApplicationTest {
     @Test
     @Order(0)
     public void approvalIntegrationTest() throws InterruptedException {
-        scrollToItem("#9999");
+        scrollToItem("#9999 #btnAccept");
         verifyThat("#9999", Node::isVisible);
         Button btnAccept = lookup("#9999 #btnAccept").query();
         clickOn(btnAccept);
@@ -122,7 +125,7 @@ public class AdminControllerTest extends ApplicationTest {
     @Test
     @Order(1)
     public void denyIntegrationTest() {
-        scrollToItem("#9998");
+        scrollToItem("#9998 #btnDeny");
         verifyThat("#9998", Node::isVisible);
         Button btnDeny = lookup("#9998 #btnDeny").query();
 

@@ -278,13 +278,53 @@ public class StockController extends ControllerParent {
     }
 
     /**
+     * This event gets all the items that are currently on screen and restocks them to twice their restock limit, if they
+     * are equal to their restock level or below, then moves the user straight to the basket screen
+     * @throws Exception loading FXML could fail
+     */
+    @FXML
+    protected void btnRestockAllClick(ActionEvent event) throws Exception {
+        openDB();
+
+        HashMap<String, Flag> flags = getDatabase().getAllFlags();
+        HashMap<String, Cushion> cushions = getDatabase().getAllCushions();
+
+        closeDB();
+
+        List<StockItem> restockItems = new ArrayList<>();
+
+        for (Design d : allDesigns) {
+            for (FLAG_SIZE flagSize : FLAG_SIZE.values()) {
+                String key = d.getIsoID() + "_" + FLAG_SIZE.getSizeId(flagSize);
+                Flag f = flags.get(key);
+                if (f.getTotalAmount() <= f.getRestock()) {
+                    f.setAmount((f.getRestock() * 2 - f.getTotalAmount()) * -1);
+                    restockItems.add(f);
+                }
+                flags.remove(key);
+            }
+            for (CUSHION_SIZE cushionSize : CUSHION_SIZE.values()) {
+                String key = d.getIsoID() + "_" + CUSHION_SIZE.getSizeId(cushionSize);
+                Cushion c = cushions.get(key);
+                if (c.getTotalAmount() <= c.getRestock()) {
+                    c.setAmount((c.getRestock() * 2 - c.getTotalAmount()) * -1);
+                    restockItems.add(c);
+                }
+                cushions.remove(key);
+            }
+        }
+
+        addItems(restockItems);
+        l.showBasket(stage, getItems(), operator);
+    }
+
+    /**
      * Used to print all the information about stock prices and total stock to a file in the system directory. This
      * does utilise the current search conditions meaning that it will only print all when the search conditions are blank,
      * this feature is explained to the user on a tooltip when hovering over the button
-     * @throws Exception creating a new file and writing to it could fail
      */
     @FXML
-    protected void btnPrintClick(ActionEvent event) throws Exception {
+    protected void btnPrintClick(ActionEvent event) {
         String msg = "";
 
         openDB();
@@ -455,8 +495,7 @@ public class StockController extends ControllerParent {
                 }
                 else {
                     int index = 0;
-                    //-2 to account for the label and the image of the arrow
-                    for (int i = 0; i < boxTagOps.getChildren().size() - 2; i++) {
+                    for (int i = 0; i < 3; i++) {
                         Node n = boxTagOps.getChildren().get(i);
 
                         //Ensures only the selected box has the correct arrow rotation

@@ -67,7 +67,6 @@ public class Flag extends StockItem {
 
     @Override
     public boolean equals(Object o) {
-        System.out.println("We're equal checking");
         if (!(o instanceof Flag f)) return false;
         if (hoist != null && f.getHoist() != null && hoist != f.getHoist()) return false;
         if (material != null && f.getMaterial() != null && material != f.getMaterial()) return false;
@@ -82,6 +81,7 @@ public class Flag extends StockItem {
         result = prime * result + (material != null ? material.hashCode() : 0);
         result = prime * result + (hoist != null ? hoist.hashCode() : 0);
 
+        System.out.println("Material : " + material + " Hoist : " + hoist + " Name: " + name + " sizeID " + sizeID + " stockID " + stockID + " signum " + Integer.signum(amount));
         return prime * result + super.hashCode();
     }
 
