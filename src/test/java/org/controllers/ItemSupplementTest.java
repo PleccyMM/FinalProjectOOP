@@ -10,7 +10,7 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 
 public abstract class ItemSupplementTest extends ApplicationTest {
-    private static Flag flagHand, flagDesk, flagSmall, flagMedium, flagLarge;
+    private static StockItem flagHand, flagDesk, flagSmall, flagMedium, flagLarge;
     protected static DatabaseControl database = new DatabaseControl();
     protected ItemController controller;
 
@@ -34,11 +34,11 @@ public abstract class ItemSupplementTest extends ApplicationTest {
     public static void saveInformation() {
         database.openDBSession();
         
-        flagHand = database.createFlag("GB", FLAG_SIZE.HAND);
-        flagDesk = database.createFlag("GB", FLAG_SIZE.DESK);
-        flagSmall = database.createFlag("GB", FLAG_SIZE.SMALL);
-        flagMedium = database.createFlag("GB", FLAG_SIZE.MEDIUM);
-        flagLarge = database.createFlag("GB", FLAG_SIZE.LARGE);
+        flagHand = database.createFlag("GB", FLAG_SIZE.HAND).clone();
+        flagDesk = database.createFlag("GB", FLAG_SIZE.DESK).clone();
+        flagSmall = database.createFlag("GB", FLAG_SIZE.SMALL).clone();
+        flagMedium = database.createFlag("GB", FLAG_SIZE.MEDIUM).clone();
+        flagLarge = database.createFlag("GB", FLAG_SIZE.LARGE).clone();
 
         database.closeDBSession();
     }

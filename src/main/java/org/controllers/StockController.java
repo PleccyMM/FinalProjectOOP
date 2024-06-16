@@ -307,7 +307,7 @@ public class StockController extends ControllerParent {
                 String key = d.getIsoID() + "_" + CUSHION_SIZE.getSizeId(cushionSize);
                 Cushion c = cushions.get(key);
                 if (c.getTotalAmount() <= c.getRestock()) {
-                    c.setAmount((c.getRestock() * 2 - c.getTotalAmount()) * -1);
+                    c.setAmount((c.getRestock() * 2 - c.getTotalAmount()) * -1 + 1);
                     restockItems.add(c);
                 }
                 cushions.remove(key);

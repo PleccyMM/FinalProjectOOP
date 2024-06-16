@@ -21,7 +21,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerCushionTest extends ApplicationTest {
-    private static Cushion cushionSmall, cushionLarge;
+    private static StockItem cushionSmall, cushionLarge;
     protected static DatabaseControl database = new DatabaseControl();
     protected ItemController controller;
 
@@ -45,8 +45,8 @@ public class ItemControllerCushionTest extends ApplicationTest {
     public static void saveInformation() {
         database.openDBSession();
 
-        cushionSmall = database.createCushion("DC", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
-        cushionLarge = database.createCushion("DC", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.EMPTY);
+        cushionSmall = database.createCushion("DC", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY).clone();
+        cushionLarge = database.createCushion("DC", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.EMPTY).clone();
 
         database.closeDBSession();
     }
