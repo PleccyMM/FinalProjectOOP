@@ -1,4 +1,5 @@
 plugins {
+    id "java"
     id "application"
     id "org.openjfx.javafxplugin" version '0.0.13'
 }
@@ -32,9 +33,6 @@ javafx {
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/java"]
-        }
-        resources {
             srcDirs = ['src/main/resources']
             includes = ["**/*.css", "**/*.png", "**/*.xml", "**/*.fxml"]
         }
@@ -45,4 +43,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
+jar {
+    manifest {
+        attributes(
+                "Main-Class": "org.vexillum.Main"
+        )
+    }
+}
 mainClassName = "org.vexillum.Main"

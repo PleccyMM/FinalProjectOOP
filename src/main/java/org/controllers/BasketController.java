@@ -100,7 +100,7 @@ public class BasketController extends ControllerParent {
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
 
-            String designPath = this.getClass().getResource("/Assets/FlagsSmall/" + i.getIsoID() + ".png").toString();
+            String designPath = this.getClass().getResource("/Assets/FlagsSmall/" + i.getIsoID().toLowerCase() + ".png").toString();
             Image design = new Image(designPath);
 
             //If the image isn't a flag then the design must be masked and overlayed on a cushion, equally if it is a long cushion there's a separate mask that must be invoked

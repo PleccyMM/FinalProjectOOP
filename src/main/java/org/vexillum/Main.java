@@ -7,16 +7,8 @@ import org.controllers.Loader;
 /**
  * The main boot location of the program
  */
-public class Main extends Application {
-    private final Loader loader = new Loader();
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("Vexillum Management");
-        loader.showLogin(stage);
-    }
-
+public class Main {
     public static void main(String[] args) {
-        launch(args);
+        RealMain.launchProg(args);
     }
 }

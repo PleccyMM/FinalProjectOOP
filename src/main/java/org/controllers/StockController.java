@@ -125,10 +125,13 @@ public class StockController extends ControllerParent {
                     //FlagSmall folder contains flags with a maximum width of 100, rather than FlagsLarge that has 1000,
                     //this massively boosts performance at the cost of surprisingly little storage space
 
-                    Image img = new Image(this.getClass().getResourceAsStream("/Assets/FlagsSmall/" + currentDesign.getIsoID() + ".png"));
+                    Image img = new Image(this.getClass().getResourceAsStream("/Assets/FlagsSmall/" + currentDesign.getIsoID().toLowerCase() + ".png"));
                     ((ImageView) productView.lookup("#imgDisp")).setImage(img);
                 }
-                catch (Exception ignored) { }
+                catch (Exception e) {
+                    System.out.println("FAILED " + "/Assets/FlagsSmall/" + currentDesign.getIsoID().toLowerCase()  + ".png");
+                    e.printStackTrace();
+                }
 
                 ((Label) productView.lookup("#lblStockName")).setText(currentDesign.getName());
 

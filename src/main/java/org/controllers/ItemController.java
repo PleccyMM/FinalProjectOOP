@@ -198,7 +198,7 @@ public class ItemController extends ControllerParent {
             }
 
             try {
-                Image img = new Image(this.getClass().getResourceAsStream("/Assets/FlagsSmall/" + loadedDesign.getIsoID() + ".png"));
+                Image img = new Image(this.getClass().getResourceAsStream("/Assets/FlagsSmall/" + loadedDesign.getIsoID().toLowerCase() + ".png"));
                 ImageView imgView = (ImageView) box.lookup("#imgDesign");
 
                 imgView.setFitWidth((int) (img.getWidth() * 0.5));
@@ -496,7 +496,7 @@ public class ItemController extends ControllerParent {
     private void populateInfo() {
         try {
             //Cushions have different designs created procedurally when needed, so some additional logic is needed
-            String designPath = this.getClass().getResource("/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png").toString();
+            String designPath = this.getClass().getResource("/Assets/FlagsLarge/" + loadedDesign.getIsoID().toLowerCase() + ".png").toString();
             Image design = new Image(designPath);
             Image img = !(item instanceof Cushion c) ? design :
                     c.getSize() != CUSHION_SIZE.LONG ?
