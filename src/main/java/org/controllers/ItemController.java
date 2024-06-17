@@ -184,7 +184,7 @@ public class ItemController extends ControllerParent {
         boolean[] needsRestocking = getDatabase().restockList(item.getStockID());
         int index = 0;
         for (String sizeVal : sizeVals) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("item_item.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/item_item.fxml"));
             Parent itemView = loader.load();
 
             StackPane box = (StackPane) itemView;
@@ -198,7 +198,7 @@ public class ItemController extends ControllerParent {
             }
 
             try {
-                Image img = new Image("org/Assets/FlagsSmall/" + loadedDesign.getIsoID() + ".png");
+                Image img = new Image(this.getClass().getResourceAsStream("/Assets/FlagsSmall/" + loadedDesign.getIsoID() + ".png"));
                 ImageView imgView = (ImageView) box.lookup("#imgDesign");
 
                 imgView.setFitWidth((int) (img.getWidth() * 0.5));
@@ -496,11 +496,11 @@ public class ItemController extends ControllerParent {
     private void populateInfo() {
         try {
             //Cushions have different designs created procedurally when needed, so some additional logic is needed
-            String designPath = "org/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png";
+            String designPath = this.getClass().getResource("/Assets/FlagsLarge/" + loadedDesign.getIsoID() + ".png").toString();
             Image design = new Image(designPath);
             Image img = !(item instanceof Cushion c) ? design :
                     c.getSize() != CUSHION_SIZE.LONG ?
-                            Masker.standardCushion(false, designPath) : Masker.longCushion(false, designPath);
+                            Masker.standardCushion(false, designPath, this.getClass()) : Masker.longCushion(false, designPath, this.getClass());
 
             //Since the images are so large they need shrinking a bit, 25% seemed good whilst retaining quality
             imgFlag.setFitWidth((int) (img.getWidth() * 0.25));
@@ -588,7 +588,7 @@ public class ItemController extends ControllerParent {
             else if (totalAmount * 0.5 <= restock) { severityImg = "IndicatorMid"; }
             else { severityImg =  "IndicatorGood"; }
 
-            Image img = new Image("org/Assets/Icons/" + severityImg + ".png");
+            Image img = new Image(this.getClass().getResourceAsStream("/Assets/Icons/" + severityImg + ".png"));
             imgSeverity.setFitWidth(12);
             imgSeverity.setFitHeight(12);
             imgSeverity.setImage(img);
@@ -605,7 +605,7 @@ public class ItemController extends ControllerParent {
      */
     @FXML
     protected void btnMoreClick(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("item_popup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/item_popup.fxml"));
         Parent itemView = loader.load();
 
         VBox box = (VBox) itemView;

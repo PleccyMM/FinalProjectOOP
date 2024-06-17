@@ -124,7 +124,7 @@ public class LoginController {
         clear();
 
         //This entire part is just attaching logic to the popup, this popup is just for confirmation
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login_popup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/login_popup.fxml"));
         Parent itemView = loader.load();
 
         VBox box = (VBox) itemView;

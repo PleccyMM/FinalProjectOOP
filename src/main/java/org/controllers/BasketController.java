@@ -64,7 +64,7 @@ public class BasketController extends ControllerParent {
 
         //basket_divider.fxml is basically just an empty file that is used to put he big EXPORT & IMPORT labels, keeping it there
         //just removes the need for a function in here and keeps consistency with no javaFX elements being defined in runtime
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/basket_divider.fxml"));
         Parent itemView = loader.load();
         HBox box = (HBox) itemView;
         ((Label) box.lookup("#lblImportExport")).setText("Imports");
@@ -73,7 +73,7 @@ public class BasketController extends ControllerParent {
         //Imported items are added before any export
         addItem(importItems);
 
-        loader = new FXMLLoader(getClass().getResource("basket_divider.fxml"));
+        loader = new FXMLLoader(getClass().getResource("/FXML/basket_divider.fxml"));
         itemView = loader.load();
         box = (HBox) itemView;
         ((Label) box.lookup("#lblImportExport")).setText("Exports");
@@ -96,17 +96,17 @@ public class BasketController extends ControllerParent {
         for(var item : itemsMap.entrySet()) {
             StockItem i = item.getValue();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_item.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/basket_item.fxml"));
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
 
-            String designPath = "org/Assets/FlagsSmall/" + i.getIsoID() + ".png";
+            String designPath = this.getClass().getResource("/Assets/FlagsSmall/" + i.getIsoID() + ".png").toString();
             Image design = new Image(designPath);
 
             //If the image isn't a flag then the design must be masked and overlayed on a cushion, equally if it is a long cushion there's a separate mask that must be invoked
             Image img = !(i instanceof Cushion c) ? design :
                     c.getSize() != CUSHION_SIZE.LONG ?
-                            Masker.standardCushion(true, designPath) : Masker.longCushion(true, designPath);
+                            Masker.standardCushion(true, designPath, this.getClass()) : Masker.longCushion(true, designPath, this.getClass());
             ((ImageView) box.lookup("#imgDesign")).setImage(img);
 
             VBox imageHolder = (VBox) box.lookup("#imageHolder");
@@ -242,7 +242,7 @@ public class BasketController extends ControllerParent {
                 Node n = (Node) source;
                 Node itemBox = n.getParent();
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_popup.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/basket_popup.fxml"));
                 Parent itemView = loader.load();
 
                 VBox box = (VBox) itemView;

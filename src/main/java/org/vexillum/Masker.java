@@ -13,10 +13,11 @@ public class Masker {
      * @param designPath path for the design to be overlaid
      * @return a square cushion with the relevant design at either 100px or 1000px width
      */
-    public static WritableImage standardCushion(boolean isSmall, String designPath) {
+    public static WritableImage standardCushion(boolean isSmall, String designPath, Class<?> resourceClass) {
         Image cushion;
-        if (isSmall) cushion = new Image("org/Assets/Cushions/SmallRegular.png");
-        else cushion = new Image("org/Assets/Cushions/LargeRegular.png");
+
+        if (isSmall) cushion = new Image(resourceClass.getResourceAsStream("/Assets/Cushions/SmallRegular.png"));
+        else cushion = new Image(resourceClass.getResourceAsStream("/Assets/Cushions/LargeRegular.png"));
 
         return cushionMask(cushion, designPath);
     }
@@ -27,10 +28,10 @@ public class Masker {
      * @param designPath path for the design to be overlaid
      * @return a rectangular cushion with the relevant design at either 100px or 1000px width
      */
-    public static WritableImage longCushion(boolean isSmall, String designPath) {
+    public static WritableImage longCushion(boolean isSmall, String designPath, Class<?> resourceClass) {
         Image cushion;
-        if (isSmall) cushion = new Image("org/Assets/Cushions/SmallLong.png");
-        else cushion = new Image("org/Assets/Cushions/LargeLong.png");
+        if (isSmall) cushion = new Image(resourceClass.getResourceAsStream("/Assets/Cushions/SmallLong.png"));
+        else cushion = new Image(resourceClass.getResourceAsStream("/Assets/Cushions/LargeLong.png"));
 
         return cushionMask(cushion, designPath);
     }

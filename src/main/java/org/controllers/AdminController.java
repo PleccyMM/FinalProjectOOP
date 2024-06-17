@@ -55,7 +55,7 @@ public class AdminController extends ControllerParent {
         List<Operator> operators = getDatabase().getOperatorsByIDAwaitingApproval(ids);
 
         for(Date date : dates) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("admin_item.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/admin_item.fxml"));
             Parent itemView = loader.load();
             HBox box = (HBox) itemView;
 

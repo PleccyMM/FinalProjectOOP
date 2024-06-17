@@ -52,14 +52,14 @@ public class StockController extends ControllerParent {
 
             int i = 0;
             for (String tagBox : tagBoxes) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_tag.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/stock_tag.fxml"));
                 Parent box = loader.load();
 
                 box.setId(tagBox);
                 ((Label) box.lookup("#lblTag")).setText(tagBox);
 
                 try {
-                    Image img = new Image("org/Assets/Icons/DownArrow.png");
+                    Image img = new Image(this.getClass().getResourceAsStream("/Assets/Icons/DownArrow.png"));
                     ((ImageView) box.lookup("#imgArrow")).setImage(img);
                 }
                 catch (Exception ignored) { }
@@ -108,7 +108,7 @@ public class StockController extends ControllerParent {
             }
 
             for (int j = 0; j < runAmount; j++) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("stock_item.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/stock_item.fxml"));
                 Parent productView = loader.load();
 
                 Design currentDesign = allDesigns.get(i+j);
@@ -124,7 +124,8 @@ public class StockController extends ControllerParent {
                 try {
                     //FlagSmall folder contains flags with a maximum width of 100, rather than FlagsLarge that has 1000,
                     //this massively boosts performance at the cost of surprisingly little storage space
-                    Image img = new Image("org/Assets/FlagsSmall/" + currentDesign.getIsoID() + ".png");
+
+                    Image img = new Image(this.getClass().getResourceAsStream("/Assets/FlagsSmall/" + currentDesign.getIsoID() + ".png"));
                     ((ImageView) productView.lookup("#imgDisp")).setImage(img);
                 }
                 catch (Exception ignored) { }
@@ -483,8 +484,8 @@ public class StockController extends ControllerParent {
                 Object source = event.getSource();
                 Node box = (Node) source;
 
-                Image downArr = new Image("org/Assets/Icons/DownArrow.png");
-                Image upArr = new Image("org/Assets/Icons/UpArrow.png");
+                Image downArr = new Image(this.getClass().getResourceAsStream("/Assets/Icons/DownArrow.png"));
+                Image upArr = new Image(this.getClass().getResourceAsStream("/Assets/Icons/UpArrow.png"));
                 ImageView imgView = ((ImageView) box.lookup("#imgArrow"));
 
                 //Any open tag selections must be closed and their arrows changed to reflect this
