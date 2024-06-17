@@ -626,6 +626,10 @@ public class ItemController extends ControllerParent {
         panStacker.getChildren().add(box);
     }
 
+    /*
+    These click event handlers are used for the popup box, not the main amount modifier
+     */
+
     EventHandler<ActionEvent> btnMinusRestockClick = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {

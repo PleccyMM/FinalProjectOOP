@@ -9,6 +9,10 @@ import java.util.*;
 
 import org.json.*;
 
+/**
+ * This class is to be used for all calls and access to the database, if a new piece of functionality for database
+ * access is needed it should be added as a method to this class
+ */
 public class DatabaseControl {
     private Session databaseSession = null;
     private SessionFactory sessionFactory;
@@ -17,6 +21,9 @@ public class DatabaseControl {
         sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
+    /**
+     * Opens the session, only if needed
+     */
     public void openDBSession() {
         if (databaseSession == null || !databaseSession.isOpen()) {
             System.out.println("Opening");
@@ -29,6 +36,9 @@ public class DatabaseControl {
         return databaseSession != null;
     }
 
+    /**
+     * Closes the session, but not the connection
+     */
     public void closeDBSession() {
         if (databaseSession != null && databaseSession.isOpen()) {
             System.out.println("Closing session");
@@ -38,18 +48,33 @@ public class DatabaseControl {
         }
     }
 
+    /**
+     * Returns a list of operators with the given name, this should only ever be 1 since operators cannot have the same name
+     * @param nameSearch the name to find
+     * @return a list of operators matching that name, which will be at most 1 or 0
+     */
     public List<Operator> getSpecificOperator(String nameSearch) {
         var query = databaseSession.createQuery("from Operator where name = (:name)")
                 .setParameter("name", nameSearch);
         List<Operator> list = query.list();
         return list;
     }
+    /**
+     * Returns a list of operators who have an id from the provided array
+     * @param ids an array of ids that are searched for inside the database
+     * @return a list of operators in order of their arrays
+     */
     public List<Operator> getOperatorsByID(Integer[] ids) {
         var query = databaseSession.createQuery("from Operator where id in (:ids) order by id asc")
                 .setParameter("ids", Arrays.asList(ids));
         List<Operator> list = query.list();
         return list;
     }
+    /**
+     * Returns a list of operators who are not yet approved by the system and who have an id from the provided array
+     * @param ids an array of ids that are searched for inside the database
+     * @return a list of operators in order of their arrays
+     */
     public List<Operator> getOperatorsByIDAwaitingApproval(Integer[] ids) {
         var query = databaseSession.createQuery("from Operator where id in (:ids) and approved = false order by id asc")
                 .setParameter("ids", Arrays.asList(ids));
@@ -57,6 +82,13 @@ public class DatabaseControl {
         return list;
     }
 
+    /**
+     * Creates a new operator, who is unapproved, and adds that operator to the awaiting_approvals table
+     * @param id the new id of the operator, this must be unique
+     * @param name the new name of the operator, this must be unique
+     * @param password the password of the operator
+     * @param applicationTime the time the application was submitted
+     */
     public void addRequest(int id, String name, String password, Date applicationTime) {
         databaseSession.beginTransaction();
         databaseSession.createNativeQuery("insert into operators values ((:id), (:name), (:password), 0, 0)")
@@ -71,6 +103,10 @@ public class DatabaseControl {
         databaseSession.getTransaction().commit();
     }
 
+    /**
+     * Accepts the operator, setting them to approved, and removes them from the awaiting_approvals table
+     * @param id the id of the operator who is being approved
+     */
     public void acceptOperator(int id) {
         Transaction transaction = null;
         try {
@@ -89,6 +125,10 @@ public class DatabaseControl {
         }
     }
 
+    /**
+     * Denys the operator, removing them from both the awaiting_approvals and general operators table
+     * @param id the id of the operator who is being denied
+     */
     public void denyOperator(int id) {
         Transaction transaction = null;
         try {
@@ -107,6 +147,10 @@ public class DatabaseControl {
         }
     }
 
+    /**
+     * Promotes an operator from a regular user to an admin, only used in testing
+     * @param id the id of the operator being promoted
+     */
     public void promoteOperator(int id) {
         databaseSession.beginTransaction();
         try {
@@ -121,12 +165,20 @@ public class DatabaseControl {
         }
     }
 
+    /**
+     * Returns all the existing ids for operators
+     * @return a list of integers, for each operator
+     */
     public List<Integer> getExistentIDs() {
         var query = databaseSession.createQuery("select operatorID from Operator");
         List<Integer> list = query.list();
         return list;
     }
 
+    /**
+     * Used to get all the operators awaiting approval, by only returning their IDs
+     * @return a HashMap with the Date as a key and the operator's id as a value, in ascending order of the date
+     */
     public HashMap<Date, Integer> getApprovals() {
         var query = databaseSession.createNativeQuery("select operatorid from operator_approvals order by time_submitted asc");
         List<Integer> listID = query.list();
@@ -141,6 +193,11 @@ public class DatabaseControl {
         return map;
     }
 
+    /**
+     * Gets a design from the designs table from an ID
+     * @param isoID the primary key of the table
+     * @return a single design which has the same ID as the one provided
+     */
     public Design getDeignFromIso(String isoID) {
         var query = databaseSession.createQuery("from Design where isoID = (:isoid)")
                 .setParameter("isoid", isoID);
@@ -150,13 +207,22 @@ public class DatabaseControl {
         return null;
     }
 
+    /**
+     * Used to search the designs table under several different conditions. There can either be no conditions present
+     * all every single one and the search will still work
+     * @param nameSearch a {@code SearchCondition} which contains the selected search conditions by the user
+     * @return a list of all designs that match the given search conditions, this can be empty
+     */
     public List<Design> searchDesigns(SearchConditions nameSearch) {
+        if (nameSearch == null) return Collections.emptyList();
         String name = nameSearch.getSearch();
         String initial1 = nameSearch.getStartLetters()[0];
         String initial2 = nameSearch.getStartLetters()[1];
         Integer region = nameSearch.getRegion();
         Integer type = nameSearch.getType();
 
+        //initial3 is necessary as although >= works in mySQL to get a string that is starts with a letter equal to or above the provided letter, <= does not, it only provides
+        //ones that are less. If no initials are present, just setting them to a and z respectively works
         var query = databaseSession.createQuery("from Design where LOWER(name) like (:name) and (LOWER(name) >= (:initial1) and LOWER(name) <= (:initial2) or LOWER(name) " +
                                                    "like (:initial3)) and (region = :region or :region is null) and (type = :type or :type is null) order by name asc")
                 .setParameter("name", name == null ? "%" : "%" + name.toLowerCase() + "%")
@@ -169,6 +235,12 @@ public class DatabaseControl {
         return list;
     }
 
+    /**
+     * Loads a flag from the database and fills it with the relevant information
+     * @param isoID the ID for the design of the flag wanted
+     * @param size the size of the flag, as an enum
+     * @return a flag with an amount of 1 with all attributes filled
+     */
     public Flag createFlag(String isoID, FLAG_SIZE size) {
         var query = databaseSession.createQuery("from Flag where isoID = (:isoID)")
                 .setParameter("isoID", isoID);
@@ -190,6 +262,12 @@ public class DatabaseControl {
         return f;
     }
 
+    /**
+     * Loads a cushion from the database and fills it with the relevant information
+     * @param isoID the ID for the design of the cushion wanted
+     * @param size the size of cushion flag, as an enum
+     * @return a cushion with an amount of 1 with all attributes filled
+     */
     public Cushion createCushion(String isoID, CUSHION_SIZE size, CUSHION_MATERIAL material) {
         var query = databaseSession.createQuery("from Cushion where isoID = (:isoID)")
                 .setParameter("isoID", isoID);
@@ -212,6 +290,12 @@ public class DatabaseControl {
         return c;
     }
 
+    /**
+     * Gets information from the stock_amount table to correctly fill the {@code restock} and {@code totalAmount} attributes of {@code StockItems}
+     * Also access the sizes and designs table to fill the size and national attributes
+     * @param i the item to be modified
+     * @return the provided item with the {@code StockItem} updated
+     */
     public StockItem setStockData(StockItem i) {
         try {
             var query = databaseSession.createNativeQuery("select amount from stock_amount where stockid = (:stockid) and sizeid = (:sizeid)")
@@ -242,6 +326,11 @@ public class DatabaseControl {
         return i;
     }
 
+    /**
+     * Gets the name of the region from the database
+     * @param regionID the ID of the region
+     * @return the name of the relevant region
+     */
     public String getRegionName(int regionID) {
         var query = databaseSession.createNativeQuery("select name from regions where regionid = (:regionID)")
                 .setParameter("regionID", regionID);
@@ -250,6 +339,11 @@ public class DatabaseControl {
         return "";
     }
 
+    /**
+     * Gets the name of the type from the database
+     * @param typeID the ID of the type
+     * @return the name of the relevant type
+     */
     public String getTypeName(int typeID) {
         var query = databaseSession.createNativeQuery("select name from designtypes where typeid = (:typeID)")
                 .setParameter("typeID", typeID);
@@ -258,6 +352,11 @@ public class DatabaseControl {
         return "";
     }
 
+    /**
+     * Gets the id of a type from its name
+     * @param name the name of the type
+     * @return the id of the relevant type
+     */
     public Integer getTypeId(String name) {
         var query = databaseSession.createNativeQuery("select typeid from designtypes where LOWER(name) = (:name)")
                 .setParameter("name", name.toLowerCase());
@@ -266,6 +365,11 @@ public class DatabaseControl {
         return null;
     }
 
+    /**
+     * Gets the id of a region from its name
+     * @param name the name of the region
+     * @return the id of the relevant region
+     */
     public Integer getRegionId(String name) {
         var query = databaseSession.createNativeQuery("select regionid from regions where LOWER(name) = (:name)")
                 .setParameter("name", name.toLowerCase());
@@ -274,6 +378,11 @@ public class DatabaseControl {
         return null;
     }
 
+    /**
+     * Checks each size of a stock and returns an array saying if the item needs restocking or not
+     * @param stockID the ID of the stock that is having its sizes checked
+     * @return a boolean in order with true relating to items that are in need of restock and false if they don't
+     */
     public boolean[] restockList(int stockID) {
         var queryAmount = "select amount from stock_amount where stockid = " + stockID;
         var queryRestock = "select restock from stock_amount where stockid = " + stockID;
@@ -288,6 +397,13 @@ public class DatabaseControl {
         return b;
     }
 
+    /**
+     * Sets the restock limit and the amount in stock to the values provided
+     * @param stockID the ID of the stock being modified
+     * @param sizeID the ID of the size
+     * @param newAmount the amount that should now be in stock
+     * @param newRestock the restock limit for warnings
+     */
     public void updateAmountAndRestock(int stockID, int sizeID, int newAmount, int newRestock) {
         databaseSession.beginTransaction();
         try {
@@ -305,6 +421,11 @@ public class DatabaseControl {
         }
     }
 
+    /**
+     * Gets the cost to produce for an item
+     * @param sizeID the size of the item
+     * @return a double that is the price to produce
+     */
     public Double getPrice(int sizeID) {
         var query = databaseSession.createNativeQuery("select price from sizes where sizeid = (:sizeid)")
                 .setParameter("sizeid", sizeID);
@@ -313,6 +434,10 @@ public class DatabaseControl {
         return null;
     }
 
+    /**
+     * Returns all flags in a hashmap, this isn't just designs but also every single size for every design
+     * @return a hashmap with the key being the isoID_sizeID and the value being the flag itself
+     */
     public HashMap<String, Flag> getAllFlags() {
         String sql = "select f.flagid, f.isoid, f.stockid, sa.sizeid, sa.amount, sa.restock, sz.price, d.name, d.typeid " +
                 "from flags f " +
@@ -342,6 +467,10 @@ public class DatabaseControl {
         return map;
     }
 
+    /**
+     * Returns all cushions in a hashmap, this isn't just designs but also every single size for every design
+     * @return a hashmap with the key being the isoID_sizeID and the value being the cushion itself
+     */
     public HashMap<String, Cushion> getAllCushions() {
         String sql = "select c.cushionid, c.isoid, c.stockid, sa.sizeid, sa.amount, sa.restock, sz.price, d.name, d.typeid " +
                 "from cushions c " +
@@ -372,9 +501,14 @@ public class DatabaseControl {
         return map;
     }
 
-    //SQL used for database setup:
+
+    /*
+    Below this point are methods only used for the creation of the database, they are completely defunct and not commented
+    since they no longer serve a purpose inside the system
+     */
 
 
+    @Deprecated
     public void AddDesigns () {
         databaseSession.beginTransaction();
         try {
@@ -398,6 +532,7 @@ public class DatabaseControl {
         }
     }
 
+    @Deprecated
     public void AddTags () {
         databaseSession.beginTransaction();
         try {
@@ -425,6 +560,7 @@ public class DatabaseControl {
         }
     }
 
+    @Deprecated
     public void AddFlags() {
         databaseSession.beginTransaction();
         try {
@@ -447,6 +583,7 @@ public class DatabaseControl {
         }
     }
 
+    @Deprecated
     public void AddCushions() {
         databaseSession.beginTransaction();
         try {
@@ -469,6 +606,7 @@ public class DatabaseControl {
         }
     }
 
+    @Deprecated
     public void AddStockItem() {
         try {
             databaseSession.beginTransaction();
@@ -489,6 +627,7 @@ public class DatabaseControl {
         }
     }
 
+    @Deprecated
     public void SetAmounts() {
         try {
             databaseSession.beginTransaction();
@@ -522,6 +661,7 @@ public class DatabaseControl {
         }
     }
 
+    @Deprecated
     public void TestSQL() {
         try {
             String sql = "SELECT * FROM sizes";

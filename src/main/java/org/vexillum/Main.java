@@ -13,16 +13,6 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Vexillum Management");
-
-        //DatabaseControl.AddDesigns();
-        //DatabaseControl.AddStockItem();
-
-        //DatabaseControl.AddFlags();
-        //DatabaseControl.AddTags();
-
-        //DatabaseControl.AddCushions();
-        //DatabaseControl.SetAmounts();
-
         loader.showLogin(stage);
     }
 
