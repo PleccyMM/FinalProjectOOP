@@ -338,7 +338,10 @@ public class BasketController extends ControllerParent {
                 //Logic for removing items if they are set to 0, initially just wipes it from internal and UI, then gets all new costs
                 if (newVal == 0) {
 
+                    if (i.isImport()) importItems.remove(Collections.binarySearch(getItems(), i));
+                    else exportItems.remove(Collections.binarySearch(getItems(), i));
                     removeItem(i);
+
                     boxScroll.getChildren().remove(box);
                     calculateTotalCost();
 

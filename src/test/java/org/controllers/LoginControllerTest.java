@@ -1,11 +1,7 @@
 package org.controllers;
 
-import com.sun.javafx.application.PlatformImpl;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.stage.*;
 import org.testfx.framework.junit5.*;
 import org.testfx.matcher.control.LabeledMatchers;

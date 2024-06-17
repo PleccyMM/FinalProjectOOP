@@ -1,15 +1,10 @@
 package org.controllers;
 
-import javafx.fxml.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-import org.testfx.framework.junit5.*;
 import org.testfx.matcher.control.*;
 import org.vexillum.*;
 import org.junit.jupiter.api.*;
-import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;

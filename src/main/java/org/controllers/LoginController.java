@@ -6,7 +6,6 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.stage.*;
 import java.util.*;
 import org.vexillum.*;

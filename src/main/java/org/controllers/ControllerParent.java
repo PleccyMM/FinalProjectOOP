@@ -65,6 +65,8 @@ public abstract class ControllerParent {
             cmbProfile.getItems().add("Admin Panel");
         }
         cmbProfile.getItems().add("Logout");
+
+        stage.setOnHiding( event -> {addStockBack();} );
     }
 
     /**
@@ -75,6 +77,21 @@ public abstract class ControllerParent {
     protected void performSearch() throws Exception {
         stageChangeHandle();
         l.showStock(stage, items, operator, sc);
+    }
+
+    /**
+     * Method called upon program close or whenever the user logouts. Ensures that any exports in the basket have their
+     * stock restocked inside the database, so that you can't lose items by just quitting
+     */
+    private void addStockBack() {
+        openDB();
+
+        for (StockItem item : items) {
+            if (item.isImport()) continue;
+            database.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount() + item.getAmount(), item.getRestock());
+        }
+
+        closeDB();
     }
 
     EventHandler<ActionEvent> btnBackHandle = new EventHandler<ActionEvent>() {
@@ -141,6 +158,7 @@ public abstract class ControllerParent {
                     l.showAdmin(stage, items, operator);
                 }
                 else {
+                    addStockBack();
                     l.showLogin(stage);
                 }
             }

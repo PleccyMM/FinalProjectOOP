@@ -1,20 +1,10 @@
 package org.vexillum;
 
-import com.sun.javafx.application.*;
-import javafx.fxml.*;
-import javafx.geometry.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.*;
-import org.testfx.matcher.control.*;
 import org.testfx.framework.junit5.ApplicationTest;
-import org.vexillum.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DatabaseTest extends ApplicationTest {

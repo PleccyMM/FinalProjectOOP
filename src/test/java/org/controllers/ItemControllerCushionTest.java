@@ -1,19 +1,14 @@
 package org.controllers;
 
-import com.sun.javafx.application.PlatformImpl;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.stage.*;
 import org.testfx.framework.junit5.*;
-import org.testfx.matcher.control.ComboBoxMatchers;
 import org.testfx.matcher.control.LabeledMatchers;
 import org.vexillum.*;
 import org.junit.jupiter.api.*;
-import java.io.File;
+
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +16,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerCushionTest extends ApplicationTest {
-    private static Cushion cushionSmall, cushionLarge;
+    private static StockItem cushionSmall, cushionLarge;
     protected static DatabaseControl database = new DatabaseControl();
     protected ItemController controller;
 
@@ -45,8 +40,8 @@ public class ItemControllerCushionTest extends ApplicationTest {
     public static void saveInformation() {
         database.openDBSession();
 
-        cushionSmall = database.createCushion("DC", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY);
-        cushionLarge = database.createCushion("DC", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.EMPTY);
+        cushionSmall = database.createCushion("DC", CUSHION_SIZE.SMALL, CUSHION_MATERIAL.EMPTY).clone();
+        cushionLarge = database.createCushion("DC", CUSHION_SIZE.LARGE, CUSHION_MATERIAL.EMPTY).clone();
 
         database.closeDBSession();
     }
