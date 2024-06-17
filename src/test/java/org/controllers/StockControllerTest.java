@@ -1,22 +1,15 @@
 package org.controllers;
 
 import com.sun.javafx.application.*;
-import javafx.application.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.*;
-import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
-import org.testfx.api.*;
 import org.testfx.framework.junit5.*;
 import org.vexillum.*;
 import org.junit.jupiter.api.*;
-import org.testfx.matcher.control.*;
 
 import java.io.File;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StockControllerTest extends ApplicationTest {

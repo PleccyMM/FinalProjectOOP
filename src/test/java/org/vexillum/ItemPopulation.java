@@ -7,8 +7,6 @@ import javafx.scene.layout.HBox;
 import org.junit.jupiter.api.*;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.util.*;
-import org.controllers.*;
-
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class ItemPopulation extends ApplicationTest {
