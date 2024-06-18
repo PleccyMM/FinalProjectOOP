@@ -38,7 +38,7 @@ CREATE TABLE `operators` (
 
 LOCK TABLES `operators` WRITE;
 /*!40000 ALTER TABLE `operators` DISABLE KEYS */;
-INSERT INTO `operators` VALUES (1,'Mark','testpassword1',1,0),(2,'Katherine','testpassword2',1,1),(3,'Elaina','testpassword3',0,0),(4,'Curt','testpassword4',0,0),(5,'Test','Password',0,0),(6,'Marshall','SecurePassword',0,0),(8,'Admin','password1',1,1),(9,'0','0',1,1),(10,'Antony','egypt02',0,0),(11,'Octavian','countryside',0,0),(12,'Aurelius','spain03',0,0),(13,'NewAccountFinal','test',0,0),(14,'TestAccount','password',1,0);
+INSERT INTO `operators` VALUES (1,'Mark','testpassword1',1,0),(2,'Katherine','testpassword2',1,1),(3,'Elaina','testpassword3',0,0),(4,'Curt','testpassword4',0,0),(6,'Marshall','SecurePassword',0,0),(8,'Admin','password1',1,1),(9,'0','0',1,1),(10,'Antony','egypt02',0,0),(11,'Octavian','countryside',0,0),(12,'Aurelius','spain03',0,0);
 /*!40000 ALTER TABLE `operators` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-17 14:16:13
+-- Dump completed on 2024-06-18 12:38:19
