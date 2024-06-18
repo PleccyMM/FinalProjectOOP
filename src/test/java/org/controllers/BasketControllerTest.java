@@ -10,16 +10,26 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * Ensures that {@code BasketController} functions as expected
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BasketControllerTest extends BasketSupplement {
+    /**
+     * Checks the items are loaded and shown on the screen
+     */
     @Test
     @Order(1)
     public void displayTest() {
         VBox boxScroll = lookup("#boxScroll").query();
 
+        //+2 is needed to all getChildren().size() calls, as there is the import and export label to account for
         assertEquals(boxScroll.getChildren().size(), controller.getItems().size() + 2);
     }
 
+    /**
+     * Checks that pricing and amount are updated correctly when using the plus and minus buttons
+     */
     @Test
     @Order(2)
     public void increaseDecreaseAmountImportTest() {
@@ -45,6 +55,9 @@ public class BasketControllerTest extends BasketSupplement {
         verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A314.00"));
     }
 
+    /**
+     * Ensures that imported items are not capped when attempting to import more than there are in stock
+     */
     @Test
     @Order(3)
     public void increaseAmountAboveStockImportTest() {
@@ -60,6 +73,9 @@ public class BasketControllerTest extends BasketSupplement {
         verifyThat(lblIncrement, LabeledMatchers.hasText("10"));
     }
 
+    /**
+     * Checks that removing the top import item from the list works as expected
+     */
     @Test
     @Order(4)
     public void removeTopImportTest() {
@@ -88,6 +104,10 @@ public class BasketControllerTest extends BasketSupplement {
         } catch (Exception ignored) { }
     }
 
+    /**
+     * Checks that removing items from varying positions inside the import section works as expected, mainly to check
+     * that the method for index retrieval isn't broken as it wouldn't necessarily show with just removing the top one
+     */
     @Test
     @Order(5)
     public void removeImportThenAroundItBelowTest() {
@@ -132,6 +152,9 @@ public class BasketControllerTest extends BasketSupplement {
         }
     }
 
+    /**
+     * Checks that pricing and amount are updated correctly when using the plus and minus buttons
+     */
     @Test
     @Order(6)
     public void increaseDecreaseAmountExportTest() {
@@ -159,6 +182,9 @@ public class BasketControllerTest extends BasketSupplement {
         verifyThat(lblSubtotal, LabeledMatchers.hasText("\u00A393.80"));
     }
 
+    /**
+     * Checks that removing the top export item from the list works as expected
+     */
     @Test
     @Order(7)
     public void removeTopExportTest() {
@@ -189,6 +215,9 @@ public class BasketControllerTest extends BasketSupplement {
         } catch (Exception ignored) { }
     }
 
+    /**
+     * Ensures that attempting to add more than there are in stock for exports caps the addition button
+     */
     @Test
     @Order(7)
     public void attemptToOverExportTest() {
@@ -205,6 +234,9 @@ public class BasketControllerTest extends BasketSupplement {
         verifyThat(lblIncrement, LabeledMatchers.hasText("20"));
     }
 
+    /**
+     * Checks that the info button displays expected information
+     */
     @Test
     @Order(8)
     public void infoTest() {
@@ -218,6 +250,9 @@ public class BasketControllerTest extends BasketSupplement {
         verifyThat("#lblMaterialVal", LabeledMatchers.hasText("Nylon"));
     }
 
+    /**
+     * Ensures the checkout button clears the screen
+     */
     @Test
     @Order(20)
     public void checkoutTest() {

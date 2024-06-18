@@ -9,8 +9,14 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * Tests the merging functionality in {@code ControllerParent} and {@code BasketController}
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerMergeTest extends ItemSupplementTest {
+    /**
+     * Tests the most basic merge between two identical imports
+     */
     @Order(1)
     @Test
     public void basicImportMergeTest() {
@@ -34,6 +40,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("8"));
     }
 
+    /**
+     * Tests the most basic merge between two identical exports
+     */
     @Order(2)
     @Test
     public void basicExportMergeTest() {
@@ -54,6 +63,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("5"));
     }
 
+    /**
+     * Tests that different modifications prevent exported items from merging
+     */
     @Order(3)
     @Test
     public void exportMergeExclusionTest() {
@@ -77,6 +89,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         assertEquals(4, boxScroll.getChildren().size());
     }
 
+    /**
+     * Tests that editing an exported item to match the modifications of another merges
+     */
     @Order(4)
     @Test
     public void editExportMergeTest() {
@@ -103,6 +118,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         assertEquals(3, boxScroll.getChildren().size());
     }
 
+    /**
+     * Tests that editing an import to match another import merges the two
+     */
     @Order(5)
     @Test
     public void editImportMergeTest() {
@@ -143,6 +161,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         assertEquals(3, boxScroll.getChildren().size());
     }
 
+    /**
+     * Helper function used to populate later tests
+     */
     private void initalSwitch() {
         clickOn("#boxSize_90x60cm");
         for (int i = 0; i < 2; i++) {
@@ -163,6 +184,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         clickOn("#btnAddToBasket");
     }
 
+    /**
+     * Tests that switching an item from importing to exporting and matching the modifications merges
+     */
     @Order(6)
     @Test
     public void switchToExportTest() {
@@ -190,6 +214,9 @@ public class ItemControllerMergeTest extends ItemSupplementTest {
         assertEquals(3, boxScroll.getChildren().size());
     }
 
+    /**
+     * Tests that switching an export to an import merges, regardless of what the export modifications were prior to the switch
+     */
     @Order(7)
     @Test
     public void switchToImportTest() {

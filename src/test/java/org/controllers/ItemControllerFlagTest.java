@@ -9,9 +9,15 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * Tests some functionality of {@code ItemController} specific to flags
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerFlagTest extends ItemSupplementTest {
 
+    /**
+     * Checks that the price changes upon changing the material selected
+     */
     @Test
     @Order(1)
     public void materialPriceTest() {
@@ -24,6 +30,9 @@ public class ItemControllerFlagTest extends ItemSupplementTest {
         assertNotEquals(lblTotalPrice.getText(), oldPrice);
     }
 
+    /**
+     * Ensures that material selection is disabled when importing
+     */
     @Test
     @Order(1)
     public void materialDisableTest() {
@@ -32,6 +41,9 @@ public class ItemControllerFlagTest extends ItemSupplementTest {
         verifyThat("#tglMaterial", Node::isDisabled);
     }
 
+    /**
+     * Ensures larger flags cannot be exported without a hoist selected
+     */
     @Test
     @Order(2)
     public void preventExportWithoutHoistTest() {
@@ -45,6 +57,9 @@ public class ItemControllerFlagTest extends ItemSupplementTest {
         verifyThat("#cmbModifications", ComboBoxMatchers.hasSelectedItem("Fabric Rings (\u00A30.50)"));
     }
 
+    /**
+     * Tests the creation of a flag in full
+     */
     @Test
     @Order(3)
     public void fullFlagCreationTest() throws InterruptedException {

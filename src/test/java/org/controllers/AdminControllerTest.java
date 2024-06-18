@@ -64,6 +64,10 @@ public class AdminControllerTest extends ApplicationTest {
         database.closeDBSession();
     }
 
+    /**
+     * Gets an item and scrolls to it on the screen
+     * @param toFind the node you want visible, should be a button for this page
+     */
     protected void scrollToItem(String toFind) {
         ScrollPane scrBackground = lookup("#scrMain").query();
         Bounds scrollBound = scrBackground.localToScene(scrBackground.getBoundsInLocal());
@@ -117,6 +121,10 @@ public class AdminControllerTest extends ApplicationTest {
         assertNull(map.get(approvalDate), "The operator shouldn't still exist in the awaiting approvals table");
     }
 
+    /**
+     * Tests the denial stage, ensuring that the operator awaiting approval is displayed, is properly removed from the
+     * screen when denied and also from the relevant part of the database
+     */
     @Test
     @Order(1)
     public void denyIntegrationTest() {

@@ -12,6 +12,9 @@ import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * General tests for {@code ItemController} functionality
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerGeneralTest extends ItemSupplementTest {
     @AfterAll
@@ -21,6 +24,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         database.closeDBSession();
     }
 
+    /**
+     * Tests that the size buttons accurately updated information
+     */
     @Test
     @Order(1)
     public void changeSizeTest() {
@@ -35,6 +41,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat(box90,Node::isVisible);
     }
 
+    /**
+     * Checks that incrementing the amount works
+     */
     @Test
     @Order(1)
     public void increaseCountTest() {
@@ -43,6 +52,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("2"));
     }
 
+    /**
+     * Checks that decreasing the amount works
+     */
     @Test
     @Order(2)
     public void decreaseCountTest() {
@@ -54,6 +66,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("3"));
     }
 
+    /**
+     * Ensures that items being exported are capped at the amount in stock
+     */
     @Test
     @Order(3)
     public void attemptOverAddTest() {
@@ -65,6 +80,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnAdd", Node::isDisabled);
     }
 
+    /**
+     * Ensures negative amounts of items cannot be added, instead at little 1
+     */
     @Test
     @Order(3)
     public void attemptUnderAddTest() {
@@ -75,6 +93,10 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnMinus", Node::isDisabled);
     }
 
+    /**
+     * Checks functionality for the amount buttons and label when the item has 0 in stock, ensuring both are disabled
+     * and the value is shown correctly
+     */
     @Test
     @Order(4)
     public void zeroQuantityTest() {
@@ -85,6 +107,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnMinus", Node::isDisabled);
     }
 
+    /**
+     * Ensures that if the amount is set and then switches to a size that has less in stock, the amount is capped
+     */
     @Test
     @Order(4)
     public void switchSizeToOverstockTest() {
@@ -98,6 +123,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("5"));
     }
 
+    /**
+     * Ensures that going from a stock with no items in stock to one with some properly resets the amount box
+     */
     @Test
     @Order(4)
     public void zeroToOneTest() {
@@ -108,6 +136,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("1"));
     }
 
+    /**
+     * Checks that the toggle-switch for importing/exporting works as expected
+     */
     @Test
     @Order(5)
     public void setToImportTest() {
@@ -119,6 +150,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnAddToBasket", LabeledMatchers.hasText("Add to Import"));
     }
 
+    /**
+     * Ensures that imports can go over the amount in stock without being capped
+     */
     @Test
     @Order(6)
     public void attemptImportingOverRestockTest() {
@@ -131,6 +165,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrement", LabeledMatchers.hasText("13"));
     }
 
+    /**
+     * Checks that if the amount importing is over the held stock reverting back to exporting will cap the limit correctly
+     */
     @Test
     @Order(7)
     public void attemptImportingOverRestockAndRevertTest() {
@@ -148,6 +185,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnAdd", Node::isDisabled);
     }
 
+    /**
+     * Ensures that items being exported have a variable price initially
+     */
     @Test
     @Order(8)
     public void initialExportPriceTest() {
@@ -163,6 +203,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         assertNotEquals(lblTotalPrice.getText(), oldPrice);
     }
 
+    /**
+     * Ensures that the price increases with the amount as expected for items being exported
+     */
     @Test
     @Order(9)
     public void exportPriceIncrementTest() {
@@ -177,6 +220,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
                             Double.parseDouble(lblTotalPrice.getText().substring(1)));
     }
 
+    /**
+     * Ensures that the price for importing is correct relevant to the amount
+     */
     @Test
     @Order(9)
     public void importPriceIncrementTest() {
@@ -195,6 +241,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         assertEquals(lblCostToProduce.getText(), "\u00A30.40 - (\u00A34.00)");
     }
 
+    /**
+     * Checks the pop-up appears as expected
+     */
     @Test
     @Order(10)
     public void informationPopupTest() {
@@ -203,6 +252,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#boxContainment", Node::isVisible);
     }
 
+    /**
+     * Checks the buttons for changing the restock limit work as intended
+     */
     @Test
     @Order(11)
     public void restockButtonsTest() {
@@ -215,6 +267,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblIncrementRestock", LabeledMatchers.hasText("7"));
     }
 
+    /**
+     * Ensures the restock limit cannot be set to 0
+     */
     @Test
     @Order(12)
     public void setRestockToZeroTest() {
@@ -227,6 +282,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnMinusRestock", Node::isDisabled);
     }
 
+    /**
+     * Ensures the restock limit changes go through and modify other labels
+     */
     @Test
     @Order(13)
     public void updateRestockTest() {
@@ -242,6 +300,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#lblRestock", LabeledMatchers.hasText("10"));
     }
 
+    /**
+     * Checks the file is created in the directory when printing
+     */
     @Test
     @Order(14)
     public void printTest() {
@@ -252,6 +313,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         assertTrue(new File("United Kingdom_Flag.txt").exists(), "File was not made");
     }
 
+    /**
+     * Ensures warnings for restocking are placed in the correct locations
+     */
     @Test
     @Order(15)
     public void verifyRestockWarningTest() {
@@ -262,6 +326,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat(lblWarningMedium, LabeledMatchers.hasText("RESTOCK"));
     }
 
+    /**
+     * Checks that returning to the stock screen works
+     */
     @Test
     @Order(16)
     public void goBackTest() throws InterruptedException {
@@ -271,6 +338,9 @@ public class ItemControllerGeneralTest extends ItemSupplementTest {
         verifyThat("#btnFlag_AC", Node::isVisible);
     }
 
+    /**
+     * Full system test involving adding 2 UK flags of different sizes and different import/export properties to basket
+     */
     @Test
     @Order(17)
     public void fullSystemTest() throws InterruptedException {

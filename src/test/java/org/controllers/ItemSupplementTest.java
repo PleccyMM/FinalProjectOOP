@@ -9,6 +9,9 @@ import org.vexillum.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
 
+/**
+ * Super class used to populate the item screen and start it up
+ */
 public abstract class ItemSupplementTest extends ApplicationTest {
     private static StockItem flagHand, flagDesk, flagSmall, flagMedium, flagLarge;
     protected static DatabaseControl database = new DatabaseControl();
@@ -18,7 +21,7 @@ public abstract class ItemSupplementTest extends ApplicationTest {
     public void start(Stage stage) throws Exception {
         database.openDBSession();
         setAmount();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/item_screen.fxml"));
         Parent root = loader.load();
 
         ItemController controller = loader.getController();

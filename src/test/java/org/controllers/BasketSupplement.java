@@ -9,15 +9,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.vexillum.ItemPopulation;
 import org.vexillum.Operator;
 
+/**
+ * A short super that just boots and properly loads the basket screen, gets all item information from {@code ItemPopulation}
+ */
 public abstract class BasketSupplement extends ItemPopulation {
     protected BasketController controller;
     protected Stage stage;
 
-
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("basket_screen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/basket_screen.fxml"));
         Parent root = loader.load();
 
         controller = loader.getController();

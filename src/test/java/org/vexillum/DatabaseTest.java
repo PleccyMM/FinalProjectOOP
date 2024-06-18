@@ -6,6 +6,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests some of the functionality of the database that isn't tested properly in the controller tests
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DatabaseTest extends ApplicationTest {
     private final DatabaseControl databaseControl = new DatabaseControl();
@@ -33,6 +36,9 @@ public class DatabaseTest extends ApplicationTest {
         assertFalse(databaseControl.isOpen());
     }
 
+    /**
+     * Checks adding new operators adds them to both tables correctly
+     */
     @Test
     @Order(3)
     public void operatorAdditionTest() {
@@ -47,6 +53,9 @@ public class DatabaseTest extends ApplicationTest {
         assertEquals(expected, operators.get(0));
     }
 
+    /**
+     * Checks approving deletes users as expected
+     */
     @Test
     @Order(4)
     public void operatorApprovalTest() {
@@ -62,6 +71,9 @@ public class DatabaseTest extends ApplicationTest {
         assertEquals(expected, operators.get(0));
     }
 
+    /**
+     * Checks denying deletes users as expected
+     */
     @Test
     @Order(5)
     public void operatorDenyTest() {
@@ -78,6 +90,9 @@ public class DatabaseTest extends ApplicationTest {
         databaseControl.denyOperator(9999);
     }
 
+    /**
+     * Checks that all designs are fetch-able with a blank search
+     */
     @Test
     @Order(6)
     public void getDesignsTest() {

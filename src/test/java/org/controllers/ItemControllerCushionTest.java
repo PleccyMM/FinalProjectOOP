@@ -14,6 +14,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * Tests some functionality of {@code ItemController} specific to cushions
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ItemControllerCushionTest extends ApplicationTest {
     private static StockItem cushionSmall, cushionLarge;
@@ -24,7 +27,7 @@ public class ItemControllerCushionTest extends ApplicationTest {
     public void start(Stage stage) throws Exception {
         database.openDBSession();
         setAmount();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("item_screen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/item_screen.fxml"));
         Parent root = loader.load();
 
         ItemController controller = loader.getController();
@@ -36,6 +39,9 @@ public class ItemControllerCushionTest extends ApplicationTest {
         database.closeDBSession();
     }
 
+    /**
+     * Gets the information from the database saved, so it can be restored
+     */
     @BeforeAll
     public static void saveInformation() {
         database.openDBSession();
@@ -46,6 +52,9 @@ public class ItemControllerCushionTest extends ApplicationTest {
         database.closeDBSession();
     }
 
+    /**
+     * For some reason, @BeforeEach didn't work for this, so it's instead invoked first in start()
+     */
     public void setAmount() {
         database.updateAmountAndRestock(442, 5, 10, 7);
         database.updateAmountAndRestock(442, 7, 11, 4);
@@ -67,6 +76,9 @@ public class ItemControllerCushionTest extends ApplicationTest {
     }
 
 
+    /**
+     * Ensures that the toggle-switch for disabling filling disables all nodes correctly
+     */
     @Test
     @Order(1)
     public void setEmptyTest() {
@@ -81,12 +93,18 @@ public class ItemControllerCushionTest extends ApplicationTest {
         verifyThat("#btnAddToBasket", node -> !node.isDisabled());
     }
 
+    /**
+     * Ensures that some filling requirements are set before export
+     */
     @Test
     @Order(2)
     public void preventExportingWithoutFillingTest() {
         verifyThat("#btnAddToBasket", Node::isDisabled);
     }
 
+    /**
+     * Full test in the creation of a cushion in full
+     */
     @Test
     @Order(3)
     public void fullCushionCreationTest() throws InterruptedException {

@@ -13,6 +13,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * Tests the functionality of {@code LoginController}
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class LoginControllerTest extends ApplicationTest {
     private static DatabaseControl database = new DatabaseControl();
@@ -23,6 +26,9 @@ public class LoginControllerTest extends ApplicationTest {
         l.showLogin(stage);
     }
 
+    /**
+     * Sets up the operators ready for logging in
+     */
     @BeforeAll
     public static void addOperator() {
         Calendar calendar = Calendar.getInstance();
@@ -58,6 +64,9 @@ public class LoginControllerTest extends ApplicationTest {
         database.closeDBSession();
     }
 
+    /**
+     * Checks warning for totally incorrect information
+     */
     @Test
     @Order(1)
     public void incorrectEverythingTest() {
@@ -71,6 +80,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Incorrect username or password"));
     }
 
+    /**
+     * Checks warning for empty attempts to login
+     */
     @Test
     @Order(1)
     public void emptyEntryTest() {
@@ -79,6 +91,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Incorrect username or password"));
     }
 
+    /**
+     * Checks warning for valid passwords but an invalid name
+     */
     @Test
     @Order(2)
     public void incorrectNameTest() {
@@ -92,6 +107,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Incorrect username or password"));
     }
 
+    /**
+     * Checks warning for a valid name but incorrect password
+     */
     @Test
     @Order(3)
     public void incorrectPasswordTest() {
@@ -105,6 +123,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Incorrect username or password"));
     }
 
+    /**
+     * Checks warning for a correct set of information on an operator who isn't approved
+     */
     @Test
     @Order(4)
     public void loginWhilstUnapprovedTest() {
@@ -118,6 +139,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Incorrect username or password"));
     }
 
+    /**
+     * Ensures that logging in with completely correct information works
+     */
     @Test
     @Order(5)
     public void correctEverythingTest() throws InterruptedException {
@@ -137,6 +161,9 @@ public class LoginControllerTest extends ApplicationTest {
         assertFalse(cmbProfile.getItems().contains("Admin Panel"));
     }
 
+    /**
+     * Checks that admins have additional options when logged in
+     */
     @Test
     @Order(6)
     public void adminLoginTest() throws InterruptedException {
@@ -152,6 +179,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#cmbProfile", ComboBoxMatchers.containsExactlyItemsInOrder("Admin Panel", "Logout"));
     }
 
+    /**
+     * Ensures going to the registration screen updates all needed elements on screen
+     */
     @Test
     @Order(7)
     public void transferToRegisterTest() {
@@ -163,6 +193,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblCreateAccount", LabeledMatchers.hasText("Login"));
     }
 
+    /**
+     * Ensures that passwords must match to be able to submit a new request
+     */
     @Test
     @Order(8)
     public void registerNewUserMismatchedPasswordsTest() {
@@ -180,6 +213,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Passwords must match"));
     }
 
+    /**
+     * Ensures that not filling in all the needed information provides a relevant warning
+     */
     @Test
     @Order(9)
     public void registerNewUserEmptyTest() {
@@ -189,11 +225,15 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("All data must be filled"));
 
         clickOn("#enrName");
+        //Just fills in the name part to check that it gives the same error if that part is at least filled
         write("0");
         clickOn("#btnLogin");
         verifyThat("#lblWarning", LabeledMatchers.hasText("All data must be filled"));
     }
 
+    /**
+     * Ensures users cannot share the name of already existent users
+     */
     @Test
     @Order(10)
     public void registerNewUserSameNameTest() {
@@ -211,6 +251,9 @@ public class LoginControllerTest extends ApplicationTest {
         verifyThat("#lblWarning", LabeledMatchers.hasText("Username already taken"));
     }
 
+    /**
+     * Checks that if all requirements are met registering works as expected
+     */
     @Test
     @Order(11)
     public void registerNewUserCorrectTest() {

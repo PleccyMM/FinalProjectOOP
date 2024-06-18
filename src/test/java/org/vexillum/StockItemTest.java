@@ -16,6 +16,11 @@ public class StockItemTest extends ItemPopulation {
         return sortedItems;
     }
 
+    /**
+     * Annoyingly long setup for the equality tests, just creates a bunch of flags and cushions with some identical, some similar that they
+     * should be seen as equals and others completely different. Each time you go down the list they have one feature changed
+     * @return the full list of items, completely unsorted
+     */
     private List<StockItem> equityHashList() {
         List<StockItem> list = new ArrayList<>();
         Cushion c1 = database.createCushion("CF", CUSHION_SIZE.LONG, CUSHION_MATERIAL.FEATHERS);
@@ -62,6 +67,9 @@ public class StockItemTest extends ItemPopulation {
         return list;
     }
 
+    /**
+     * Ensures that the {@code equals()} function works properly for all potential conditions
+     */
     @Test
     @Order(0)
     public void stockItemEqualityTest() {
@@ -75,6 +83,8 @@ public class StockItemTest extends ItemPopulation {
         c2.setAmount(2);
 
         database.closeDBSession();
+
+        //Ignore all the warnings, it has to use the equals() function as that's the point of this test scenario
 
         assertTrue(c1.equals(c2));
 
@@ -90,6 +100,9 @@ public class StockItemTest extends ItemPopulation {
         assertFalse(equityList.get(5).equals(equityList.get(9)));
     }
 
+    /**
+     * Ensures the {@code hashCode()} function is producing unique codes when appropriate
+     */
     @Test
     @Order(0)
     public void stockItemHashTest() {
@@ -111,6 +124,9 @@ public class StockItemTest extends ItemPopulation {
         assertNotEquals(hashList.get(5).hashCode(), hashList.get(9).hashCode());
     }
 
+    /**
+     * Ensures that an already sorted list isn't sorted out of order
+     */
     @Test
     @Order(0)
     public void stockItemAlreadySortedTest() {
@@ -132,6 +148,9 @@ public class StockItemTest extends ItemPopulation {
         assertEquals(sortedItems, unsortedItems);
     }
 
+    /**
+     * Ensures imported items are placed ahead of exported items when sorting
+     */
     @Test
     @Order(1)
     public void stockItemImportSortTest() {
@@ -155,6 +174,9 @@ public class StockItemTest extends ItemPopulation {
 
     }
 
+    /**
+     * Ensures items are lexicographically ordered
+     */
     @Test
     @Order(1)
     public void stockItemNameSortTest() {
@@ -178,6 +200,9 @@ public class StockItemTest extends ItemPopulation {
         assertEquals(sortedItems.get(1), unsortedItems.get(0));
     }
 
+    /**
+     * Ensures items are sorted with smaller sizes first
+     */
     @Test
     @Order(1)
     public void stockItemSizeSortTest() {
@@ -200,6 +225,9 @@ public class StockItemTest extends ItemPopulation {
         assertEquals(sortedItems.get(1), unsortedItems.get(0));
     }
 
+    /**
+     * Ensures items are sorted with flags ahead of cushions
+     */
     @Test
     @Order(1)
     public void stockItemTypeSortTest() {
@@ -222,6 +250,9 @@ public class StockItemTest extends ItemPopulation {
         assertEquals(sortedItems.get(1), unsortedItems.get(0));
     }
 
+    /**
+     * Tests all parts of the sorting conditions together on a larger unsorted list, to see if it can correctly place them
+     */
     @Test
     @Order(2)
     public void stockItemFullSortTest() {
@@ -266,6 +297,9 @@ public class StockItemTest extends ItemPopulation {
         assertEquals(sortedItems.get(8), unsortedItems.get(8));
     }
 
+    /**
+     * Ensures cloning provides exact matches
+     */
     @Test
     @Order(3)
     public void cloneTest() {
@@ -287,6 +321,9 @@ public class StockItemTest extends ItemPopulation {
         assertEquals(cushionClone, cushion);
     }
 
+    /**
+     * Ensures the calculation of prices returns expected values
+     */
     @Test
     @Order(4)
     public void priceTest() {

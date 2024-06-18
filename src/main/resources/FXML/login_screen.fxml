@@ -20,7 +20,7 @@
             <Insets top="25" bottom="25"/>
         </padding>
 
-        <Pane id="test1"
+        <Pane id="blue-fill"
               minWidth="480"
         />
 

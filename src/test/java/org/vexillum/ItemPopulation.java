@@ -8,6 +8,9 @@ import org.junit.jupiter.api.*;
 import org.testfx.framework.junit5.ApplicationTest;
 import java.util.*;
 
+/**
+ * A helper object that just populates the {@code items} list, mainly used for display
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class ItemPopulation extends ApplicationTest {
     protected final List<StockItem> testItems = new ArrayList<>();
@@ -15,6 +18,9 @@ public abstract class ItemPopulation extends ApplicationTest {
     private static final List<StockItem> unalteredStockItems = new ArrayList<>();
     protected static final DatabaseControl database = new DatabaseControl();
 
+    /**
+     * Saves the original amounts, so they can be reverted
+     */
     @BeforeAll
     public static void saveStockInformation() {
         database.openDBSession();
@@ -43,17 +49,22 @@ public abstract class ItemPopulation extends ApplicationTest {
         database.closeDBSession();
     }
 
+    /**
+     * Restores all stock with their original stock to the database
+     */
     @AfterAll
     public static void restoreStockInformation() {
         database.openDBSession();
 
         for (StockItem item : unalteredStockItems) {
-            System.out.println("Item with ISOID " + item.getIsoID() + " has new totalAmount " + item.getTotalAmount() + " and restock " + item.getRestock());
             database.updateAmountAndRestock(item.getStockID(), item.getSizeID(), item.getTotalAmount(), item.getRestock());
         }
         database.closeDBSession();
     }
 
+    /**
+     * Just fetches and modifies each item to the desired amounts
+     */
     @BeforeEach
     public void setUpItems() throws InterruptedException {
         database.openDBSession();
@@ -114,6 +125,10 @@ public abstract class ItemPopulation extends ApplicationTest {
         database.closeDBSession();
     }
 
+    /**
+     * Scrolls to the given location inside {@code BasketController}, scrolls one box more than given so shouldn't be used to scroll
+     * to the final item in the list
+     */
     protected void scrollToExport(int indexOfBox, List<StockItem> stockItems) {
         ScrollPane scrBackground = lookup("#scrBackground").query();
         Bounds scrollBound = scrBackground.localToScene(scrBackground.getBoundsInLocal());
@@ -134,6 +149,9 @@ public abstract class ItemPopulation extends ApplicationTest {
         } while (!scrollBound.intersects(boxBound));;
     }
 
+    /**
+     * Just a test to ensure setup is applied, as it was causing issues sometimes without this
+     */
     @Test
     @Order(0)
     public void dummyTest() {

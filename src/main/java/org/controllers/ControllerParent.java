@@ -66,6 +66,7 @@ public abstract class ControllerParent {
         }
         cmbProfile.getItems().add("Logout");
 
+        //Sets the needed method for closing
         stage.setOnHiding( event -> {addStockBack();} );
     }
 
@@ -158,6 +159,7 @@ public abstract class ControllerParent {
                     l.showAdmin(stage, items, operator);
                 }
                 else {
+                    //Remembers to add stock back to the system when logging out
                     addStockBack();
                     l.showLogin(stage);
                 }

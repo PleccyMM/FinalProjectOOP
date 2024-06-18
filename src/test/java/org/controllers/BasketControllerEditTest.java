@@ -10,8 +10,14 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
+/**
+ * Tests the functionality of {@code BasketController} and {@code ItemController} through ensuring the edit button works
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BasketControllerEditTest extends BasketSupplement {
+    /**
+     * Ensures that all information is correctly displayed when going to edit an item being imported
+     */
     @Test
     @Order(1)
     public void editImportTest() {
@@ -41,6 +47,9 @@ public class BasketControllerEditTest extends BasketSupplement {
         verifyThat("#lblCostToProduce", LabeledMatchers.hasText("\u00A37.00 - (\u00A335.00)"));
     }
 
+    /**
+     * Ensures that all information is correctly displayed when going to edit an item being exported
+     */
     @Test
     @Order(2)
     public void editExportTest() {

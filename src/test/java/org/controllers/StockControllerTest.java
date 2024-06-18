@@ -11,6 +11,9 @@ import java.io.File;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test cases for {@code StockController}
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StockControllerTest extends ApplicationTest {
 
@@ -55,6 +58,9 @@ public class StockControllerTest extends ApplicationTest {
         }, "Failed to find bottom level design");
     }
 
+    /**
+     * Ensures an empty search returns everything
+     */
     @Test
     @Order(2)
     public void searchEmptyTest() throws InterruptedException {
@@ -72,6 +78,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(112, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Ensures that a search that has no matches does not crash and instead displays nothing
+     */
     @Test
     @Order(2)
     public void searchNoReturnTest() throws InterruptedException {
@@ -160,6 +169,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(3, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * A search test using a partial match to a word and not a full match
+     */
     @Test
     @Order(4)
     public void searchJustTextPartialTest() throws InterruptedException {
@@ -180,6 +192,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(4, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Checks the type tag for searching works
+     */
     @Test
     @Order(5)
     public void searchJustTypeTest() throws InterruptedException {
@@ -199,6 +214,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(7, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Checks the region tag for searching works
+     */
     @Test
     @Order(5)
     public void searchJustRegionTest() throws InterruptedException {
@@ -218,6 +236,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(11, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Checks the initial tags for searching works
+     */
     @Test
     @Order(5)
     public void searchJustInitialTest() throws InterruptedException {
@@ -237,6 +258,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(23, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Checks the using all tags in tandem for searching works
+     */
     @Test
     @Order(6)
     public void searchAllTagsTest() throws InterruptedException {
@@ -278,6 +302,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(9, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Checks the using all tags in tandem and text for searching works
+     */
     @Test
     @Order(7)
     public void searchEverythingTest() throws InterruptedException {
@@ -331,6 +358,9 @@ public class StockControllerTest extends ApplicationTest {
         assertEquals(3, boxScroll.getChildren().size(), "Wrong amount of children found");
     }
 
+    /**
+     * Checks the printing button produces the file in the needed spot
+     */
     @Test
     @Order(8)
     public void printTest() {
